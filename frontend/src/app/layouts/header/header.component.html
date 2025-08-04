@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">Планинска викендица</a>
+    @if (userRole !== null || !isAuthPage()) {
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    }
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      @if (userRole === null && !isAuthPage()) {
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" routerLink="/login">Улогуј се</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/register">Региструј се</a></li>
+        </ul>
+      }
+      @if (userRole !== null) {
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <ng-container *ngIf="userRole === 'TOURIST'">
+            <li class="nav-item"><a class="nav-link" routerLink="/profile">Профил</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="/cottages">Викендице</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="/reservations">Резервације</a></li>
+          </ng-container>
+          <ng-container *ngIf="userRole === 'HOST'">
+            <li class="nav-item"><a class="nav-link" routerLink="/profile">Профил</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="/my-reservations">Резервације</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="/my-cottages">Моје викендице</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="/statistics">Статистика</a></li>
+          </ng-container>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" routerLink="/change-password">Промена лозинке</a></li>
+          <li class="nav-item"><a class="nav-link cursor-pointer" (click)="logout()">Излогуј се</a></li>
+        </ul>
+      }
+    </div>
+  </div>
+</nav>

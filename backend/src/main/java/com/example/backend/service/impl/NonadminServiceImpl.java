@@ -92,6 +92,7 @@ public class NonadminServiceImpl implements NonadminService {
             throw new AuthException("Korisnik nije ni turista ni vlasnik.");
         }
         NonadminResponseDTO response = new NonadminResponseDTO();
+        response.setId(nonadmin.getId());
         response.setUsername(nonadmin.getUsername());
         response.setUserType(nonadmin.getUserType());
         response.setFirstName(nonadmin.getFirstName());

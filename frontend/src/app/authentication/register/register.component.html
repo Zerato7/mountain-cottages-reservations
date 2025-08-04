@@ -1,0 +1,78 @@
+<div class="container mt-4">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label>Корисничко име</label>
+        <input type="text" class="form-control" formControlName="username" />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label>Лозинка</label>
+        <input type="password" class="form-control" formControlName="password" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label>Име</label>
+        <input type="text" class="form-control" formControlName="firstName" />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label>Презиме</label>
+        <input type="text" class="form-control" formControlName="lastName" />
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label>Пол</label>
+      <select class="form-select" formControlName="gender">
+        <option value="M">Мушки</option>
+        <option value="Ž">Женски</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label>Адреса</label>
+      <input type="text" class="form-control" formControlName="address" />
+    </div>
+
+    <div class="mb-3">
+      <label>Контакт телефон</label>
+      <input type="text" class="form-control" formControlName="phoneNumber" />
+    </div>
+
+    <div class="mb-3">
+      <label>E-mail</label>
+      <input type="email" class="form-control" formControlName="email" />
+    </div>
+
+    <div class="mb-3">
+      <label>Профилна слика</label>
+      <input type="text" class="form-control" formControlName="profilePicturePath" />
+    </div>
+
+    <div class="mb-3">
+      <label>Број кредитне картице</label>
+      <input type="text" class="form-control" formControlName="creditCardNumber" />
+    </div>
+
+    <div class="mb-3">
+      <label>Тип корисника</label>
+      <select class="form-select" formControlName="userType">
+        <option value="TOURIST">Туриста</option>
+        <option value="HOST">Власник</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">
+      Региструј се
+    </button>
+  </form>
+
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+    {{ errorMessage }}
+  </div>
+
+  <p class="mt-3">
+    Већ имаш налог? <a routerLink="/login">Пријави се овде</a>
+  </p>
+</div>

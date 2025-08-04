@@ -31,6 +31,7 @@ public class AdminServiceImpl implements AdminService {
             throw new AuthException("Korisnik nije administrator.");
         }
         UserResponseDTO response = new UserResponseDTO();
+        response.setId(user.getId());
         response.setUsername(user.getUsername());
         response.setUserType(user.getUserType());
         return response;
