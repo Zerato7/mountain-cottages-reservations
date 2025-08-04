@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(PasswordChangeException.class)
     public ResponseEntity<MessageDTO> handlePasswordChangeException(PasswordChangeException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
             new MessageDTO(ex.getMessage())
         );
     }

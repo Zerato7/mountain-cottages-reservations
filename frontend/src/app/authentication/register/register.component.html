@@ -115,14 +115,21 @@
     </div>
 
     <div class="row justify-content-start">
-      <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-3 position-relative">
         <label for="creditCardNumber" class="form-label">Број кредитне картице</label>
-        <input type="text" id="creditCardNumber" class="form-control" formControlName="creditCardNumber">
+        <div class="input-group">
+          <input type="text" id="creditCardNumber" class="form-control" formControlName="creditCardNumber">
+          <span
+            *ngIf="cardType"
+            class="input-group-text bg-white border-start-0">
+            <img src="assets/{{cardType}}.jpg" alt="{{cardType}}" height="30">
+          </span>
+        </div>
         <div
           *ngIf="registerForm.get('creditCardNumber')?.invalid && registerForm.get('creditCardNumber')?.touched"
           class="text-danger"
         >
-          Број кредитне картице је обавезан.
+          Број кредитне картице није валидан.
         </div>
       </div>
 

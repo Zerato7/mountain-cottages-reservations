@@ -1,10 +1,15 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { UserRegistration } from '../../models/requests/userRegistration';
 import { CommonModule } from '@angular/common';
 import { UserType } from '../../models/userType';
+
+
+const dinersRegexp = /^((300|301|302|303)\d{12})|((36|38)\d{13})$/;
+const masterRegexp = /^(51|52|53|54|55)\d{14}$/;
+const visaRegexp = /^(4539|4556|4916|4532|4929|4485|4716)\d{12}$/;
 
 @Component({
   selector: 'app-register',
@@ -19,12 +24,28 @@ export class RegisterComponent {
   private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
 
-  constructor() { }
+  errorMessage: string = '';
+  loading: boolean = false;
+  cardType: string | null = null;
+
+  ngOnInit(): void {
+    this.registerForm.get('creditCardNumber')?.valueChanges.subscribe(() => {
+      this.cardType =this.getCardType();
+    })
+  }
 
   passwordMatchValidator(formGroup: FormGroup) {
     const password = formGroup.get('password')?.value;
     const confirmPassword = formGroup.get('confirmPassword')?.value;
     return password === confirmPassword ? null : {passwordMismatch: true}
+  }
+
+  creditCardNumberValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value?.toString().replace(/\s+/g, '') || '';
+    if (dinersRegexp.test(value) ||
+        masterRegexp.test(value) ||
+        visaRegexp.test(value)) return null;
+    else return {invalidNumber: true};
   }
 
   registerForm = this.formBuilder.group({
@@ -47,14 +68,15 @@ export class RegisterComponent {
     ],
     email: ['', [Validators.required, Validators.email]],
     profilePicturePath: [''],
-    creditCardNumber: ['', Validators.required],
+    creditCardNumber: ['', [
+      Validators.required,
+      this.creditCardNumberValidator
+      ]
+    ],
     userType: ['TOURIST', Validators.required]
   }, {
     validators: this.passwordMatchValidator
   });
-
-  errorMessage: string = '';
-  loading: boolean = false;
 
   onSubmit() {
     if (this.registerForm.valid) {
@@ -86,6 +108,15 @@ export class RegisterComponent {
         }
       });
     }
+  }
+
+  private getCardType(): string | null {
+    const value = this.registerForm.get('creditCardNumber')?.value;
+    if (value === null) return null;
+    if (dinersRegexp.test(value)) return 'diners';
+    if (masterRegexp.test(value)) return 'mastercard';
+    if (visaRegexp.test(value)) return 'visa';
+    return null;
   }
 
 }

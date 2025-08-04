@@ -77,6 +77,7 @@ export class AuthService {
   changePassword(passwordChange: PasswordChange) {
     return this.http.put<string>(`${this.backPath}/change-password`, passwordChange).pipe(
       catchError((error: HttpErrorResponse) => {
+        //console.log(error);
         let message = 'Непозната грешка при промени лозинке.';
         if (error.error?.message) {
           message = error.error.message;
