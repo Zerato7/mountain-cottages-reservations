@@ -1,10 +1,10 @@
-package com.example.backend.exception;
+package com.example.backend.dto.ResponseDTO;
 
-public class ErrorMessage {
+public class MessageDTO {
     
     private String message;
 
-    public ErrorMessage(String message) {
+    public MessageDTO(String message) {
         this.message = message;
     }
 

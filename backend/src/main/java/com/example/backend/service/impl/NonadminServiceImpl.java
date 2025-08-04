@@ -12,11 +12,13 @@ import com.example.backend.db.repository.HostRepository;
 import com.example.backend.db.repository.NonadminRepository;
 import com.example.backend.db.repository.TouristRepository;
 import com.example.backend.db.repository.UserRepository;
+import com.example.backend.dto.PasswordChangeDTO;
 import com.example.backend.dto.UserLoginDTO;
 import com.example.backend.dto.UserRegistrationDTO;
 import com.example.backend.dto.ResponseDTO.NonadminResponseDTO;
 import com.example.backend.exception.AuthException;
 import com.example.backend.exception.DuplicateUserException;
+import com.example.backend.exception.PasswordChangeException;
 import com.example.backend.service.NonadminService;
 import com.example.backend.util.EncryptionUtil;
 
@@ -104,6 +106,21 @@ public class NonadminServiceImpl implements NonadminService {
         response.setProfilePicturePath(nonadmin.getProfilePicturePath());
         response.setCreditCardNumberLast4Digits(nonadmin.getCreditCardNumberLast4Digits());
         return response;
+    }
+
+    @Override
+    public void changePassword(PasswordChangeDTO dto) {
+        User user = userRepository.findById(dto.getId()).orElseThrow(() ->
+            new PasswordChangeException("Корисник чија се лозинка покушава променити, не постоји.")
+        );
+        if (!passwordEncoder.matches(dto.getCurrentPassword(), user.getPassword())) {
+            throw new PasswordChangeException("Промена лозинке није успела.");
+        }
+        if (passwordEncoder.matches(dto.getNewPassword(), user.getPassword())) {
+            throw new PasswordChangeException("Промена лозинке није успела.");
+        }
+        user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+        userRepository.save(user);
     }
     
 }

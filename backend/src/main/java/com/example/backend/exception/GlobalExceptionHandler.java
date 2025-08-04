@@ -9,34 +9,43 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.example.backend.dto.ResponseDTO.MessageDTO;
+import com.example.backend.dto.ResponseDTO.MessageListDTO;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<FormFieldErrorMessage> > handleValidationExceptions(MethodArgumentNotValidException ex) {
-        List<FormFieldErrorMessage> errors = new ArrayList<>();
-        ex.getBindingResult().getFieldErrors().forEach(error -> 
+    public ResponseEntity<MessageListDTO> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        List<MessageDTO> errors = new ArrayList<>();
+        ex.getBindingResult().getFieldErrors().forEach(error -> {
             errors.add(
-                new FormFieldErrorMessage(
-                    error.getField(), 
+                new MessageDTO(
                     error.getDefaultMessage()
                 )
-            )
-        );
-        return ResponseEntity.badRequest().body(errors);
+            );
+        });
+        return ResponseEntity.badRequest().body(new MessageListDTO(errors));
     }
 
     @ExceptionHandler(DuplicateUserException.class)
-    public ResponseEntity<FormFieldErrorMessage> handleDuplicateUserException(DuplicateUserException ex) {
+    public ResponseEntity<MessageDTO> handleDuplicateUserException(DuplicateUserException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(
-            new FormFieldErrorMessage(ex.getField(), ex.getMessage())
+            new MessageDTO(ex.getMessage())
         );
     }
 
     @ExceptionHandler(AuthException.class)
-    public ResponseEntity<ErrorMessage> handleAuthException(AuthException ex) {
+    public ResponseEntity<MessageDTO> handleAuthException(AuthException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-            new ErrorMessage(ex.getMessage())
+            new MessageDTO(ex.getMessage())
+        );
+    }
+
+    @ExceptionHandler(PasswordChangeException.class)
+    public ResponseEntity<MessageDTO> handlePasswordChangeException(PasswordChangeException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(
+            new MessageDTO(ex.getMessage())
         );
     }
 

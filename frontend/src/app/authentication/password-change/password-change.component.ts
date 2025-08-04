@@ -1,0 +1,74 @@
+import { Component, inject, Input } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { PasswordChange } from '../../models/requests/passwordChange';
+
+@Component({
+  selector: 'app-password-change',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './password-change.component.html',
+  styleUrl: './password-change.component.css'
+})
+export class PasswordChangeComponent {
+
+  userId: Number = 0
+
+  private formBuilder = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  constructor() {}
+
+  newPasswordValidator(formGroup: FormGroup) {
+    const currentPassword = formGroup.get('currentPassword')?.value;
+    const newPassword = formGroup.get('newPassword')?.value;
+    const confirmNewPassword = formGroup.get('confirmNewPassword')?.value;
+
+    const errors: ValidationErrors = {}
+
+    if (newPassword !== confirmNewPassword) {
+      errors['passwordsMismatch'] = true;
+    }
+
+    if (newPassword === currentPassword) {
+      errors['currentNewPasswordsSame'] = true;
+    }
+
+    return Object.keys(errors).length ? errors : null;
+  }
+
+  passwordChangeForm = this.formBuilder.group({
+    currentPassword: ['', Validators.required],
+    newPassword: ['', [
+      Validators.required,
+      Validators.pattern(
+        '^(?=(.*[a-z]){3})(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])[a-zA-Z][a-zA-Z\\d!@#$%^&*]{5,9}$'
+      )]
+    ],
+    confirmNewPassword: ['', Validators.required]
+  }, {
+    validators: this.newPasswordValidator
+  });
+
+  errorMessage: string = ''
+
+  onSubmit() {
+    const {currentPassword, newPassword, confirmNewPassword}  = this.passwordChangeForm.value;
+    let passwordChange: PasswordChange = new PasswordChange();
+    passwordChange.id = this.authService.getUser()?.id || 0;
+    passwordChange.currentPassword = currentPassword;
+    passwordChange.newPassword = newPassword;
+    this.authService.changePassword(passwordChange).subscribe({
+      next: message => {
+        this.router.navigate(['/login']);
+      },
+      error: err => {
+        this.errorMessage = err.message;
+      }
+    });
+  }
+
+}

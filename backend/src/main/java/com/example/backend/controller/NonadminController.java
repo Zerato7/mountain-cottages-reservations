@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.backend.dto.PasswordChangeDTO;
 import com.example.backend.dto.UserLoginDTO;
 import com.example.backend.dto.UserRegistrationDTO;
+import com.example.backend.dto.ResponseDTO.MessageDTO;
 import com.example.backend.dto.ResponseDTO.NonadminResponseDTO;
 import com.example.backend.service.NonadminService;
 
@@ -24,14 +27,20 @@ public class NonadminController {
     private NonadminService nonadminService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerNonadmin(@Valid @RequestBody UserRegistrationDTO dto) {
+    public ResponseEntity<MessageDTO> registerNonadmin(@Valid @RequestBody UserRegistrationDTO dto) {
         nonadminService.registerNonadmin(dto);
-        return ResponseEntity.ok("Zahtev za registracijom uspešno poslat.");
+        return ResponseEntity.ok(new MessageDTO("Zahtev za registracijom uspešno poslat."));
     }
 
     @PostMapping("/login")
     public ResponseEntity<NonadminResponseDTO> loginNonadmin(@Valid @RequestBody UserLoginDTO dto) {
         return ResponseEntity.ok(nonadminService.loginNonadmin(dto));
+    }
+
+    @PutMapping("/change-password")
+    public ResponseEntity<MessageDTO> changePassword(@Valid @RequestBody PasswordChangeDTO dto) {
+        nonadminService.changePassword(dto);
+        return ResponseEntity.ok(new MessageDTO("Успешно промењена лозинка."));
     }
 
 }

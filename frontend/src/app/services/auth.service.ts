@@ -5,6 +5,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { UserLogin } from '../models/requests/userLogin';
 import { catchError, throwError } from 'rxjs';
 import { UserRegistration } from '../models/requests/userRegistration';
+import { PasswordChange } from '../models/requests/passwordChange';
 
 @Injectable({
   providedIn: 'root'
@@ -57,9 +58,29 @@ export class AuthService {
   }
 
   register(userRegistration: UserRegistration) {
-    return this.http.post<NonAdminResponse>(`${this.backPath}/register`, userRegistration).pipe(
+    return this.http.post<string>(`${this.backPath}/register`, userRegistration).pipe(
       catchError((error: HttpErrorResponse) => {
-        let message = error.error?.message || 'Непозната грешка при регистрацији';
+        //console.log(error);
+        let message = 'Непозната грешка при регистрацији.';
+
+        if (error.error?.messages) {
+          message = error.error.messages.map((item: any) => item.message).join(', ');
+        } else if (error.error?.message) {
+          message = error.error.message;
+        }
+
+        return throwError(() => new Error(message));
+      })
+    );
+  }
+
+  changePassword(passwordChange: PasswordChange) {
+    return this.http.put<string>(`${this.backPath}/change-password`, passwordChange).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let message = 'Непозната грешка при промени лозинке.';
+        if (error.error?.message) {
+          message = error.error.message;
+        }
         return throwError(() => new Error(message));
       })
     );

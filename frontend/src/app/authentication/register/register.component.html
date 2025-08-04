@@ -1,75 +1,150 @@
 <div class="container mt-4">
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="row justify-content-start">
+      <div class="col-md-6 mb-3">
+        <label for="username" class="form-label">Корисничко име</label>
+        <input type="text" id="username" class="form-control" formControlName="username" autocomplete="username">
+        <div
+          *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
+          class="text-danger"
+        >
+          Корисничко име је обавезно.
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label for="password" class="form-label">Лозинка</label>
+        <input type="password" id="password" class="form-control" formControlName="password">
+        <div
+          *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+          class="text-danger"
+        >
+          Лозинка је обавезна и мора садржати минимално 6, а максимално 10 карактера, од тога бар једно велико слово, три мала слова, један број и један специјални карактер, и мора почињати словом.
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="confirmPassword" class="form-label">Потврди лозинку</label>
+        <input type="password" id="confirmPassword" class="form-control" formControlName="confirmPassword">
+        <div
+          *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched"
+          class="text-danger"
+        >
+          Лозинке се не поклапају.
+        </div>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-md-6 mb-3">
-        <label>Корисничко име</label>
-        <input type="text" class="form-control" formControlName="username" />
+        <label for="firstName" class="form-label">Име</label>
+        <input type="text" id="firstName" class="form-control" formControlName="firstName">
+        <div
+          *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched"
+          class="text-danger"
+        >
+          Име је обавезно.
+        </div>
       </div>
       <div class="col-md-6 mb-3">
-        <label>Лозинка</label>
-        <input type="password" class="form-control" formControlName="password" />
+        <label for="lastName" class="form-label">Презиме</label>
+        <input type="text" id="lastName" class="form-control" formControlName="lastName">
+        <div
+          *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched"
+          class="text-danger"
+        >
+          Презиме је обавезно.
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-between">
+      <div class="col-md-3 mb-3">
+        <span class="d-block">Пол</span>
+        <div class="form-check form-check-inline">
+          <input type="radio" id="genderMale" class="form-check-input"
+            formControlName="gender" value="M">
+          <label for="genderMale" class="form-check-label">Мушки</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input type="radio" id="genderFemale" class="form-check-input"
+            formControlName="gender" value="Ž">
+          <label for="genderFemale" class="form-check-label">Женски</label>
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label for="address" class="form-label">Адреса</label>
+        <input type="text" id="address" class="form-control" formControlName="address" autocomplete="on">
+        <div
+          *ngIf="registerForm.get('address')?.invalid && registerForm.get('address')?.touched"
+          class="text-danger"
+        >
+          Адреса је обавезна.
+        </div>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-6 mb-3">
-        <label>Име</label>
-        <input type="text" class="form-control" formControlName="firstName" />
+        <label for="phoneNumber" class="form-label">Контакт телефон</label>
+        <input type="text" id="phoneNumber" class="form-control" formControlName="phoneNumber">
+        <div
+          *ngIf="registerForm.get('phoneNumber')?.invalid && registerForm.get('phoneNumber')?.touched"
+          class="text-danger"
+        >
+          Контакт телефон је обавезан и мора бити у формату +XXXXXXXXXXXX.
+        </div>
       </div>
       <div class="col-md-6 mb-3">
-        <label>Презиме</label>
-        <input type="text" class="form-control" formControlName="lastName" />
+        <label for="email" class="form-label">Е-мејл</label>
+        <input type="email" id="email" class="form-control" formControlName="email" autocomplete="email">
+        <div
+          *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+          class="text-danger"
+        >
+          Е-мејл је обавезан.
+        </div>
       </div>
-    </div>
-
-    <div class="mb-3">
-      <label>Пол</label>
-      <select class="form-select" formControlName="gender">
-        <option value="M">Мушки</option>
-        <option value="Ž">Женски</option>
-      </select>
-    </div>
-
-    <div class="mb-3">
-      <label>Адреса</label>
-      <input type="text" class="form-control" formControlName="address" />
-    </div>
-
-    <div class="mb-3">
-      <label>Контакт телефон</label>
-      <input type="text" class="form-control" formControlName="phoneNumber" />
-    </div>
-
-    <div class="mb-3">
-      <label>E-mail</label>
-      <input type="email" class="form-control" formControlName="email" />
     </div>
 
     <div class="mb-3">
       <label>Профилна слика</label>
-      <input type="text" class="form-control" formControlName="profilePicturePath" />
+      <input type="text" class="form-control" formControlName="profilePicturePath">
     </div>
 
-    <div class="mb-3">
-      <label>Број кредитне картице</label>
-      <input type="text" class="form-control" formControlName="creditCardNumber" />
+    <div class="row justify-content-start">
+      <div class="col-md-6 mb-3">
+        <label for="creditCardNumber" class="form-label">Број кредитне картице</label>
+        <input type="text" id="creditCardNumber" class="form-control" formControlName="creditCardNumber">
+        <div
+          *ngIf="registerForm.get('creditCardNumber')?.invalid && registerForm.get('creditCardNumber')?.touched"
+          class="text-danger"
+        >
+          Број кредитне картице је обавезан.
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <label for="userType" class="form-label">Тип корисника</label>
+        <select id="userType" class="form-select" formControlName="userType">
+          <option value="TOURIST">Туриста</option>
+          <option value="HOST">Власник</option>
+        </select>
+      </div>
     </div>
 
-    <div class="mb-3">
-      <label>Тип корисника</label>
-      <select class="form-select" formControlName="userType">
-        <option value="TOURIST">Туриста</option>
-        <option value="HOST">Власник</option>
-      </select>
-    </div>
-
-    <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">
+    <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid || loading">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm ms-2"></span>
       Региструј се
     </button>
   </form>
 
-  <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-    {{ errorMessage }}
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3 pb-0">
+    <ul>
+      <li *ngFor="let error of errorMessage.split('\n')">{{ error }}</li>
+    </ul>
   </div>
 
   <p class="mt-3">
