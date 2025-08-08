@@ -9,7 +9,6 @@ export class UserRegistration {
   address: string = '';
   phoneNumber: string = '';
   email: string = '';
-  profilePicturePath: string | null = null;
   creditCardNumber: string = '';
   userType: UserType = UserType.TOURIST;
 }

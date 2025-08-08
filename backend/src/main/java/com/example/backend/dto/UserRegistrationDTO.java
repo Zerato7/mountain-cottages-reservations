@@ -35,8 +35,6 @@ public class UserRegistrationDTO {
     @NotBlank(message = "E-mail je obavezan")
     private String email;
 
-    private String profilePicturePath;
-
     @NotBlank(message = "Broj kreditne kartice je obavezan")
     private String creditCardNumber;
 
@@ -107,14 +105,6 @@ public class UserRegistrationDTO {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getProfilePicturePath() {
-        return profilePicturePath;
-    }
-
-    public void setProfilePicturePath(String profilePicturePath) {
-        this.profilePicturePath = profilePicturePath;
     }
 
     public String getCreditCardNumber() {

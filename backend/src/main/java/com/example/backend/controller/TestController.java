@@ -1,6 +1,5 @@
 package com.example.backend.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,10 +13,13 @@ import com.example.backend.util.EncryptionUtil;
 @RequestMapping("/test")
 public class TestController {
     
-    @Autowired
-    private EncryptionUtil encryptionUtil;
-    @Autowired
-    private CottageRepository cottageRepository;
+    private final EncryptionUtil encryptionUtil;
+    private final CottageRepository cottageRepository;
+
+    public TestController(EncryptionUtil encryptionUtil, CottageRepository cottageRepository) {
+        this.encryptionUtil = encryptionUtil;
+        this.cottageRepository = cottageRepository;
+    }
     
     @GetMapping("/")
     public String test() {

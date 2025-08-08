@@ -1,9 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { UserLogin } from '../../models/requests/userLogin';
+import { NonAdminResponse } from '../../models/responses/nonadminResponse';
+
+const adminLoginUrl = 'admin/login';
 
 @Component({
   selector: 'app-login',
@@ -14,17 +17,19 @@ import { UserLogin } from '../../models/requests/userLogin';
 })
 export class LoginComponent {
 
-  private formBuilder: FormBuilder = inject(FormBuilder);
   private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
 
-  constructor() { }
+  ngOnInit(): void {
+    this.isAdmin = this.router.url.includes(adminLoginUrl);
+  }
 
-  loginForm = this.formBuilder.group({
-    username: ['', Validators.required],
-    password: ['', Validators.required]
+  loginForm = new FormGroup({
+    username: new FormControl<string>('', {validators: Validators.required}),
+    password: new FormControl<string>('', {validators: Validators.required})
   });
 
+  isAdmin: boolean = false;
   errorMessage: string = '';
 
   onSubmit() {
@@ -33,15 +38,30 @@ export class LoginComponent {
       let userLogin = new UserLogin();
       userLogin.username = username ? username : '';
       userLogin.password = password ? password : '';
-      this.authService.login(userLogin).subscribe({
-        next: nonadmin => {
-          this.authService.setUser(nonadmin);
-          this.router.navigate(['/']);
-        },
-        error: err => {
-          this.errorMessage = err.message;
-        }
-      });
+
+      if (this.isAdmin) {
+        this.authService.loginAdmin(userLogin).subscribe({
+          next: user => {
+            this.authService.setAdmin(user);
+            this.router.navigate(['/']);
+          },
+          error: err => {
+            this.errorMessage = err.message;
+          }
+        });
+      } else {
+        this.authService.loginNonadmin(userLogin).subscribe({
+          next: user => {
+            this.authService.setNonadmin(user);
+            this.router.navigate(['/']);
+          },
+          error: err => {
+            this.errorMessage = err.message;
+          }
+        });
+      }
+
+
     }
   }
 

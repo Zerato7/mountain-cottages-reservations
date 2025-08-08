@@ -5,6 +5,7 @@ import { RegisterSuccessComponent } from './authentication/register-success/regi
 import { PasswordChangeComponent } from './authentication/password-change/password-change.component';
 
 export const routes: Routes = [
+  {path: 'admin/login', component: LoginComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'register-success', component: RegisterSuccessComponent},

@@ -6,6 +6,10 @@ import { UserLogin } from '../models/requests/userLogin';
 import { catchError, throwError } from 'rxjs';
 import { UserRegistration } from '../models/requests/userRegistration';
 import { PasswordChange } from '../models/requests/passwordChange';
+import { UserResponse } from '../models/responses/userResponse';
+
+const keyLoggedName = 'loggedInUser';
+const authUrls = ['/login', '/register', '/admin/login'];
 
 @Injectable({
   providedIn: 'root'
@@ -16,40 +20,58 @@ export class AuthService {
     this.loadNonAdminFromStorage();
   }
 
+  private user: UserResponse | null = null;
   private nonadmin: NonAdminResponse | null = null;
 
   private loadNonAdminFromStorage(): void {
-    const nonadminJson = localStorage.getItem('loggedInNonAdmin');
+    const nonadminJson = localStorage.getItem(keyLoggedName);
     this.nonadmin = nonadminJson ? JSON.parse(nonadminJson) : null;
+    this.user = this.nonadmin;
   }
 
-  getUser(): NonAdminResponse | null {
+  getUser(): UserResponse | null {
+    return this.user;
+  }
+
+  getNonadmin(): NonAdminResponse | null {
     return this.nonadmin;
   }
 
   isLoggedIn(): boolean {
-    return this.nonadmin !== null;
+    return this.user !== null;
   }
 
   getUserType(): UserType | null{
-    return this.nonadmin ? this.nonadmin.userType : null;
+    return this.user ? this.user.userType : null;
   }
 
-  setUser(nonadmin: NonAdminResponse): void {
+  setNonadmin(nonadmin: NonAdminResponse): void {
     this.nonadmin = nonadmin;
-    localStorage.setItem('loggedInNonAdmin', JSON.stringify(nonadmin));
+    this.user = nonadmin;
+    localStorage.setItem(keyLoggedName, JSON.stringify(nonadmin));
+  }
+
+  setAdmin(admin: UserResponse): void {
+    this.user = admin;
+    localStorage.setItem(keyLoggedName, JSON.stringify(admin));
   }
 
   logout(): void {
     this.nonadmin = null;
-    localStorage.removeItem('loggedInNonAdmin');
+    this.user = null;
+    localStorage.removeItem(keyLoggedName);
+  }
+
+  isAuthPage(url: string): boolean {
+    return authUrls.includes(url);
   }
 
   private http = inject(HttpClient);
-  private backPath = 'http://localhost:8080/nonadmin';
+  private baseBackPath = 'http://localhost:8080'
+  private curBackPath = this.baseBackPath + '/nonadmin';
 
-  login(userLogin: UserLogin) {
-    return this.http.post<NonAdminResponse>(`${this.backPath}/login`, userLogin).pipe(
+  loginNonadmin(userLogin: UserLogin) {
+    return this.http.post<NonAdminResponse>(`${this.curBackPath}/login`, userLogin).pipe(
       catchError((error: HttpErrorResponse) => {
         let message = error.error?.message || 'Непозната грешка при пријави';
         return throwError(() => new Error(message));
@@ -57,8 +79,17 @@ export class AuthService {
     );
   }
 
-  register(userRegistration: UserRegistration) {
-    return this.http.post<string>(`${this.backPath}/register`, userRegistration).pipe(
+  loginAdmin(userLogin: UserLogin) {
+    return this.http.post<UserResponse>(`${this.baseBackPath}/admin/login`, userLogin).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let message = error.error?.message || 'Непозната грешка при пријави';
+        return throwError(() => new Error(message));
+      })
+    );
+  }
+
+  register(registartionFormData: FormData) {
+    return this.http.post<string>(`${this.curBackPath}/register`, registartionFormData).pipe(
       catchError((error: HttpErrorResponse) => {
         //console.log(error);
         let message = 'Непозната грешка при регистрацији.';
@@ -75,7 +106,7 @@ export class AuthService {
   }
 
   changePassword(passwordChange: PasswordChange) {
-    return this.http.put<string>(`${this.backPath}/change-password`, passwordChange).pipe(
+    return this.http.put<string>(`${this.curBackPath}/change-password`, passwordChange).pipe(
       catchError((error: HttpErrorResponse) => {
         //console.log(error);
         let message = 'Непозната грешка при промени лозинке.';

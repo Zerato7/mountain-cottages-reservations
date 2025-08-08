@@ -1,7 +1,7 @@
 <div class="container mt-4">
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <div class="row justify-content-start">
-      <div class="col-md-6 mb-3">
+      <div class="col-12 col-md-6 mb-3">
         <label for="username" class="form-label">Корисничко име</label>
         <input type="text" id="username" class="form-control" formControlName="username" autocomplete="username">
         <div
@@ -14,7 +14,7 @@
     </div>
 
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-12 col-md-6 mb-3">
         <label for="password" class="form-label">Лозинка</label>
         <input type="password" id="password" class="form-control" formControlName="password">
         <div
@@ -24,7 +24,7 @@
           Лозинка је обавезна и мора садржати минимално 6, а максимално 10 карактера, од тога бар једно велико слово, три мала слова, један број и један специјални карактер, и мора почињати словом.
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-12 col-md-6 mb-3">
         <label for="confirmPassword" class="form-label">Потврди лозинку</label>
         <input type="password" id="confirmPassword" class="form-control" formControlName="confirmPassword">
         <div
@@ -37,7 +37,7 @@
     </div>
 
     <div class="row">
-      <div class="col-md-6 mb-3">
+      <div class="col-12 col-md-6 mb-3">
         <label for="firstName" class="form-label">Име</label>
         <input type="text" id="firstName" class="form-control" formControlName="firstName">
         <div
@@ -47,7 +47,7 @@
           Име је обавезно.
         </div>
       </div>
-      <div class="col-md-6 mb-3">
+      <div class="col-12 col-md-6 mb-3">
         <label for="lastName" class="form-label">Презиме</label>
         <input type="text" id="lastName" class="form-control" formControlName="lastName">
         <div
@@ -59,9 +59,19 @@
       </div>
     </div>
 
-    <div class="row justify-content-between">
-      <div class="col-md-3 mb-3">
-        <span class="d-block">Пол</span>
+    <div class="row justify-content-start">
+      <div class="col-12 col-md-6 mb-3">
+        <label for="address" class="form-label">Адреса</label>
+        <input type="text" id="address" class="form-control" formControlName="address" autocomplete="on">
+        <div
+          *ngIf="registerForm.get('address')?.invalid && registerForm.get('address')?.touched"
+          class="text-danger"
+        >
+          Адреса је обавезна.
+        </div>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <span class="d-block radio-label">Пол</span>
         <div class="form-check form-check-inline">
           <input type="radio" id="genderMale" class="form-check-input"
             formControlName="gender" value="M">
@@ -73,21 +83,10 @@
           <label for="genderFemale" class="form-check-label">Женски</label>
         </div>
       </div>
-
-      <div class="col-md-6 mb-3">
-        <label for="address" class="form-label">Адреса</label>
-        <input type="text" id="address" class="form-control" formControlName="address" autocomplete="on">
-        <div
-          *ngIf="registerForm.get('address')?.invalid && registerForm.get('address')?.touched"
-          class="text-danger"
-        >
-          Адреса је обавезна.
-        </div>
-      </div>
     </div>
 
     <div class="row">
-      <div class="col-md-6 mb-3">
+      <div class="col-12 col-md-6 mb-3">
         <label for="phoneNumber" class="form-label">Контакт телефон</label>
         <input type="text" id="phoneNumber" class="form-control" formControlName="phoneNumber">
         <div
@@ -97,7 +96,7 @@
           Контакт телефон је обавезан и мора бити у формату +XXXXXXXXXXXX.
         </div>
       </div>
-      <div class="col-md-6 mb-3">
+      <div class="col-12 col-md-6 mb-3">
         <label for="email" class="form-label">Е-мејл</label>
         <input type="email" id="email" class="form-control" formControlName="email" autocomplete="email">
         <div
@@ -109,13 +108,47 @@
       </div>
     </div>
 
-    <div class="mb-3">
-      <label>Профилна слика</label>
-      <input type="text" class="form-control" formControlName="profilePicturePath">
-    </div>
-
     <div class="row justify-content-start">
-      <div class="col-md-6 mb-3 position-relative">
+      <div class="col-12 col-md-3 mb-3 upload-image-col">
+        <input
+          type="file"
+          #profilePictureUpload
+          (change)="onFileSelected($event)"
+          accept="image/jpeg, image/png"
+          hidden
+        >
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="profilePictureUpload.click()"
+        >Учитај профилну слику</button>
+        <div
+          *ngIf="registerForm.get('image')?.hasError('invalidType')"
+          class="text-danger"
+        >
+          Слика мора бити у JPG/PNG формату.
+        </div>
+        <div
+          *ngIf="registerForm.get('image')?.hasError('invalidDimensions')"
+          class="text-danger"
+        >
+          Слика мора бити минималне величине 100x100 px и максималне величине 300x300 px.
+        </div>
+      </div>
+      @if (imageName && !registerForm.get('image')?.errors) {
+        <div class="col-12 col-md-3 mb-3">
+          <div *ngIf="imagePreviewUrl" class="mt-2 image-preview mx-auto">
+              <img [src]="imagePreviewUrl" alt="Преглед слике">
+          </div>
+          <div class="text-success text-center">
+            Слика "{{ imageName }}" је успешно одабрана.
+            <span *ngIf="imageSize">
+              ({{ (imageSize / 1024) | number:'1.0-1' }} KB)
+            </span>
+          </div>
+        </div>
+      }
+      <div class="col-12 col-md-4 mb-3 position-relative">
         <label for="creditCardNumber" class="form-label">Број кредитне картице</label>
         <div class="input-group">
           <input type="text" id="creditCardNumber" class="form-control" formControlName="creditCardNumber">
@@ -133,7 +166,7 @@
         </div>
       </div>
 
-      <div class="col-md-3 mb-3">
+      <div class="col-12 col-md-2 mb-3">
         <label for="userType" class="form-label">Тип корисника</label>
         <select id="userType" class="form-select" formControlName="userType">
           <option value="TOURIST">Туриста</option>

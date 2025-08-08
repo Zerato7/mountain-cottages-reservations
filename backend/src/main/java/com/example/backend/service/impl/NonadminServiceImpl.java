@@ -1,10 +1,18 @@
 package com.example.backend.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.backend.db.model.Nonadmin;
+import com.example.backend.config.FileUploadProperties;
 import com.example.backend.db.model.Host;
 import com.example.backend.db.model.Tourist;
 import com.example.backend.db.model.User;
@@ -17,6 +25,7 @@ import com.example.backend.dto.UserLoginDTO;
 import com.example.backend.dto.UserRegistrationDTO;
 import com.example.backend.dto.ResponseDTO.NonadminResponseDTO;
 import com.example.backend.exception.AuthException;
+import com.example.backend.exception.BackendServerException;
 import com.example.backend.exception.DuplicateUserException;
 import com.example.backend.exception.PasswordChangeException;
 import com.example.backend.service.NonadminService;
@@ -25,22 +34,36 @@ import com.example.backend.util.EncryptionUtil;
 @Service
 public class NonadminServiceImpl implements NonadminService {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private EncryptionUtil encryptionUtil;
+    private final PasswordEncoder passwordEncoder;
+    private final EncryptionUtil encryptionUtil;
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private NonadminRepository nonadminRepository;
-    @Autowired
-    private HostRepository hostRepository;
-    @Autowired
-    private TouristRepository touristRepository;
+    private final FileUploadProperties fileUploadProperties;
+
+    private final UserRepository userRepository;
+    private final NonadminRepository nonadminRepository;
+    private final HostRepository hostRepository;
+    private final TouristRepository touristRepository;
+
+    public NonadminServiceImpl(
+            PasswordEncoder passwordEncoder,
+            EncryptionUtil encryptionUtil,
+            FileUploadProperties fileUploadProperties,
+            UserRepository userRepository,
+            NonadminRepository nonadminRepository,
+            HostRepository hostRepository,
+            TouristRepository touristRepository
+    ) {
+        this.passwordEncoder = passwordEncoder;
+        this.encryptionUtil = encryptionUtil;
+        this.fileUploadProperties = fileUploadProperties;
+        this.userRepository = userRepository;
+        this.nonadminRepository = nonadminRepository;
+        this.hostRepository = hostRepository;
+        this.touristRepository = touristRepository;
+    }
 
     @Override
-    public Nonadmin registerNonadmin(UserRegistrationDTO dto) {
+    public Nonadmin registerNonadmin(UserRegistrationDTO dto, MultipartFile profilePicture) {
         if (userRepository.existsByUsername(dto.getUsername())) {
             throw new DuplicateUserException("Korisničko ime već postoji.", "username");
         }
@@ -51,18 +74,18 @@ public class NonadminServiceImpl implements NonadminService {
         switch(dto.getUserType()) {
             case TOURIST:
                 Tourist tourist = new Tourist();
-                mapUserRegistrationDTOToNonadmin(dto, tourist);
+                mapUserRegistrationDTOToNonadmin(dto, profilePicture, tourist);
                 return touristRepository.save(tourist);
             case HOST:
                 Host host = new Host();
-                mapUserRegistrationDTOToNonadmin(dto, host);
+                mapUserRegistrationDTOToNonadmin(dto, profilePicture, host);
                 return hostRepository.save(host);
             default:
-                throw new IllegalArgumentException("Unsupported user type: " + dto.getUserType());
+                throw new AuthException("Unsupported user type: " + dto.getUserType());
         }
     }
 
-    private void mapUserRegistrationDTOToNonadmin(UserRegistrationDTO dto, Nonadmin nonadmin) {
+    private void mapUserRegistrationDTOToNonadmin(UserRegistrationDTO dto, MultipartFile profilePicture, Nonadmin nonadmin) {
         nonadmin.setUsername(dto.getUsername());
         nonadmin.setPassword(passwordEncoder.encode(dto.getPassword()));
         nonadmin.setFirstName(dto.getFirstName());
@@ -71,12 +94,39 @@ public class NonadminServiceImpl implements NonadminService {
         nonadmin.setAddress(dto.getAddress());
         nonadmin.setPhoneNumber(dto.getPhoneNumber());
         nonadmin.setEmail(dto.getEmail());
-        nonadmin.setProfilePicturePath(dto.getProfilePicturePath());
         nonadmin.setCreditCardNumber(encryptionUtil.encrypt(dto.getCreditCardNumber()));
         if (dto.getCreditCardNumber().length() >= 4) {
             nonadmin.setCreditCardNumberLast4Digits(dto.getCreditCardNumber().substring(dto.getCreditCardNumber().length() - 4));
         }
         nonadmin.setUserType(dto.getUserType());
+
+        String profilePicturePath;
+        if (profilePicture != null && !profilePicture.isEmpty()) {
+            try {
+                profilePicturePath = saveImageToFileSys(dto.getUsername(), profilePicture);
+            } catch (IOException e) {
+                throw new BackendServerException("Уписивање слике није успело.");
+            }
+        } else {
+            profilePicturePath = dto.getGender().equals("M") ? 
+                                fullPathName(fileUploadProperties.getDefaultMale()) :
+                                fullPathName(fileUploadProperties.getDefaultFemale());
+        }
+        nonadmin.setProfilePicturePath(profilePicturePath);
+    }
+
+    private String saveImageToFileSys(String username, MultipartFile image) throws IOException {
+        String fileName = username + String.valueOf(System.currentTimeMillis()) + 
+                          '.' + FilenameUtils.getExtension(image.getOriginalFilename());
+        Path folder = Paths.get(fileUploadProperties.getDir());
+        Files.createDirectories(folder);
+        Path fullPath = folder.resolve(fileName);
+        Files.copy(image.getInputStream(), fullPath, StandardCopyOption.REPLACE_EXISTING);
+        return fullPath.toString();
+    }
+
+    private String fullPathName(String fileName) {
+        return Paths.get(fileName).toString();
     }
 
     @Override

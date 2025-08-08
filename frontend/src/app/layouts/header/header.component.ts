@@ -25,7 +25,11 @@ export class HeaderComponent {
   }
 
   isAuthPage(): boolean {
-    return this.router.url === '/login' || this.router.url === '/register';
+    return this.authService.isAuthPage(this.router.url);
+  }
+
+  isPasswordChangePage(): boolean {
+    return this.router.url === '/password-change';
   }
 
 }

@@ -1,6 +1,5 @@
 package com.example.backend.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,8 +18,11 @@ import jakarta.validation.Valid;
 @CrossOrigin(origins = "http://localhost:4200")
 public class AdminController {
     
-    @Autowired
-    private AdminService adminService;
+    private final AdminService adminService;
+
+    public AdminController(AdminService adminService) {
+        this.adminService = adminService;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<UserResponseDTO> loginAdmin(@Valid @RequestBody UserLoginDTO dto) {

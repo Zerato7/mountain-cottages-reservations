@@ -49,4 +49,18 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(BackendServerException.class)
+    public ResponseEntity<MessageDTO> handleBackendServerException(BackendServerException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+            new MessageDTO(ex.getMessage())
+        );
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<MessageDTO> handleRuntimeException(RuntimeException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+            new MessageDTO(ex.getMessage())
+        );
+    }
+
 }
