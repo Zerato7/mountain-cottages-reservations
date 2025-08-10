@@ -1,11 +1,11 @@
-package com.example.backend.exception;
+package com.example.backend.dto.ResponseDTO;
 
-public class FormFieldErrorMessage {
+public class FormFieldErrorMessageDTO {
 
     private String field;
     private String message;
 
-    public FormFieldErrorMessage(String field, String message) {
+    public FormFieldErrorMessageDTO(String field, String message) {
         this.field = field;
         this.message = message;
     }

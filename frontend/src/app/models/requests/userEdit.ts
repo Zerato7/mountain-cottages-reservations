@@ -1,14 +1,12 @@
-import { UserType } from "../userType";
-
-export class UserRegistration {
+export class UserEdit {
+  id: number = 0;
   username: string = '';
-  password: string = '';
   firstName: string = '';
   lastName: string = '';
   gender: 'М' | 'Ж' = 'М';
   address: string = '';
   phoneNumber: string = '';
   email: string = '';
+  editProfilePicture: boolean = true;
   creditCardNumber: string = '';
-  userType: UserType = UserType.TOURIST;
 }

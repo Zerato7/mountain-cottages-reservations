@@ -74,12 +74,12 @@
         <span class="d-block radio-label">Пол</span>
         <div class="form-check form-check-inline">
           <input type="radio" id="genderMale" class="form-check-input"
-            formControlName="gender" value="M">
+            formControlName="gender" value="М">
           <label for="genderMale" class="form-check-label">Мушки</label>
         </div>
         <div class="form-check form-check-inline">
           <input type="radio" id="genderFemale" class="form-check-input"
-            formControlName="gender" value="Ž">
+            formControlName="gender" value="Ж">
           <label for="genderFemale" class="form-check-label">Женски</label>
         </div>
       </div>
@@ -135,15 +135,15 @@
           Слика мора бити минималне величине 100x100 px и максималне величине 300x300 px.
         </div>
       </div>
-      @if (imageName && !registerForm.get('image')?.errors) {
+      @if (getImageName() && !registerForm.get('image')?.errors) {
         <div class="col-12 col-md-3 mb-3">
-          <div *ngIf="imagePreviewUrl" class="mt-2 image-preview mx-auto">
-              <img [src]="imagePreviewUrl" alt="Преглед слике">
+          <div *ngIf="getImagePreviewUrl()" class="mt-2 image-preview mx-auto">
+              <img [src]="getImagePreviewUrl()" alt="Преглед слике">
           </div>
           <div class="text-success text-center">
-            Слика "{{ imageName }}" је успешно одабрана.
-            <span *ngIf="imageSize">
-              ({{ (imageSize / 1024) | number:'1.0-1' }} KB)
+            Слика "{{ getImageName() }}" је успешно одабрана.
+            <span *ngIf="getImageSize()">
+              ({{ (getImageSize() / 1024) | number:'1.0-1' }} KB)
             </span>
           </div>
         </div>

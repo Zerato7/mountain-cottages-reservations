@@ -1,0 +1,359 @@
+<div class="container mt-4">
+  <h2 class="text-center text-break">Администратор - Управљање корисницима</h2>
+
+  <div class="mt-5">
+    <h4>
+      <span class="badge badge-pending text-dark text-wrap text-break">Захтеви за регистрацијом</span>
+    </h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle table-pending">
+        <thead>
+          <tr>
+            <th>Корисничко име</th>
+            <th>Тип корисника</th>
+            <th>Име</th>
+            <th>Презиме</th>
+            <th>Пол</th>
+            <th>Адреса</th>
+            <th>Контакт телефон</th>
+            <th>Е-мејл</th>
+            <th>Профилна слика</th>
+            <th>Број кредитне картице</th>
+            <th>Акције</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let nonadmin of getNonadminsByStatus('PENDING')">
+            <td>{{ nonadmin.username }}</td>
+            <td>{{ nonadmin.userType }}</td>
+            <td>{{ nonadmin.firstName }}</td>
+            <td>{{ nonadmin.lastName }}</td>
+            <td>{{ nonadmin.gender }}</td>
+            <td>{{ nonadmin.address }}</td>
+            <td>{{ nonadmin.phoneNumber }}</td>
+            <td>{{ nonadmin.email }}</td>
+            <td>
+              <div class="image-preview mx-auto">
+                <img
+                  *ngIf="nonadmin.profilePicturePath"
+                  [src]="getImageUrl(nonadmin.profilePicturePath)"
+                  alt="Профилна слика"
+                >
+              </div>
+            </td>
+            <td>{{ getCreditCardNumberDisplay(nonadmin.creditCardNumberLast4Digits) }}</td>
+            <td>
+              <div class="d-flex flex-wrap gap-2">
+                <button class="btn btn-success btn-sm" (click)="acceptNonadmin(nonadmin.id)">Прихвати</button>
+                <button class="btn btn-danger btn-sm" (click)="rejectNonadmin(nonadmin.id)">Одбиј</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h4>
+      <span class="badge badge-accepted text-dark text-wrap text-break">Одобрени корисници</span>
+    </h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle table-accepted">
+        <thead>
+          <tr>
+            <th>Корисничко име</th>
+            <th>Тип корисника</th>
+            <th>Име</th>
+            <th>Презиме</th>
+            <th>Пол</th>
+            <th>Адреса</th>
+            <th>Контакт телефон</th>
+            <th>Е-мејл</th>
+            <th>Профилна слика</th>
+            <th>Број кредитне картице</th>
+            <th>Акције</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let nonadmin of getNonadminsByStatus('ACCEPTED')">
+            <td>{{ nonadmin.username }}</td>
+            <td>{{ nonadmin.userType }}</td>
+            <td>{{ nonadmin.firstName }}</td>
+            <td>{{ nonadmin.lastName }}</td>
+            <td>{{ nonadmin.gender }}</td>
+            <td>{{ nonadmin.address }}</td>
+            <td>{{ nonadmin.phoneNumber }}</td>
+            <td>{{ nonadmin.email }}</td>
+            <td>
+              <div class="image-preview mx-auto">
+                <img
+                  *ngIf="nonadmin.profilePicturePath"
+                  [src]="getImageUrl(nonadmin.profilePicturePath)"
+                  alt="Профилна слика"
+                >
+              </div>
+            </td>
+            <td>{{ getCreditCardNumberDisplay(nonadmin.creditCardNumberLast4Digits) }}</td>
+            <td>
+              <div class="d-flex flex-wrap gap-2">
+                <button class="btn btn-primary btn-sm" (click)="openEditModal(nonadmin)">Измени</button>
+                <button class="btn btn-danger btn-sm" (click)="deactivateNonadmin(nonadmin.id)">Деактивирај</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h4>
+      <span class="badge badge-deactivated text-dark text-wrap text-break">Деактивирани корисници</span>
+    </h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle table-deactivated">
+        <thead>
+          <tr>
+            <th>Корисничко име</th>
+            <th>Тип корисника</th>
+            <th>Име</th>
+            <th>Презиме</th>
+            <th>Пол</th>
+            <th>Адреса</th>
+            <th>Контакт телефон</th>
+            <th>Е-мејл</th>
+            <th>Профилна слика</th>
+            <th>Број кредитне картице</th>
+            <th>Акције</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let nonadmin of getNonadminsByStatus('DEACTIVATED')">
+            <td>{{ nonadmin.username }}</td>
+            <td>{{ nonadmin.userType }}</td>
+            <td>{{ nonadmin.firstName }}</td>
+            <td>{{ nonadmin.lastName }}</td>
+            <td>{{ nonadmin.gender }}</td>
+            <td>{{ nonadmin.address }}</td>
+            <td>{{ nonadmin.phoneNumber }}</td>
+            <td>{{ nonadmin.email }}</td>
+            <td>
+              <div class="image-preview mx-auto">
+                <img
+                  *ngIf="nonadmin.profilePicturePath"
+                  [src]="getImageUrl(nonadmin.profilePicturePath)"
+                  alt="Профилна слика"
+                >
+              </div>
+            </td>
+            <td>{{ getCreditCardNumberDisplay(nonadmin.creditCardNumberLast4Digits) }}</td>
+            <td>
+              <button class="btn btn-success btn-sm" (click)="reactivateNonadmin(nonadmin.id)">Поново активирај</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h4>
+      <span class="badge badge-rejected text-dark text-wrap text-break">Одбијени захтеви</span>
+    </h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle table-rejected">
+        <thead>
+          <tr>
+            <th>Корисничко име</th>
+            <th>Тип корисника</th>
+            <th>Име</th>
+            <th>Презиме</th>
+            <th>Пол</th>
+            <th>Адреса</th>
+            <th>Контакт телефон</th>
+            <th>Е-мејл</th>
+            <th>Профилна слика</th>
+            <th>Број кредитне картице</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let nonadmin of getNonadminsByStatus('REJECTED')">
+            <td>{{ nonadmin.username }}</td>
+            <td>{{ nonadmin.userType }}</td>
+            <td>{{ nonadmin.firstName }}</td>
+            <td>{{ nonadmin.lastName }}</td>
+            <td>{{ nonadmin.gender }}</td>
+            <td>{{ nonadmin.address }}</td>
+            <td>{{ nonadmin.phoneNumber }}</td>
+            <td>{{ nonadmin.email }}</td>
+            <td>
+              <div class="image-preview mx-auto">
+                <img
+                  *ngIf="nonadmin.profilePicturePath"
+                  [src]="getImageUrl(nonadmin.profilePicturePath)"
+                  alt="Профилна слика"
+                >
+              </div>
+            </td>
+            <td>{{ getCreditCardNumberDisplay(nonadmin.creditCardNumberLast4Digits) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<ng-template #editModal let-modal>
+  <form [formGroup]="editForm" (ngSubmit)="submitEdit(modal)">
+    <div class="modal-header">
+      <h5 class="modal-title">Измени податке о кориснику</h5>
+      <button type="button" class="btn-close" aria-label="close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="mb-3">
+        <label for="username" class="form-label">Корисничко име</label>
+        <input type="text" id="username" class="form-control" formControlName="username" autocomplete="username">
+        <div
+          *ngIf="editForm.get('username')?.invalid && editForm.get('username')?.touched"
+          class="text-danger"
+        >
+          Корисничко име је обавезно.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="firstName" class="form-label">Име</label>
+        <input type="text" id="firstName" class="form-control" formControlName="firstName">
+        <div
+          *ngIf="editForm.get('firstName')?.invalid && editForm.get('firstName')?.touched"
+          class="text-danger"
+        >
+          Име је обавезно.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="lastName" class="form-label">Презиме</label>
+        <input type="text" id="lastName" class="form-control" formControlName="lastName">
+        <div
+          *ngIf="editForm.get('lastName')?.invalid && editForm.get('lastName')?.touched"
+          class="text-danger"
+        >
+          Презиме је обавезно.
+        </div>
+      </div>
+      <div class="mb-3">
+        <span class="d-block radio-label">Пол</span>
+        <div class="form-check form-check-inline">
+          <input type="radio" id="genderMale" class="form-check-input"
+            formControlName="gender" value="М">
+          <label for="genderMale" class="form-check-label">Мушки</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input type="radio" id="genderFemale" class="form-check-input"
+            formControlName="gender" value="Ж">
+          <label for="genderFemale" class="form-check-label">Женски</label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="address" class="form-label">Адреса</label>
+        <input type="text" id="address" class="form-control" formControlName="address" autocomplete="on">
+        <div
+          *ngIf="editForm.get('address')?.invalid && editForm.get('address')?.touched"
+          class="text-danger"
+        >
+          Адреса је обавезна.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="phoneNumber" class="form-label">Контакт телефон</label>
+        <input type="text" id="phoneNumber" class="form-control" formControlName="phoneNumber">
+        <div
+          *ngIf="editForm.get('phoneNumber')?.invalid && editForm.get('phoneNumber')?.touched"
+          class="text-danger"
+        >
+          Контакт телефон је обавезан и мора бити у формату +XXXXXXXXXXXX.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Е-мејл</label>
+        <input type="email" id="email" class="form-control" formControlName="email" autocomplete="email">
+        <div
+          *ngIf="editForm.get('email')?.invalid && editForm.get('email')?.touched"
+          class="text-danger"
+        >
+          Е-мејл је обавезан.
+        </div>
+      </div>
+      <div class="form-check mb-3">
+        <input type="checkbox" id="editProfilePicture" class="form-check-input" formControlName="editProfilePicture">
+        <label for="editProfilePicture" class="form-check-label">Измена профилне слике</label>
+      </div>
+      <div class="mb-3">
+        <input
+          type="file"
+          #profilePictureUpload
+          (change)="onFileSelected($event)"
+          accept="image/jpeg, image/png"
+          hidden
+        >
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          [disabled]="!editForm.get('editProfilePicture')?.value"
+          (click)="profilePictureUpload.click()"
+        >Учитај профилну слику</button>
+        <div
+          *ngIf="editForm.get('image')?.hasError('invalidType')"
+          class="text-danger"
+        >
+          Слика мора бити у JPG/PNG формату.
+        </div>
+        <div
+          *ngIf="editForm.get('image')?.hasError('invalidDimensions')"
+          class="text-danger"
+        >
+          Слика мора бити минималне величине 100x100 px и максималне величине 300x300 px.
+        </div>
+      </div>
+      @if (getImageName() && !editForm.get('image')?.errors) {
+        <div class="mb-3">
+          <div *ngIf="getImagePreviewUrl()" class="mt-2 image-preview mx-auto">
+              <img [src]="getImagePreviewUrl()" alt="Преглед слике">
+          </div>
+          <div class="text-success text-center">
+            Слика "{{ getImageName() }}" је успешно одабрана.
+            <span *ngIf="getImageSize()">
+              ({{ (getImageSize() / 1024) | number:'1.0-1' }} KB)
+            </span>
+          </div>
+        </div>
+      }
+      <div class="mb-3">
+        <label for="creditCardNumber" class="form-label">Број кредитне картице</label>
+        <div class="input-group">
+          <input type="text" id="creditCardNumber" class="form-control" formControlName="creditCardNumber">
+          <span
+            *ngIf="cardType"
+            class="input-group-text bg-white border-start-0">
+            <img src="assets/{{cardType}}.jpg" alt="{{cardType}}" height="30">
+          </span>
+        </div>
+        <div
+          *ngIf="editForm.get('creditCardNumber')?.invalid && editForm.get('creditCardNumber')?.touched"
+          class="text-danger"
+        >
+          Број кредитне картице није валидан.
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success" [disabled]="editForm.invalid">Сачувај</button>
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Одустани</button>
+    </div>
+  </form>
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3 pb-0 mx-2">
+    <ul>
+      <li *ngFor="let error of errorMessage.split('\n')">{{ error }}</li>
+    </ul>
+  </div>
+</ng-template>

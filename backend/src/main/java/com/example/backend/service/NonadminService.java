@@ -1,19 +1,16 @@
 package com.example.backend.service;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.backend.db.model.Nonadmin;
-import com.example.backend.dto.PasswordChangeDTO;
-import com.example.backend.dto.UserLoginDTO;
-import com.example.backend.dto.UserRegistrationDTO;
+import com.example.backend.dto.RequestDTO.UserEditDTO;
 import com.example.backend.dto.ResponseDTO.NonadminResponseDTO;
 
 public interface NonadminService {
 
-    Nonadmin registerNonadmin(UserRegistrationDTO dto, MultipartFile profilePicture);
+    List<NonadminResponseDTO> getAll();
 
-    NonadminResponseDTO loginNonadmin(UserLoginDTO dto);
-
-    void changePassword(PasswordChangeDTO dto);
+    void editNonadmin(UserEditDTO dto, MultipartFile profilePicture);
 
 }

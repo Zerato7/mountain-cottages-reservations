@@ -1,13 +1,13 @@
-package com.example.backend.dto;
+package com.example.backend.dto.RequestDTO;
 
 import jakarta.validation.constraints.NotBlank;
 
 public class UserLoginDTO {
     
-    @NotBlank(message = "Korisničko ime je obavezno")
+    @NotBlank(message = "Корисничко име је обавезно.")
     private String username;
 
-    @NotBlank(message = "Lozinka je obavezna")
+    @NotBlank(message = "Лозинка је обавезна.")
     private String password;
 
     // Getters and Setters

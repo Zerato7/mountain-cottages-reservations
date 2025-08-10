@@ -7,6 +7,6 @@ export class NonAdminResponse extends UserResponse {
   address: string = '';
   phoneNumber: string = '';
   email: string = '';
-  profilePicture: string | null = '';
+  profilePicturePath: string | null = '';
   creditCardNumberLast4Digits: string = '';
 }

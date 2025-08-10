@@ -28,6 +28,10 @@ public abstract class User {
     @Column(nullable = false)
     private UserType userType;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserStatus status;
+
     // Getters and Setters
 
     public Long getId() {
@@ -56,6 +60,14 @@ public abstract class User {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
     }
 
     public boolean isAdmin() {

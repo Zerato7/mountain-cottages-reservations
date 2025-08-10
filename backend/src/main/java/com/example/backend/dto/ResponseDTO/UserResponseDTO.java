@@ -1,5 +1,6 @@
 package com.example.backend.dto.ResponseDTO;
 
+import com.example.backend.db.model.UserStatus;
 import com.example.backend.db.model.UserType;
 
 public class UserResponseDTO {
@@ -7,6 +8,7 @@ public class UserResponseDTO {
     private Long id;
     private String username;
     private UserType userType;
+    private UserStatus status;
 
     // Getters and Setters
 
@@ -27,6 +29,12 @@ public class UserResponseDTO {
     }
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+    public UserStatus getStatus() {
+        return status;
+    }
+    public void setStatus(UserStatus status) {
+        this.status = status;
     }
 
 }

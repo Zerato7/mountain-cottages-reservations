@@ -1,4 +1,4 @@
-package com.example.backend.dto;
+package com.example.backend.dto.RequestDTO;
 
 import com.example.backend.db.model.UserType;
 
@@ -9,36 +9,36 @@ import jakarta.validation.constraints.Pattern;
 
 public class UserRegistrationDTO {
     
-    @NotBlank(message = "Korisničko ime je obavezno")
+    @NotBlank(message = "Корисничко име је обавезно.")
     private String username;
 
-    @NotBlank(message = "Lozinka je obavezna")
+    @NotBlank(message = "Лозинка је обавезна.")
     private String password;
 
-    @NotBlank(message = "Ime je obavezno")
+    @NotBlank(message = "Име је обавезно.")
     private String firstName;
 
-    @NotBlank(message = "Prezime je obavezno")
+    @NotBlank(message = "Презиме је обавезно.")
     private String lastName;
 
-    @Pattern(regexp = "^[MŽ]$", message = "Pol mora biti 'M' ili 'Ž'")
-    @NotBlank(message = "Pol je obavezan")
+    @Pattern(regexp = "^[МЖ]$", message = "Пол мора бити 'М' или 'Ж'.")
+    @NotBlank(message = "Пол је обавезан.")
     private String gender;
 
-    @NotBlank(message = "Adresa je obavezna")
+    @NotBlank(message = "Адреса је обавезна.")
     private String address;
 
-    @NotBlank(message = "Kontakt telefon je obavezan")
+    @NotBlank(message = "Контакт телефон је обавезан.")
     private String phoneNumber;
 
-    @Email(message = "E-mail mora biti validan")
-    @NotBlank(message = "E-mail je obavezan")
+    @Email(message = "Е-мејл мора бити валидан.")
+    @NotBlank(message = "Е-мејл је обавезан.")
     private String email;
 
-    @NotBlank(message = "Broj kreditne kartice je obavezan")
+    @NotBlank(message = "Број кредитне картице је обавезан.")
     private String creditCardNumber;
 
-    @NotNull(message = "Tip korisnika je obavezan")
+    @NotNull(message = "Тип корисника је обавезан.")
     private UserType userType;
 
     // Getters and Setters

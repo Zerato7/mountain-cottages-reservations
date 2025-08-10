@@ -10,9 +10,10 @@ CREATE TABLE `user` (
   `password` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `user_type` enum('ADMIN','HOST','TOURIST') NOT NULL,
+  `status` enum('ACCEPTED','PENDING','REJECTED','DEACTIVATED') NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UKsb8bbouer5wak8vyiiy4pf2bx` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 CREATE TABLE `nonadmin` (
   `address` varchar(255) NOT NULL,
   `credit_card_number` varchar(255) NOT NULL,
@@ -43,9 +44,9 @@ CREATE TABLE `admin` (
   PRIMARY KEY (`id`),
   CONSTRAINT `FK1ja8rua032fgnk9jmq7du3b3a` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-INSERT INTO user(password, username, user_type) VALUES('$2a$10$RO6dlD2Mi5Ur76dd9VHz/uKZDNPoUoyqVbCCbuI2K.EJc9kTCzq5.', 'ana_admin', 'ADMIN');
+INSERT INTO user(password, username, user_type, status) VALUES('$2a$10$RO6dlD2Mi5Ur76dd9VHz/uKZDNPoUoyqVbCCbuI2K.EJc9kTCzq5.', 'ana_admin', 'ADMIN', 'ACCEPTED');
 INSERT INTO admin(id) SELECT MAX(id) FROM user;
-INSERT INTO user(password, username, user_type) VALUES('$2a$10$bnAEXqxSwgsiVeS7X4X/HeeR6sE7AaN3FHMIUUpk84ZmgzX5SyCy6', 'pera_admin', 'ADMIN');
+INSERT INTO user(password, username, user_type, status) VALUES('$2a$10$bnAEXqxSwgsiVeS7X4X/HeeR6sE7AaN3FHMIUUpk84ZmgzX5SyCy6', 'pera_admin', 'ADMIN', 'ACCEPTED');
 INSERT INTO admin(id) SELECT MAX(id) FROM user;
-INSERT INTO user(password, username, user_type) VALUES('$2a$10$4N9c4UBUQGmGWzFa7UwcMekR.gOCoxnrIIdhZ1pQd4qElKU9zH2VS', 'marko_admin', 'ADMIN');
+INSERT INTO user(password, username, user_type, status) VALUES('$2a$10$4N9c4UBUQGmGWzFa7UwcMekR.gOCoxnrIIdhZ1pQd4qElKU9zH2VS', 'marko_admin', 'ADMIN', 'ACCEPTED');
 INSERT INTO admin(id) SELECT MAX(id) FROM user;

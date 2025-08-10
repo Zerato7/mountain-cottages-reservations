@@ -1,9 +1,15 @@
-package com.example.backend.dto;
+package com.example.backend.dto.RequestDTO;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class PasswordChangeDTO {
 
+    @NotNull(message = "ID корисника је обавезан.")
     private Long id;
+    @NotBlank(message = "Тренутна лозинка је обавезна.")
     private String currentPassword;
+    @NotBlank(message = "Нова лозинка је обавезна.")
     private String newPassword;
 
     // Getters and Setters

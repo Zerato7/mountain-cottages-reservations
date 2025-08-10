@@ -16,12 +16,15 @@ const authUrls = ['/login', '/register', '/admin/login'];
 })
 export class AuthService {
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.loadNonAdminFromStorage();
   }
 
   private user: UserResponse | null = null;
   private nonadmin: NonAdminResponse | null = null;
+
+  private baseBackPath = 'http://localhost:8080'
+  private curBackPath = this.baseBackPath + '/auth';
 
   private loadNonAdminFromStorage(): void {
     const nonadminJson = localStorage.getItem(keyLoggedName);
@@ -65,10 +68,6 @@ export class AuthService {
   isAuthPage(url: string): boolean {
     return authUrls.includes(url);
   }
-
-  private http = inject(HttpClient);
-  private baseBackPath = 'http://localhost:8080'
-  private curBackPath = this.baseBackPath + '/nonadmin';
 
   loginNonadmin(userLogin: UserLogin) {
     return this.http.post<NonAdminResponse>(`${this.curBackPath}/login`, userLogin).pipe(

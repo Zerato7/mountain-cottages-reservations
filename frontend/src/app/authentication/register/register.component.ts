@@ -1,20 +1,12 @@
-import { Component, inject } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { UserRegistration } from '../../models/requests/userRegistration';
 import { CommonModule } from '@angular/common';
 import { UserType } from '../../models/userType';
-import { Observable, of } from 'rxjs';
-
-
-const dinersRegexp = /^((300|301|302|303)\d{12})|((36|38)\d{13})$/;
-const masterRegexp = /^(51|52|53|54|55)\d{14}$/;
-const visaRegexp = /^(4539|4556|4916|4532|4929|4485|4716)\d{12}$/;
-
-const validImageFormats = ['image/jpeg', 'image/png'];
-const min_width = 100, max_width = 300;
-const min_height = 100, max_height = 300;
+import { CreditCardService } from '../../services/credit-card.service';
+import { ImageService } from '../../services/image.service';
 
 @Component({
   selector: 'app-register',
@@ -25,20 +17,23 @@ const min_height = 100, max_height = 300;
 })
 export class RegisterComponent {
 
-  private authService: AuthService = inject(AuthService);
-  private router: Router = inject(Router);
+  constructor(
+    private authService: AuthService,
+    private creditCardService: CreditCardService,
+    private imageService: ImageService,
+    private router: Router
+  ) { }
 
   errorMessage: string = '';
   loading: boolean = false;
   cardType: string | null = null;
-  imageName: string | null = null;
-  imagePreviewUrl: string | null = null;
-  imageSize: number | null = null;
 
   ngOnInit(): void {
     this.registerForm.get('creditCardNumber')?.valueChanges.subscribe(() => {
-      this.cardType =this.getCardType();
-    })
+      this.cardType =this.creditCardService.getCardType(
+        this.registerForm.get('creditCardNumber')?.value || ''
+      );
+    });
   }
 
   // SyncValidators
@@ -48,51 +43,6 @@ export class RegisterComponent {
     const confirmPassword = formGroup.get('confirmPassword')?.value;
 
     return password === confirmPassword ? null : {passwordMismatch: true};
-  }
-
-  creditCardNumberValidator(control: AbstractControl): ValidationErrors | null {
-    const value = control.value?.toString().replace(/\s+/g, '') || '';
-    if (dinersRegexp.test(value) ||
-        masterRegexp.test(value) ||
-        visaRegexp.test(value)) return null;
-    else return {invalidNumber: true};
-  }
-
-  // AsyncValidators
-
-  imageAsyncValidator(): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      const file = control.value as File;
-      if (!file) return of(null);
-
-      console.log(file.type);
-      if (!validImageFormats.includes(file.type)) return of({invalidType: true});
-
-      return new Observable<ValidationErrors | null>(observer => {
-        const reader = new FileReader();
-        reader.onload = (event: any) => {
-          const image = new Image();
-          image.src = reader.result as string;
-
-          image.onload = () => {
-            const {width, height} = image;
-            if (width < min_width || height < min_height || width > max_width || height > max_height) {
-              observer.next({invalidDimensions: true});
-            } else {
-              observer.next(null);
-            }
-            observer.complete();
-          };
-
-          image.onerror = () => {
-            observer.next({invalidType: true});
-            observer.complete();
-          }
-        };
-
-        reader.readAsDataURL(file);
-      });
-    };
   }
 
   // FormGroup
@@ -112,7 +62,7 @@ export class RegisterComponent {
     firstName: new FormControl<string>('', {nonNullable: true, validators: Validators.required}),
     lastName: new FormControl<string>('', {nonNullable: true, validators: Validators.required}),
     address: new FormControl<string>('', {nonNullable: true, validators: Validators.required}),
-    gender: new FormControl<string>('M', {nonNullable: true, validators: Validators.required}),
+    gender: new FormControl<string>('М', {nonNullable: true, validators: Validators.required}),
     phoneNumber: new FormControl<string>('', {
       nonNullable: true,
       validators: [
@@ -129,14 +79,14 @@ export class RegisterComponent {
     }),
     image: new FormControl<File|null>(null, {
       validators: [],
-      asyncValidators: [this.imageAsyncValidator()],
+      asyncValidators: [ImageService.imageAsyncValidator()],
       updateOn: 'change'
     }),
     creditCardNumber: new FormControl<string>('', {
       nonNullable: true,
       validators: [
         Validators.required,
-        this.creditCardNumberValidator
+        CreditCardService.creditCardNumberValidator
       ]
     }),
     userType: new FormControl<UserType>(UserType.TOURIST, {nonNullable:true, validators: Validators.required})
@@ -149,15 +99,15 @@ export class RegisterComponent {
   onSubmit(): void {
     if (this.registerForm.valid) {
       this.loading = true;
-      const { username, password, confirmPassword, firstName, lastName, gender, address, phoneNumber, email, image, creditCardNumber, userType } = this.registerForm.value;
+      const { username, password, confirmPassword, firstName, lastName, address, gender, phoneNumber, email, image, creditCardNumber, userType } = this.registerForm.value;
       let userRegistration = new UserRegistration();
       userRegistration.username = username ?? '';
       userRegistration.password = password ?? '';
       userRegistration.email = email ?? '';
       userRegistration.firstName = firstName ?? '';
       userRegistration.lastName = lastName ?? '';
-      userRegistration.gender = gender === 'M' || gender === 'Ž' ? gender : 'M';
       userRegistration.address = address ?? '';
+      userRegistration.gender = gender === 'М' || gender === 'Ж' ? gender : 'М';
       userRegistration.phoneNumber = phoneNumber ?? '';
       userRegistration.creditCardNumber = creditCardNumber ?? '';
       userRegistration.userType = userType ?? UserType.TOURIST;
@@ -184,35 +134,22 @@ export class RegisterComponent {
     }
   }
 
-  // OnFile Selection - image
+  // Image
 
   onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0] ?? null;
-
-    this.registerForm.get('image')?.setValue(file);
-    this.registerForm.get('image')?.markAsTouched();
-    this.registerForm.get('image')?.updateValueAndValidity();
-
-    this.imageName = file?.name ?? null;
-    this.imageSize = file?.size ?? null;
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = e => this.imagePreviewUrl = reader.result as string;
-      reader.readAsDataURL(file);
-    } else {
-      this.imagePreviewUrl = null;
-    }
+    this.imageService.onFileSelected(event, this.registerForm, 'image');
   }
 
-  // CardType getter
+  getImageName(): string | null {
+    return this.imageService.getImageName();
+  }
 
-  private getCardType(): string | null {
-    const value = this.registerForm.get('creditCardNumber')?.value || '';
-    if (dinersRegexp.test(value)) return 'diners';
-    if (masterRegexp.test(value)) return 'mastercard';
-    if (visaRegexp.test(value)) return 'visa';
-    return null;
+  getImageSize(): number {
+    return this.imageService.getImageSize() ?? 0;
+  }
+
+  getImagePreviewUrl(): string | null {
+    return this.imageService.getImagePreviewUrl();
   }
 
 }

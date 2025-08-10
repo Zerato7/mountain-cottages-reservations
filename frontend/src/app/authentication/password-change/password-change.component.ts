@@ -58,19 +58,21 @@ export class PasswordChangeComponent {
   errorMessage: string = ''
 
   onSubmit() {
-    const {currentPassword, newPassword, confirmNewPassword}  = this.passwordChangeForm.value;
-    let passwordChange: PasswordChange = new PasswordChange();
-    passwordChange.id = this.authService.getUser()?.id || 0;
-    passwordChange.currentPassword = currentPassword ?? '';
-    passwordChange.newPassword = newPassword ?? '';
-    this.authService.changePassword(passwordChange).subscribe({
-      next: message => {
-        this.router.navigate(['/login']);
-      },
-      error: err => {
-        this.errorMessage = err.message;
-      }
-    });
+    if (this.passwordChangeForm.valid) {
+      const {currentPassword, newPassword, confirmNewPassword}  = this.passwordChangeForm.value;
+      let passwordChange: PasswordChange = new PasswordChange();
+      passwordChange.id = this.authService.getUser()?.id || 0;
+      passwordChange.currentPassword = currentPassword ?? '';
+      passwordChange.newPassword = newPassword ?? '';
+      this.authService.changePassword(passwordChange).subscribe({
+        next: message => {
+          this.router.navigate(['/login']);
+        },
+        error: err => {
+          this.errorMessage = err.message;
+        }
+      });
+    }
   }
 
 }

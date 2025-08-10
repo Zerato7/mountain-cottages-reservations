@@ -43,7 +43,7 @@ export class LoginComponent {
         this.authService.loginAdmin(userLogin).subscribe({
           next: user => {
             this.authService.setAdmin(user);
-            this.router.navigate(['/']);
+            this.router.navigate(['/admin/dashboard']);
           },
           error: err => {
             this.errorMessage = err.message;
