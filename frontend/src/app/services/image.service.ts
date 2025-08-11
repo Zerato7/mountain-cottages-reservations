@@ -84,6 +84,18 @@ export class ImageService {
     return this.imagePreviewUrl;
   }
 
+  clearImageName(): void {
+    this.imageName = null;
+  }
+
+  clearImageSize(): void {
+    this.imageSize = null;
+  }
+
+  clearImagePreviewUrl(): void {
+    this.imagePreviewUrl = null;
+  }
+
   getImageUrl(profilePicturePath: string): string {
     return this.baseBackPath + '/' + profilePicturePath;
   }

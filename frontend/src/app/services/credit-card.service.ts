@@ -31,7 +31,7 @@ export class CreditCardService {
   }
 
   getCreditCardNumberDisplay(last4Digits: string): string {
-    return this.hiddenChar.repeat(12) + last4Digits;
+    return (this.hiddenChar.repeat(4) + ' ').repeat(3) + last4Digits;
   }
 
 }

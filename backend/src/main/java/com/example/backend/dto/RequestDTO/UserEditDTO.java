@@ -9,19 +9,12 @@ public class UserEditDTO {
 
     @NotNull(message = "ID неадмина је обавезан.")
     private Long id;
-    
-    @NotBlank(message = "Корисничко име је обавезно.")
-    private String username;
 
     @NotBlank(message = "Име је обавезно.")
     private String firstName;
 
     @NotBlank(message = "Презиме је обавезно.")
     private String lastName;
-
-    @Pattern(regexp = "^[МЖ]$", message = "Пол мора бити 'М' или 'Ж'.")
-    @NotBlank(message = "Пол је обавезан.")
-    private String gender;
 
     @NotBlank(message = "Адреса је обавезна.")
     private String address;
@@ -36,7 +29,16 @@ public class UserEditDTO {
     @NotNull(message = "Поље за потврду измене профилне слике је обавезно.")
     private Boolean editProfilePicture;
 
+    // Can only be edited by admins and tourists themselfs
+
     private String creditCardNumber;
+
+    // Can only be edited by admins
+    
+    private String username;
+    
+    @Pattern(regexp = "^[МЖ]$", message = "Пол мора бити 'М' или 'Ж'.")
+    private String gender;
 
     // Getters and Setters
 
@@ -46,14 +48,6 @@ public class UserEditDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getFirstName() {
@@ -70,14 +64,6 @@ public class UserEditDTO {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 
     public String getAddress() {
@@ -118,6 +104,22 @@ public class UserEditDTO {
 
     public void setCreditCardNumber(String creditCardNumber) {
         this.creditCardNumber = creditCardNumber;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
 }

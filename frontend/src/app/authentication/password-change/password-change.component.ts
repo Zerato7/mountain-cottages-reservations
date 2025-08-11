@@ -1,9 +1,10 @@
-import { Component, inject, Input } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PasswordChange } from '../../models/requests/passwordChange';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-password-change',
@@ -16,10 +17,11 @@ export class PasswordChangeComponent {
 
   userId: Number = 0
 
-  private authService = inject(AuthService);
-  private router = inject(Router);
-
-  constructor() {}
+  constructor(
+    private authService: AuthService,
+    private navigationService: NavigationService,
+    private router: Router
+  ) {}
 
   newPasswordValidator(formGroup: AbstractControl): ValidationErrors | null {
     const currentPassword = formGroup.get('currentPassword')?.value;
@@ -73,6 +75,10 @@ export class PasswordChangeComponent {
         }
       });
     }
+  }
+
+  back() {
+    this.router.navigate([this.navigationService.getPreviousUrl()]);
   }
 
 }

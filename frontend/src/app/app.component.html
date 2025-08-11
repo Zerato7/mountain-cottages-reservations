@@ -1,5 +1,7 @@
 <app-header [userRole]="authService.getUserType()"></app-header>
-<main class="container my-4">
-  <router-outlet></router-outlet>
-</main>
-<app-footer></app-footer>
+<div class="app-main" [ngClass]="getBackgroundClass()">
+  <main class="container">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+<app-footer [userRole]="authService.getUserType()"></app-footer>

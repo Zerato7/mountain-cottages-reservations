@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.backend.dto.RequestDTO.UserEditDTO;
-import com.example.backend.dto.ResponseDTO.MessageDTO;
 import com.example.backend.dto.ResponseDTO.NonadminResponseDTO;
 import com.example.backend.service.NonadminService;
 
@@ -36,12 +35,11 @@ public class NonadminController {
     }
 
     @PutMapping(value = "/edit", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<MessageDTO> editNonadmin(
+    public ResponseEntity<NonadminResponseDTO> editNonadmin(
         @Valid @RequestPart("user") UserEditDTO dto,
         @RequestPart(value = "profilePicture", required = false) MultipartFile profilePicture
     ) {
-        nonadminService.editNonadmin(dto, profilePicture);
-        return ResponseEntity.ok(new MessageDTO("Подаци о неадмину успешно измењени."));
+        return ResponseEntity.ok(nonadminService.editNonadmin(dto, profilePicture));
     }
 
 }

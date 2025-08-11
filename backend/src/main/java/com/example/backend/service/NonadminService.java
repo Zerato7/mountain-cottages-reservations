@@ -11,6 +11,6 @@ public interface NonadminService {
 
     List<NonadminResponseDTO> getAll();
 
-    void editNonadmin(UserEditDTO dto, MultipartFile profilePicture);
+    NonadminResponseDTO editNonadmin(UserEditDTO dto, MultipartFile profilePicture);
 
 }

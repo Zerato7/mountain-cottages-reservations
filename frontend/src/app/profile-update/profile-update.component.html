@@ -1,0 +1,151 @@
+<form [formGroup]="editForm" (ngSubmit)="submitEdit()">
+  <div class="modal-header">
+    <h5 class="modal-title">Измени податке о кориснику</h5>
+    <button type="button" class="btn-close" aria-label="close" (click)="activeModal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="mb-3" *ngIf="!disabledFields.includes('username')">
+      <label for="username" class="form-label">Корисничко име</label>
+      <input type="text" id="username" class="form-control" formControlName="username" autocomplete="username">
+      <div
+        *ngIf="editForm.get('username')?.invalid && editForm.get('username')?.touched"
+        class="text-danger"
+      >
+        Корисничко име је обавезно.
+      </div>
+    </div>
+    <div class="mb-3" *ngIf="!disabledFields.includes('firstName')">
+      <label for="firstName" class="form-label">Име</label>
+      <input type="text" id="firstName" class="form-control" formControlName="firstName">
+      <div
+        *ngIf="editForm.get('firstName')?.invalid && editForm.get('firstName')?.touched"
+        class="text-danger"
+      >
+        Име је обавезно.
+      </div>
+    </div>
+    <div class="mb-3" *ngIf="!disabledFields.includes('lastName')">
+      <label for="lastName" class="form-label">Презиме</label>
+      <input type="text" id="lastName" class="form-control" formControlName="lastName">
+      <div
+        *ngIf="editForm.get('lastName')?.invalid && editForm.get('lastName')?.touched"
+        class="text-danger"
+      >
+        Презиме је обавезно.
+      </div>
+    </div>
+    <div class="mb-3" *ngIf="!disabledFields.includes('gender')">
+      <span class="d-block radio-label">Пол</span>
+      <div class="form-check form-check-inline">
+        <input type="radio" id="genderMale" class="form-check-input"
+          formControlName="gender" value="М">
+        <label for="genderMale" class="form-check-label">Мушки</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="radio" id="genderFemale" class="form-check-input"
+          formControlName="gender" value="Ж">
+        <label for="genderFemale" class="form-check-label">Женски</label>
+      </div>
+    </div>
+    <div class="mb-3" *ngIf="!disabledFields.includes('address')">
+      <label for="address" class="form-label">Адреса</label>
+      <input type="text" id="address" class="form-control" formControlName="address" autocomplete="on">
+      <div
+        *ngIf="editForm.get('address')?.invalid && editForm.get('address')?.touched"
+        class="text-danger"
+      >
+        Адреса је обавезна.
+      </div>
+    </div>
+    <div class="mb-3" *ngIf="!disabledFields.includes('phoneNumber')">
+      <label for="phoneNumber" class="form-label">Контакт телефон</label>
+      <input type="text" id="phoneNumber" class="form-control" formControlName="phoneNumber">
+      <div
+        *ngIf="editForm.get('phoneNumber')?.invalid && editForm.get('phoneNumber')?.touched"
+        class="text-danger"
+      >
+        Контакт телефон је обавезан и мора бити у формату +XXXXXXXXXXXX.
+      </div>
+    </div>
+    <div class="mb-3" *ngIf="!disabledFields.includes('email')">
+      <label for="email" class="form-label">Е-мејл</label>
+      <input type="email" id="email" class="form-control" formControlName="email" autocomplete="email">
+      <div
+        *ngIf="editForm.get('email')?.invalid && editForm.get('email')?.touched"
+        class="text-danger"
+      >
+        Е-мејл је обавезан.
+      </div>
+    </div>
+    <div class="form-check mb-3" *ngIf="!disabledFields.includes('editProfilePicture')">
+      <input type="checkbox" id="editProfilePicture" class="form-check-input" formControlName="editProfilePicture">
+      <label for="editProfilePicture" class="form-check-label">Измена профилне слике</label>
+    </div>
+    <div class="mb-3" *ngIf="!disabledFields.includes('image')">
+      <input
+        type="file"
+        #profilePictureUpload
+        (change)="onFileSelected($event)"
+        accept="image/jpeg, image/png"
+        hidden
+      >
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        [disabled]="!editForm.get('editProfilePicture')?.value"
+        (click)="profilePictureUpload.click()"
+      >Учитај профилну слику</button>
+      <div
+        *ngIf="editForm.get('image')?.hasError('invalidType')"
+        class="text-danger"
+      >
+        Слика мора бити у JPG/PNG формату.
+      </div>
+      <div
+        *ngIf="editForm.get('image')?.hasError('invalidDimensions')"
+        class="text-danger"
+      >
+        Слика мора бити минималне величине 100x100 px и максималне величине 300x300 px.
+      </div>
+    </div>
+    @if (getImageName() && !editForm.get('image')?.errors) {
+      <div class="mb-3">
+        <div *ngIf="getImagePreviewUrl()" class="mt-2 image-preview mx-auto">
+          <img [src]="getImagePreviewUrl()" alt="Преглед слике">
+        </div>
+        <div class="text-success text-center">
+          Слика "{{ getImageName() }}" је успешно одабрана.
+          <span *ngIf="getImageSize()">
+            ({{ (getImageSize() / 1024) | number:'1.0-1' }} KB)
+          </span>
+        </div>
+      </div>
+    }
+    <div class="mb-3" *ngIf="!disabledFields.includes('creditCardNumber')">
+      <label for="creditCardNumber" class="form-label">Број кредитне картице</label>
+      <div class="input-group">
+        <input type="text" id="creditCardNumber" class="form-control" formControlName="creditCardNumber">
+        <span
+          *ngIf="cardType"
+          class="input-group-text bg-white border-start-0">
+          <img src="assets/{{cardType}}.jpg" alt="{{cardType}}" height="30">
+        </span>
+      </div>
+      <div
+        *ngIf="editForm.get('creditCardNumber')?.invalid && editForm.get('creditCardNumber')?.touched"
+        class="text-danger"
+      >
+        Број кредитне картице није валидан.
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-success" [disabled]="editForm.invalid">Сачувај</button>
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Одустани</button>
+  </div>
+</form>
+<div *ngIf="errorMessage" class="alert alert-danger mt-3 pb-0 mx-2">
+  <ul>
+    <li *ngFor="let error of errorMessage.split('\n')">{{ error }}</li>
+  </ul>
+</div>

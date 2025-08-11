@@ -1,22 +1,24 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { UserType } from '../../models/userType';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, RouterLinkActive],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
 
-  @Input() userRole: UserType | null = null;
+  constructor(
+    private authService:  AuthService,
+    private router: Router
+  ) { }
 
-  private router = inject(Router);
-  private authService = inject(AuthService);
+  @Input() userRole: UserType | null = null;
 
   logout() {
     console.log('User logged out');
@@ -30,6 +32,15 @@ export class HeaderComponent {
 
   isPasswordChangePage(): boolean {
     return this.router.url === '/password-change';
+  }
+
+  getBackgroundClass(): string {
+    switch (this.authService.getUserType()) {
+      case UserType.TOURIST: return 'bg-header-tourist';
+      case UserType.HOST: return 'bg-header-host';
+      case UserType.ADMIN: return 'bg-header-admin';
+      default: return 'bg-header-unregistered';
+    }
   }
 
 }

@@ -53,7 +53,7 @@ export class LoginComponent {
         this.authService.loginNonadmin(userLogin).subscribe({
           next: user => {
             this.authService.setNonadmin(user);
-            this.router.navigate(['/']);
+            this.router.navigate(['/profile']);
           },
           error: err => {
             this.errorMessage = err.message;

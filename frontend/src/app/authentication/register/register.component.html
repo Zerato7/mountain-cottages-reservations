@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="container text-w-heavier mt-4">
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <div class="row justify-content-start">
       <div class="col-12 col-md-6 mb-3">
@@ -103,7 +103,7 @@
           *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
           class="text-danger"
         >
-          Е-мејл је обавезан.
+          Е-мејл је обавезан и мора бити валидан.
         </div>
       </div>
     </div>

@@ -18,7 +18,7 @@ export class NonadminService {
   }
 
   editNonadmin(editFormData: FormData) {
-    return this.http.put<string>(`${this.curBackPath}/edit`, editFormData).pipe(
+    return this.http.put<NonAdminResponse>(`${this.curBackPath}/edit`, editFormData).pipe(
       catchError((error: HttpErrorResponse) => {
         let message = 'Непозната грешка при измени података корисника.';
 

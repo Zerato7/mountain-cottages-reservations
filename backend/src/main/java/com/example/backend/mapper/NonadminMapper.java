@@ -44,10 +44,17 @@ public class NonadminMapper {
     }
 
     public void editFromDto(Nonadmin nonadmin, UserEditDTO dto, MultipartFile profilePicture) {
-        nonadmin.setUsername(dto.getUsername());
+        if (dto.getUsername() != null) {
+            nonadmin.setUsername(dto.getUsername());
+        }
+
         nonadmin.setFirstName(dto.getFirstName());
         nonadmin.setLastName(dto.getLastName());
-        nonadmin.setGender(dto.getGender());
+
+        if (dto.getGender() != null) {
+            nonadmin.setGender(dto.getGender());
+        }
+        
         nonadmin.setAddress(dto.getAddress());
         nonadmin.setPhoneNumber(dto.getPhoneNumber());
         nonadmin.setEmail(dto.getEmail());
@@ -58,7 +65,7 @@ public class NonadminMapper {
                 nonadmin.setCreditCardNumberLast4Digits(dto.getCreditCardNumber().substring(dto.getCreditCardNumber().length() - 4));
             }
         }
-
+        
         if (dto.getEditProfilePicture()) {
             String profilePicturePath;
             if (profilePicture != null && !profilePicture.isEmpty()) {

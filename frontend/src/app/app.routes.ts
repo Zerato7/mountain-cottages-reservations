@@ -4,6 +4,8 @@ import { RegisterComponent } from './authentication/register/register.component'
 import { RegisterSuccessComponent } from './authentication/register-success/register-success.component';
 import { PasswordChangeComponent } from './authentication/password-change/password-change.component';
 import { AdminComponent } from './admin/admin.component';
+import { ProfileComponent } from './profile/profile.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {path: 'admin/login', component: LoginComponent},
@@ -11,5 +13,6 @@ export const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'register-success', component: RegisterSuccessComponent},
   {path: 'password-change', component: PasswordChangeComponent},
+  {path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
   {path: 'admin/dashboard', component: AdminComponent}
 ];

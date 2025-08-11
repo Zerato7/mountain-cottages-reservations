@@ -1,12 +1,12 @@
 export class UserEdit {
   id: number = 0;
-  username: string = '';
+  username: string | null = null;
   firstName: string = '';
   lastName: string = '';
-  gender: 'М' | 'Ж' = 'М';
+  gender: 'М' | 'Ж' | null = null;
   address: string = '';
   phoneNumber: string = '';
   email: string = '';
   editProfilePicture: boolean = true;
-  creditCardNumber: string = '';
+  creditCardNumber: string | null = null;
 }

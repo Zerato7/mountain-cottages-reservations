@@ -1,42 +1,60 @@
-<div class="container mt-5" style="max-width: 400px">
-  <h2 class="title">
-    Логовање
-    @if (isAdmin) {
-      - Администратор
-    }
-  </h2>
+<div class="container mt-5 text-w-heavier">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-5">
+      <h2 class="title">
+        Логовање
+        @if (isAdmin) {
+          - Администратор
+        }
+      </h2>
+    </div>
+  </div>
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div class="col-12 mb-3">
-      <label for="username" class="form-label">Корисничко име</label>
-      <input type="text" id="username" class="form-control" formControlName="username" />
-      <div
-        *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
-        class="text-danger"
-      >
-        Корисничко име је обавезно.
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-5 mb-3">
+        <label for="username" class="form-label">Корисничко име</label>
+        <input type="text" id="username" class="form-control" formControlName="username" />
+        <div
+          *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
+          class="text-danger"
+        >
+          Корисничко име је обавезно.
+        </div>
       </div>
     </div>
-    <div class="col-12 mb-3">
-      <label for="password" class="form-label">Лозинка</label>
-      <input type="password" id="password" class="form-control" formControlName="password" />
-      <div
-        *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-        class="text-danger"
-      >
-        Лозинка је обавезна.
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-5 mb-3">
+        <label for="password" class="form-label">Лозинка</label>
+        <input type="password" id="password" class="form-control" formControlName="password" />
+        <div
+          *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+          class="text-danger"
+        >
+          Лозинка је обавезна.
+        </div>
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">
-      Улогуј се
-    </button>
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-5">
+        <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">
+          Улогуј се
+        </button>
+      </div>
+    </div>
   </form>
 
-  <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-    {{ errorMessage }}
+  <div class="row justify-content-center">
+    <div *ngIf="errorMessage" class="col-12 col-sm-10 col-md-5alert alert-danger mt-3">
+      {{ errorMessage }}
+    </div>
   </div>
 
-  <p class="mt-3">
-    Немаш налог? <a routerLink="/register">Региструј се овде</a>
-  </p>
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-5 mt-3">
+      <p>
+        Немаш налог? <a routerLink="/register">Региструј се овде</a>
+      </p>
+    </div>
+  </div>
 </div>

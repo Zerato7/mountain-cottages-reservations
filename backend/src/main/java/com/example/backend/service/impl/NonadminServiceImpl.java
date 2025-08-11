@@ -42,7 +42,7 @@ public class NonadminServiceImpl implements NonadminService {
     }
 
     @Override
-    public void editNonadmin(UserEditDTO dto, MultipartFile profilePicture) {
+    public NonadminResponseDTO editNonadmin(UserEditDTO dto, MultipartFile profilePicture) {
         Nonadmin nonadmin = nonadminRepository.findById(dto.getId()).orElseThrow(() ->
             new BadRequestException("Неадмин не постоји у систему.")
         );
@@ -53,7 +53,7 @@ public class NonadminServiceImpl implements NonadminService {
             throw new DuplicateUserException("Е-мејл адреса већ постоји.", "email");
         }
         nonadminMapper.editFromDto(nonadmin, dto, profilePicture);
-        nonadminRepository.save(nonadmin);
+        return nonadminMapper.toResDto(nonadminRepository.save(nonadmin));
     }
     
 }
