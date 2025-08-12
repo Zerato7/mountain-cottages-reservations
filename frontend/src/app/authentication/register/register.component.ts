@@ -109,7 +109,7 @@ export class RegisterComponent {
       userRegistration.address = address ?? '';
       userRegistration.gender = gender === 'М' || gender === 'Ж' ? gender : 'М';
       userRegistration.phoneNumber = phoneNumber ?? '';
-      userRegistration.creditCardNumber = creditCardNumber ?? '';
+      userRegistration.creditCardNumber = this.creditCardService.trim(creditCardNumber ?? '');
       userRegistration.userType = userType ?? UserType.TOURIST;
 
       const formData = new FormData();

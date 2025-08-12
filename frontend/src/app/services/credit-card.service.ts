@@ -24,6 +24,7 @@ export class CreditCardService {
   }
 
   getCardType(value: string): string | null {
+    value = this.trim(value);
     if (dinersRegexp.test(value)) return 'diners';
     if (masterRegexp.test(value)) return 'mastercard';
     if (visaRegexp.test(value)) return 'visa';
@@ -32,6 +33,10 @@ export class CreditCardService {
 
   getCreditCardNumberDisplay(last4Digits: string): string {
     return (this.hiddenChar.repeat(4) + ' ').repeat(3) + last4Digits;
+  }
+
+  trim(value: string): string {
+    return value.replace(/\s+/g, '');
   }
 
 }
