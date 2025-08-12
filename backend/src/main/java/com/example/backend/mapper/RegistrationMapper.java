@@ -6,8 +6,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.backend.db.model.User;
 import com.example.backend.db.model.Nonadmin;
-import com.example.backend.db.model.UserStatus;
 import com.example.backend.dto.RequestDTO.UserRegistrationDTO;
 import com.example.backend.exception.BackendServerException;
 import com.example.backend.util.EncryptionUtil;
@@ -45,7 +45,7 @@ public class RegistrationMapper {
             nonadmin.setCreditCardNumberLast4Digits(dto.getCreditCardNumber().substring(dto.getCreditCardNumber().length() - 4));
         }
         nonadmin.setUserType(dto.getUserType());
-        nonadmin.setStatus(UserStatus.PENDING);
+        nonadmin.setStatus(User.Status.PENDING);
 
         String profilePicturePath;
         if (profilePicture != null && !profilePicture.isEmpty()) {

@@ -1,6 +1,6 @@
 package com.example.backend.dto.RequestDTO;
 
-import com.example.backend.db.model.UserType;
+import com.example.backend.db.model.User;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -39,7 +39,7 @@ public class UserRegistrationDTO {
     private String creditCardNumber;
 
     @NotNull(message = "Тип корисника је обавезан.")
-    private UserType userType;
+    private User.Type userType;
 
     // Getters and Setters
 
@@ -115,11 +115,11 @@ public class UserRegistrationDTO {
         this.creditCardNumber = creditCardNumber;
     }
 
-    public UserType getUserType() {
+    public User.Type getUserType() {
         return userType;
     }
 
-    public void setUserType(UserType userType) {
+    public void setUserType(User.Type userType) {
         this.userType = userType;
     }
 

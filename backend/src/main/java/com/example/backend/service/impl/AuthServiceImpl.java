@@ -9,7 +9,6 @@ import com.example.backend.db.model.Host;
 import com.example.backend.db.model.Nonadmin;
 import com.example.backend.db.model.Tourist;
 import com.example.backend.db.model.User;
-import com.example.backend.db.model.UserStatus;
 import com.example.backend.db.repository.HostRepository;
 import com.example.backend.db.repository.NonadminRepository;
 import com.example.backend.db.repository.TouristRepository;
@@ -94,7 +93,7 @@ public class AuthServiceImpl implements AuthService {
         if (!user.isNonadmin()) {
             throw new AuthException("Корисник није ни туриста ни власник.");
         }
-        if (user.getStatus() != UserStatus.ACCEPTED) {
+        if (user.getStatus() != User.Status.ACCEPTED) {
             throw new BadRequestException("Корисник је статуса: " + user.getStatus());
         }
         Nonadmin nonadmin = nonadminRepository.findByUsername(dto.getUsername()).orElseThrow(() ->
@@ -108,7 +107,7 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findById(dto.getId()).orElseThrow(() ->
             new PasswordChangeException("Корисник чија се лозинка покушава променити, не постоји.")
         );
-        if (user.getStatus() != UserStatus.ACCEPTED) {
+        if (user.getStatus() != User.Status.ACCEPTED) {
             throw new PasswordChangeException("Промена лозинке није успела. (Регистрација није прихваћена)");
         }
         if (!passwordEncoder.matches(dto.getCurrentPassword(), user.getPassword())) {

@@ -15,6 +15,7 @@ public class MessageListDTO {
     public List<MessageDTO> getMessages() {
         return messages;
     }
+    
     public void setMessages(List<MessageDTO> messages) {
         this.messages = messages;
     }

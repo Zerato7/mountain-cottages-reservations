@@ -13,6 +13,19 @@ import jakarta.persistence.InheritanceType;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User {
+
+    public enum Status {
+        PENDING,
+        ACCEPTED,
+        REJECTED,
+        DEACTIVATED
+    }
+
+    public enum Type {
+        ADMIN,
+        TOURIST,
+        HOST
+    }
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,11 +39,11 @@ public abstract class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserType userType;
+    private Type userType;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserStatus status;
+    private Status status;
 
     // Getters and Setters
 
@@ -54,29 +67,29 @@ public abstract class User {
         this.password = password;
     }
 
-    public UserType getUserType() {
+    public Type getUserType() {
         return userType;
     }
 
-    public void setUserType(UserType userType) {
+    public void setUserType(Type userType) {
         this.userType = userType;
     }
 
-    public UserStatus getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(UserStatus status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
     public boolean isAdmin() {
-        return UserType.ADMIN.equals(this.userType);
+        return Type.ADMIN.equals(this.userType);
     }
 
     public boolean isNonadmin() {
-        return UserType.TOURIST.equals(this.userType)
-            || UserType.HOST.equals(this.userType);
+        return Type.TOURIST.equals(this.userType)
+            || Type.HOST.equals(this.userType);
     }
 
 }

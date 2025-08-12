@@ -6,7 +6,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.backend.db.model.User;
-import com.example.backend.db.model.UserStatus;
 import com.example.backend.db.repository.UserRepository;
 import com.example.backend.dto.RequestDTO.UserLoginDTO;
 import com.example.backend.dto.ResponseDTO.MessageDTO;
@@ -38,7 +37,7 @@ public class AdminServiceImpl implements AdminService {
         if (!user.isAdmin()) {
             throw new AuthException("Корисник није администратор.");
         }
-        if (user.getStatus() != UserStatus.ACCEPTED) {
+        if (user.getStatus() != User.Status.ACCEPTED) {
             throw new BadRequestException("Корисник је статуса: " + user.getStatus());
         }
         UserResponseDTO response = new UserResponseDTO();
@@ -51,29 +50,29 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public MessageDTO acceptNonadmin(Long id) {
-        return changeStatusTo(id, UserStatus.PENDING, UserStatus.ACCEPTED, 
+        return changeStatusTo(id, User.Status.PENDING, User.Status.ACCEPTED, 
             "Регистрација прихваћена.", "Прихватање захтева за регистрацијом није успело.");
     }
 
     @Override
     public MessageDTO rejectNonadmin(Long id) {
-        return changeStatusTo(id, UserStatus.PENDING, UserStatus.REJECTED, 
+        return changeStatusTo(id, User.Status.PENDING, User.Status.REJECTED, 
         "Регистрација одбијена.", "Одбијање захтева за регистрацијом није успело.");
     }
 
     @Override
     public MessageDTO deactivateNonadmin(Long id) {
-        return changeStatusTo(id, UserStatus.ACCEPTED, UserStatus.DEACTIVATED, 
+        return changeStatusTo(id, User.Status.ACCEPTED, User.Status.DEACTIVATED, 
             "Корисник деактивиран.", "Деактивација корисника није успела.");
     }
 
     @Override
     public MessageDTO reactivateNonadmin(Long id) {
-        return changeStatusTo(id, UserStatus.DEACTIVATED, UserStatus.ACCEPTED, 
+        return changeStatusTo(id, User.Status.DEACTIVATED, User.Status.ACCEPTED, 
             "Корисник поново активиран.", "Поновна активација корисника није успела.");
     }
 
-    private MessageDTO changeStatusTo(Long id, UserStatus statusFrom, UserStatus statusTo, String successMessage, String errorMessage) {
+    private MessageDTO changeStatusTo(Long id, User.Status statusFrom, User.Status statusTo, String successMessage, String errorMessage) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent() && user.get().getStatus() == statusFrom) {
             user.get().setStatus(statusTo);
