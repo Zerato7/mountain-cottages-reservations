@@ -140,8 +140,12 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="submit" class="btn btn-success" [disabled]="editForm.invalid">Сачувај</button>
-    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Одустани</button>
+    <button type="submit" class="btn btn-success" [disabled]="editForm.invalid">
+      <i class="bi bi-check-circle"></i> Сачувај
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">
+      <i class="bi bi-x-circle"></i> Одустани
+    </button>
   </div>
 </form>
 <div *ngIf="errorMessage" class="alert alert-danger mt-3 pb-0 mx-2">
