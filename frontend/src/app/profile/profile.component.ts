@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { NonAdminResponse } from '../models/responses/nonadminResponse';
 import { AuthService } from '../services/auth.service';
 import { ImageService } from '../services/image.service';
-import { CreditCardService } from '../services/credit-card.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileUpdateComponent } from '../profile-update/profile-update.component';
 import { CommonModule } from '@angular/common';
 import { UserType } from '../models/userType';
+import { BgColourUtil } from '../utils/bg-colour.util';
+import { CreditCardUtil } from '../utils/credit-card.util';
 
 const disabledFields: Record<UserType, string[]> = {
   ADMIN: [],
@@ -26,7 +27,6 @@ export class ProfileComponent {
   constructor(
     private authService: AuthService,
     private imageService: ImageService,
-    private creditCardService: CreditCardService,
     private modalService: NgbModal
   ) { }
 
@@ -36,7 +36,7 @@ export class ProfileComponent {
     this.loadNonadmin();
   }
 
-  private loadNonadmin() {
+  private loadNonadmin(): void {
     this.nonadmin = this.authService.getNonadmin()!;
   }
 
@@ -57,7 +57,7 @@ export class ProfileComponent {
       () => {
 
       }
-    )
+    );
   }
 
   getImageUrl(profilePicturePath: string): string {
@@ -65,19 +65,15 @@ export class ProfileComponent {
   }
 
   getCreditCardNumberDisplay(last4Digits: string): string {
-    return this.creditCardService.getCreditCardNumberDisplay(last4Digits);
+    return CreditCardUtil.getCreditCardNumberDisplay(last4Digits);
   }
 
   enabled(fieldName: string): boolean {
     return !disabledFields[this.nonadmin.userType].includes(fieldName);
   }
 
-  getCardBodyClass(): string {
-    switch (this.nonadmin.userType) {
-      case UserType.TOURIST: return 'bg-profile-tourist';
-      case UserType.HOST: return 'bg-profile-host';
-      default: return '';
-    }
+  getBackgroundClass(): string {
+    return BgColourUtil.getCardBodyClass(this.authService.getUserType());
   }
 
 }

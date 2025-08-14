@@ -6,8 +6,8 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImageService } from '../services/image.service';
-import { CreditCardService } from '../services/credit-card.service';
 import { ProfileUpdateComponent } from '../profile-update/profile-update.component';
+import { CreditCardUtil } from '../utils/credit-card.util';
 
 @Component({
   selector: 'app-admin',
@@ -22,7 +22,6 @@ export class AdminComponent {
     private nonadminService: NonadminService,
     private adminService: AdminService,
     private imageService: ImageService,
-    private creditCardService: CreditCardService,
     private modalService: NgbModal
   ) {}
 
@@ -113,7 +112,7 @@ export class AdminComponent {
   }
 
   getCreditCardNumberDisplay(last4Digits: string): string {
-    return this.creditCardService.getCreditCardNumberDisplay(last4Digits);
+    return CreditCardUtil.getCreditCardNumberDisplay(last4Digits);
   }
 
 }

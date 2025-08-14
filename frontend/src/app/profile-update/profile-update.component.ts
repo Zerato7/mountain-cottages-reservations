@@ -5,8 +5,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserEdit } from '../models/requests/userEdit';
 import { NonadminService } from '../services/nonadmin.service';
 import { ImageService } from '../services/image.service';
-import { CreditCardService } from '../services/credit-card.service';
 import { CommonModule } from '@angular/common';
+import { CreditCardUtil } from '../utils/credit-card.util';
 
 @Component({
   selector: 'app-profile-update',
@@ -20,8 +20,7 @@ export class ProfileUpdateComponent {
   constructor(
     private nonadminService: NonadminService,
     public activeModal: NgbActiveModal,
-    private imageService: ImageService,
-    private creditCardService: CreditCardService
+    private imageService: ImageService
   ) {}
 
   @Input() nonadmin: NonAdminResponse = new NonAdminResponse();
@@ -93,13 +92,13 @@ export class ProfileUpdateComponent {
       }, {
         nonNullable: true,
         validators: [
-          CreditCardService.creditCardNumberValidator
+          CreditCardUtil.creditCardNumberValidator
         ]
       })
     });
 
     this.editForm.get('creditCardNumber')?.valueChanges.subscribe(() => {
-      this.cardType =this.creditCardService.getCardType(
+      this.cardType = CreditCardUtil.getCardType(
         this.editForm.get('creditCardNumber')?.value || ''
       );
     });

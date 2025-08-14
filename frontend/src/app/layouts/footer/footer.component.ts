@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { UserType } from '../../models/userType';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { BgColourUtil } from '../../utils/bg-colour.util';
 
 @Component({
   selector: 'app-footer',
@@ -19,12 +20,7 @@ export class FooterComponent {
   @Input() userRole: UserType | null = null;
 
   getBackgroundClass(): string {
-    switch (this.authService.getUserType()) {
-      case UserType.TOURIST: return 'bg-footer-tourist';
-      case UserType.HOST: return 'bg-footer-host';
-      case UserType.ADMIN: return 'bg-footer-admin';
-      default: return 'bg-footer-unregistered';
-    }
+    return BgColourUtil.getFooterBgClass(this.authService.getUserType());
   }
 
 }

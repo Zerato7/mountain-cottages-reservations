@@ -3,6 +3,7 @@ import { Component, inject, Input } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { UserType } from '../../models/userType';
+import { BgColourUtil } from '../../utils/bg-colour.util';
 
 @Component({
   selector: 'app-header',
@@ -35,12 +36,7 @@ export class HeaderComponent {
   }
 
   getBackgroundClass(): string {
-    switch (this.authService.getUserType()) {
-      case UserType.TOURIST: return 'bg-header-tourist';
-      case UserType.HOST: return 'bg-header-host';
-      case UserType.ADMIN: return 'bg-header-admin';
-      default: return 'bg-header-unregistered';
-    }
+    return BgColourUtil.getHeaderBgClass(this.authService.getUserType());
   }
 
 }

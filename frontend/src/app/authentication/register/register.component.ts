@@ -5,8 +5,8 @@ import { Router, RouterLink } from '@angular/router';
 import { UserRegistration } from '../../models/requests/userRegistration';
 import { CommonModule } from '@angular/common';
 import { UserType } from '../../models/userType';
-import { CreditCardService } from '../../services/credit-card.service';
 import { ImageService } from '../../services/image.service';
+import { CreditCardUtil } from '../../utils/credit-card.util';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +19,6 @@ export class RegisterComponent {
 
   constructor(
     private authService: AuthService,
-    private creditCardService: CreditCardService,
     private imageService: ImageService,
     private router: Router
   ) { }
@@ -30,7 +29,7 @@ export class RegisterComponent {
 
   ngOnInit(): void {
     this.registerForm.get('creditCardNumber')?.valueChanges.subscribe(() => {
-      this.cardType =this.creditCardService.getCardType(
+      this.cardType = CreditCardUtil.getCardType(
         this.registerForm.get('creditCardNumber')?.value || ''
       );
     });
@@ -86,7 +85,7 @@ export class RegisterComponent {
       nonNullable: true,
       validators: [
         Validators.required,
-        CreditCardService.creditCardNumberValidator
+        CreditCardUtil.creditCardNumberValidator
       ]
     }),
     userType: new FormControl<UserType>(UserType.TOURIST, {nonNullable:true, validators: Validators.required})
@@ -109,7 +108,7 @@ export class RegisterComponent {
       userRegistration.address = address ?? '';
       userRegistration.gender = gender === 'М' || gender === 'Ж' ? gender : 'М';
       userRegistration.phoneNumber = phoneNumber ?? '';
-      userRegistration.creditCardNumber = this.creditCardService.trim(creditCardNumber ?? '');
+      userRegistration.creditCardNumber = CreditCardUtil.trim(creditCardNumber ?? '');
       userRegistration.userType = userType ?? UserType.TOURIST;
 
       const formData = new FormData();
