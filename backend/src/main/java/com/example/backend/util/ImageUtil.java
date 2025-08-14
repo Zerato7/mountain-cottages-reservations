@@ -24,20 +24,30 @@ public class ImageUtil {
         this.fileUploadProperties = fileUploadProperties;
     }
 
-    public String saveImageToFileSys(String username, MultipartFile image) throws IOException {
-        String fileName = username + String.valueOf(System.currentTimeMillis()) + 
+    public String saveProfileToFileSys(String name, MultipartFile image) throws IOException {
+        return saveImageToFileSys(name, fileUploadProperties.getProfileDir(), image);
+    }
+
+    public String getDefaultProfilePath(String gender) {
+        return gender.equals("М") ? 
+            fullPathName(fileUploadProperties.getDefaultMale()) :
+            fullPathName(fileUploadProperties.getDefaultFemale());
+    }
+
+    public String createFolder(String name) throws IOException {
+        Path folder = Paths.get(fileUploadProperties.getCottagePhotosDir() + "/" + name);
+        Files.createDirectories(folder);
+        return normalizePath(folder.toString());
+    }
+
+    public String saveImageToFileSys(String name, String folderName, MultipartFile image) throws IOException {
+        String fileName = name + String.valueOf(System.currentTimeMillis()) + 
                           '.' + FilenameUtils.getExtension(image.getOriginalFilename());
-        Path folder = Paths.get(fileUploadProperties.getDir());
+        Path folder = Paths.get(folderName);
         Files.createDirectories(folder);
         Path fullPath = folder.resolve(fileName);
         Files.copy(image.getInputStream(), fullPath, StandardCopyOption.REPLACE_EXISTING);
         return normalizePath(fullPath.toString());
-    }
-
-    public String getDefaultImagePath(String gender) {
-        return gender.equals("М") ? 
-            fullPathName(fileUploadProperties.getDefaultMale()) :
-            fullPathName(fileUploadProperties.getDefaultFemale());
     }
     
     private String fullPathName(String fileName) {

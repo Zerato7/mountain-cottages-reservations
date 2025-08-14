@@ -1,0 +1,59 @@
+<div class="container mt-4">
+
+  @if (cottagesExt.length > 0) {
+    <div class="row">
+      @for (cottageExt of cottagesExt; track cottageExt.cottage.id) {
+        <div class="col-12 col-sm-6 col-md-4 mb-4">
+          <div class="card h-100 shadow-sm text-w-lighter">
+            <div class="card-body" [ngClass]="getBackgroundCardBodyClass()">
+              <h5 class="card-title">{{ cottageExt.cottage.name }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{ cottageExt.cottage.location }}</h6>
+              <p class="card-text">
+                <strong>Услуге:</strong> {{ cottageExt.cottage.services }}<br />
+                <strong>Цена:</strong>
+                @if (!isSummer()) {
+                  {{ cottageExt.cottage.winterPriceAdult }} РСД - {{ cottageExt.cottage.winterPriceChild}} РСД
+                } @else {
+                  {{ cottageExt.cottage.summerPriceAdult }} РСД - {{ cottageExt.cottage.summerPriceChild}} РСД
+                }
+                <br />
+                <strong>Телефон:</strong> {{ cottageExt.cottage.phoneNumber }}
+              </p>
+              <div class="row justify-content-between">
+                <div class="col-12 text-center col-sm-6 text-sm-start">
+                  <button class="btn btn-outline-primary btn-sm" (click)="editCottage(cottageExt)">Уреди</button>
+                </div>
+                <div class="col-12 text-center mt-3 col-sm-6 text-sm-end mt-sm-0">
+                  <button class="btn btn-outline-danger btn-sm" (click)="deleteCottage(cottageExt)">Обриши</button>
+                </div>
+                <div *ngIf="cottageExt.errorMessage" class="col-12 text-center text-danger">
+                  {{ cottageExt.errorMessage }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+    <div class="row justify-content-center mb-4">
+      <div class="col-12 col-sm-10 col-md-5 text-center">
+        <button class="btn btn-success" (click)="openAddModal()">
+          <i class="bi bi-plus-circle"></i> Додај викендицу
+        </button>
+      </div>
+    </div>
+  }
+  @else {
+    <div class="d-flex flex-column align-items-center justify-content-center
+      text-center p-5 mt-5 border border-2 border-secondary rounded shadow-sm"
+      [ngClass]="getBackgroundClass()"
+    >
+      <i class="bi bi-house-slash" style="font-size: 3rem; color: #6c757d;"></i>
+      <h4 class="mt-3">Немате викендица</h4>
+      <p class="text-muted">Кликните на дугме испод да додате прву викендицу.</p>
+      <button class="btn btn-success mt-2" (click)="openAddModal()">
+        <i class="bi bi-plus-circle"></i> Додај викендицу
+      </button>
+    </div>
+  }
+</div>

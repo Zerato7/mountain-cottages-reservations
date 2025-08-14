@@ -4,12 +4,20 @@ import { Observable, of } from "rxjs";
 const validImageFormats = ['image/jpeg', 'image/png'];
 const min_width = 100, max_width = 300;
 const min_height = 100, max_height = 300;
+const baseBackPath = 'http://localhost:8080';
 
-export class ImageUtil {
+export namespace ImageUtil {
+
+  export function getImageUrl(profilePicturePath: string): string {
+    return baseBackPath + '/' + profilePicturePath;
+  }
+
+}
+
+export class ImageUpload {
 
   constructor() { }
 
-  private baseBackPath = 'http://localhost:8080';
   private imageName: string | null = null;
   private imagePreviewUrl: string | null = null;
   private imageSize: number | null = null;
@@ -19,7 +27,7 @@ export class ImageUtil {
       const file = control.value as File;
       if (!file) return of(null);
 
-      console.log(file.type);
+      // console.log(file.type);
       if (!validImageFormats.includes(file.type)) return of({invalidType: true});
 
       return new Observable<ValidationErrors | null>(observer => {
@@ -92,8 +100,56 @@ export class ImageUtil {
     this.imagePreviewUrl = null;
   }
 
-  getImageUrl(profilePicturePath: string): string {
-    return this.baseBackPath + '/' + profilePicturePath;
+}
+
+export class ImageListUpload {
+
+  private imageNameList: string[] = [];
+  private imagePreviewUrlList: string[] = [];
+  private imageSizeList: number[] = [];
+
+  static imageAsyncValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      const files = control.value as FileList;
+      if (!files) return of(null);
+
+      const invalidFileExists = Array.from(files).some(file => !validImageFormats.includes(file.type));
+      if (invalidFileExists) {
+        return of({invalidType: true});
+      } else {
+        return of(null);
+      }
+    };
+  }
+
+  onImagesSelected(event: Event, formGroup: FormGroup, fieldName: string):void {
+    const input = event.target as HTMLInputElement;
+    const files = input.files;
+
+    formGroup.get(fieldName)?.setValue(files);
+    formGroup.get(fieldName)?.markAsTouched();
+    formGroup.get(fieldName)?.updateValueAndValidity();
+
+    Array.from(files ?? []).forEach(file => {
+      this.imageNameList.push(file.name);
+      this.imageSizeList.push(file.size);
+
+      const reader = new FileReader();
+      reader.onload = e => this.imagePreviewUrlList.push(reader.result as string);
+      reader.readAsDataURL(file);
+    })
+  }
+
+  getImageName(position: number): string | null {
+    return this.imageNameList.at(position) ?? null;
+  }
+
+  getImagePreviewUrl(position: number): string | null {
+    return this.imagePreviewUrlList.at(position) ?? null;
+  }
+
+  getImagePreviewUrlList(): string[] {
+    return this.imagePreviewUrlList;
   }
 
 }

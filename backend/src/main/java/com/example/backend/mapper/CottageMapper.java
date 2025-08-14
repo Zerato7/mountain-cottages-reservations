@@ -1,0 +1,101 @@
+package com.example.backend.mapper;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.backend.db.model.Cottage;
+import com.example.backend.db.model.CottagePhoto;
+import com.example.backend.db.model.Host;
+import com.example.backend.dto.RequestDTO.CottageInsertDTO;
+import com.example.backend.dto.ResponseDTO.CottageResponseDTO;
+import com.example.backend.exception.BackendServerException;
+import com.example.backend.util.ImageUtil;
+
+@Component
+public class CottageMapper {
+    
+    private final ImageUtil imageUtil;
+
+    public CottageMapper(
+        ImageUtil imageUtil
+    ) {
+        this.imageUtil = imageUtil;
+    }
+
+    public Cottage toEntity(CottageInsertDTO dto, Host owner, List<MultipartFile> cottagePhotosFile) {
+        Cottage cottage = new Cottage();
+        cottage.setName(dto.getName());
+        cottage.setLocation(dto.getLocation());
+        cottage.setCapacity(dto.getCapacity());
+        cottage.setServices(dto.getServices());
+        cottage.setWinterPriceAdult(dto.getWinterPriceAdult());
+        cottage.setWinterPriceChild(dto.getWinterPriceChild());
+        cottage.setSummerPriceAdult(dto.getSummerPriceAdult());
+        cottage.setSummerPriceChild(dto.getSummerPriceChild());
+        cottage.setPhoneNumber(dto.getPhoneNumber());
+        cottage.setLatitude(dto.getLatitude());
+        cottage.setLongitude(dto.getLongitude());
+        cottage.setOwner(owner);
+        try {
+            cottage.setPhotosFolderPath(imageUtil.createFolder(
+                owner.getUsername() + "_" + 
+                dto.getName().replace(' ', '_') + "_" + 
+                dto.getLocation().replace(' ', '_')
+            ));
+        } catch (IOException e) {
+            throw new BackendServerException("Креирање директоријума није успело.");
+        }
+        
+        if (cottagePhotosFile != null) {
+            int cnt = 0;
+            for (MultipartFile cottagePhotoFile : cottagePhotosFile) {
+                try {
+                    String cottagePhotoPath = imageUtil.saveImageToFileSys(
+                        String.valueOf(cnt), 
+                        cottage.getPhotosFolderPath(), 
+                        cottagePhotoFile);
+                    CottagePhoto cottagePhoto = new CottagePhoto();
+                    cottagePhoto.setPhotoPath(cottagePhotoPath);
+                    cottagePhoto.setPosition(cnt++);
+                    cottagePhoto.setCottage(cottage);
+
+                    cottage.getPhotos().add(cottagePhoto);
+                } catch (IOException e) {
+                    throw new BackendServerException("Уписивање слике није успело.");
+                }
+            }
+        }
+
+        return cottage;
+    }
+    
+    public CottageResponseDTO toResDto(Cottage cottage) {
+        CottageResponseDTO cottageResponseDTO = new CottageResponseDTO();
+        cottageResponseDTO.setId(cottage.getId());
+        cottageResponseDTO.setName(cottage.getName());
+        cottageResponseDTO.setLocation(cottage.getLocation());
+        cottageResponseDTO.setCapacity(cottage.getCapacity());
+        cottageResponseDTO.setServices(cottage.getServices());
+        cottageResponseDTO.setWinterPriceAdult(cottage.getWinterPriceAdult());
+        cottageResponseDTO.setWinterPriceChild(cottage.getWinterPriceChild());
+        cottageResponseDTO.setSummerPriceAdult(cottage.getSummerPriceAdult());
+        cottageResponseDTO.setSummerPriceChild(cottage.getSummerPriceChild());
+        cottageResponseDTO.setPhoneNumber(cottage.getPhoneNumber());
+        cottageResponseDTO.setLatitude(cottage.getLatitude());
+        cottageResponseDTO.setLongitude(cottage.getLongitude());
+        cottageResponseDTO.setOwnerId(cottage.getOwner().getId());
+        
+        cottageResponseDTO.setPhotoPaths(
+            cottage.getPhotos().stream()
+                .map(CottagePhoto::getPhotoPath)
+                .collect(Collectors.toList())
+        );
+
+        return cottageResponseDTO;
+    }
+
+}

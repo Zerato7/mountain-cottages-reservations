@@ -1,0 +1,237 @@
+<form [formGroup]="cottageForm" (ngSubmit)="submitInsert()" class="text-w-lighter text-break">
+  <div class="modal-header border-bottom">
+    <h5 class="modal-title fw-semibold">
+      <i class="bi bi-house-add me-2"></i>Унесите податке о викендици
+    </h5>
+    <button type="button" class="btn-close" aria-label="close" (click)="activeModal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <!-- Info -->
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title mb-3">
+          <i class="bi bi-info-circle"></i> Основни подаци
+        </h5>
+        <div class="row align-items-end">
+          <div class="col-12 col-md-6 mb-3">
+            <label for="name" class="form-label">Назив - <strong>name</strong></label>
+            <input type="text" id="name" class="form-control" formControlName="name" autocomplete="name">
+            <div
+              *ngIf="cottageForm.get('name')?.invalid && cottageForm.get('name')?.touched"
+              class="text-danger"
+            >
+              Назив је обавезан.
+            </div>
+          </div>
+          <div class="col-12 col-md-6 mb-3">
+            <label for="location" class="form-label">Место - <strong>location</strong></label>
+            <input type="text" id="location" class="form-control" formControlName="location">
+            <div
+              *ngIf="cottageForm.get('location')?.invalid && cottageForm.get('location')?.touched"
+              class="text-danger"
+            >
+              Место је обавезно.
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-end">
+          <div class="col-12 col-md-3 mb-3">
+            <label for="capacity" class="form-label">Капацитет - <strong>capacity</strong></label>
+            <input type="text" id="capacity" class="form-control" formControlName="capacity">
+            <div
+              *ngIf="cottageForm.get('capacity')?.invalid && cottageForm.get('capacity')?.touched"
+              class="text-danger"
+            >
+              Капацитет је обавезан.
+            </div>
+          </div>
+          <div class="col-12 col-md-9 mb-3">
+            <label for="services" class="form-label">Услуге - <strong>services</strong></label>
+            <input type="textarea" id="services" class="form-control"
+                formControlName="services" maxlength="500">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Winter Prices -->
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title mb-3">
+          <i class="bi bi-snow"></i> Цене ноћења - зима
+        </h5>
+        <div class="row align-items-end">
+          <div class="col-12 col-sm-6 mb-3">
+            <label for="winterPriceAdult" class="form-label">Одрасли - <strong>winterPriceAdult</strong></label>
+            <input type="text" id="winterPriceAdult" class="form-control" formControlName="winterPriceAdult">
+            <div
+              *ngIf="cottageForm.get('winterPriceAdult')?.invalid && cottageForm.get('winterPriceAdult')?.touched"
+              class="text-danger"
+            >
+              Цена ноћења зими за одрасле је обавезна.
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 mb-3">
+            <label for="winterPriceChild" class="form-label">Деца - <strong>winterPriceChild</strong></label>
+            <input type="text" id="winterPriceChild" class="form-control" formControlName="winterPriceChild">
+            <div
+              *ngIf="cottageForm.get('winterPriceChild')?.invalid && cottageForm.get('winterPriceChild')?.touched"
+              class="text-danger"
+            >
+              Цена ноћења зими за децу је обавезна.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Summer Prices -->
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title mb-3">
+          <i class="bi bi-sun"></i> Цене ноћења - лето
+        </h5>
+        <div class="row align-items-end">
+          <div class="col-12 col-sm-6 mb-3">
+            <label for="summerPriceAdult" class="form-label">Одрасли - <strong>summerPriceAdult</strong></label>
+            <input type="text" id="summerPriceAdult" class="form-control" formControlName="summerPriceAdult">
+            <div
+              *ngIf="cottageForm.get('summerPriceAdult')?.invalid && cottageForm.get('summerPriceAdult')?.touched"
+              class="text-danger"
+            >
+              Цена ноћења лети за одрасле је обавезна.
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 mb-3">
+            <label for="summerPriceChild" class="form-label">Деца - <strong>summerPriceChild</strong></label>
+            <input type="text" id="summerPriceChild" class="form-control" formControlName="summerPriceChild">
+            <div
+              *ngIf="cottageForm.get('summerPriceChild')?.invalid && cottageForm.get('summerPriceChild')?.touched"
+              class="text-danger"
+            >
+              Цена ноћења лети за децу је обавезна.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Contact and Coordinates -->
+    <div class="row align-items-end">
+      <div class="col-12 col-md-6 mb-3">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title mb-3">
+              <i class="bi bi-telephone"></i> Контакт
+            </h5>
+            <label for="phoneNumber" class="form-label">Контакт телефон - <strong>phoneNumber</strong></label>
+            <input type="text" id="phoneNumber" class="form-control" formControlName="phoneNumber">
+            <div
+              *ngIf="cottageForm.get('phoneNumber')?.invalid && cottageForm.get('phoneNumber')?.touched"
+              class="text-danger"
+            >
+              Контакт телефон је обавезан и мора бити у формату +XXXXXXXXXXXX.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 mb-3">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title mb-3">
+              <i class="bi bi-geo-alt"></i> Координате
+            </h5>
+            <div class="row align-items-end">
+              <div class="col-12 col-sm-6 mb-3">
+                <label for="latitude" class="form-label">Географска ширина - <strong>latitude</strong></label>
+                <input type="text" id="latitude" class="form-control" formControlName="latitude">
+                <div
+                  *ngIf="cottageForm.get('latitude')?.invalid && cottageForm.get('latitude')?.touched"
+                >
+                  Географска ширина је обавезна.
+                </div>
+              </div>
+              <div class="col-12 col-sm-6 mb-3">
+                <label for="longitude" class="form-label">Географска дужина - <strong>longitude</strong></label>
+                <input type="text" id="longitude" class="form-control" formControlName="longitude">
+                <div
+                  *ngIf="cottageForm.get('longitude')?.invalid && cottageForm.get('longitude')?.touched"
+                >
+                  Географска дужина је обавезна.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- FileUpload -->
+    <div class="row align-items-end">
+      <div class="col-12 col-md-6 mb-3">
+        <div class="border rounded p-3">
+          <h5><i class="bi bi-upload me-2"></i> Учитај JSON</h5>
+          <p class="text-muted small mb-2">Можете попунити поља аутоматски учитавањем JSON фајла.</p>
+          <input
+            type="file"
+            #jsonUpload
+            (change)="onJsonFileSelected($event)"
+            accept=".json,application/json"
+            hidden
+          />
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="jsonUpload.click()"
+          >Учитај JSON</button>
+          <div
+            *ngIf="jsonError"
+            class="text-danger mt-2"
+          >
+            <strong>{{ jsonError }}</strong>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 mb-3">
+        <div class="border rounded p-3">
+          <h5><i class="bi bi-images me-2"></i> Учитајте слике викендице</h5>
+          <p class="text-muted small mb-2">Изаберите слике викендице.</p>
+          <input
+            type="file"
+            #imageUpload
+            (change)="onImageFileSelected($event)"
+            accept="image/*"
+            multiple
+            hidden
+          />
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="imageUpload.click()"
+          >Учитај слике</button>
+          <div
+            *ngIf="cottageForm.get('image')?.hasError('invalidType')"
+            class="text-danger mt-2"
+          >
+            <strong>Слика мора бити у JPG/PNG формату.</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- PhotoPreview -->
+    <div class="photo-grid">
+      <div class="photo-preview mx-auto" *ngFor="let imagePreviewUrl of getImagePreviewUrlList()">
+        <img [src]="imagePreviewUrl" class="img-fluid rounded" alt="Преглед слике" />
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-success" [disabled]="cottageForm.invalid">
+      <i class="bi bi-check-circle"></i> Додај
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">
+      <i class="bi bi-x-circle"></i> Одустани
+    </button>
+  </div>
+</form>
+<div *ngIf="errorMessage" class="alert alert-danger mt-3 pb-0 mx-2 text-w-lighter">
+  <ul>
+    <li *ngFor="let error of errorMessage.split('\n')">{{ error }}</li>
+  </ul>
+</div>

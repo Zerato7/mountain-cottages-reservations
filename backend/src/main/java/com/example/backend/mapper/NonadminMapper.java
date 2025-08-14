@@ -52,12 +52,12 @@ public class NonadminMapper {
         String profilePicturePath;
         if (profilePicture != null && !profilePicture.isEmpty()) {
             try {
-                profilePicturePath = imageUtil.saveImageToFileSys(dto.getUsername(), profilePicture);
+                profilePicturePath = imageUtil.saveProfileToFileSys(dto.getUsername(), profilePicture);
             } catch (IOException e) {
                 throw new BackendServerException("Уписивање слике није успело.");
             }
         } else {
-            profilePicturePath = imageUtil.getDefaultImagePath(dto.getGender());
+            profilePicturePath = imageUtil.getDefaultProfilePath(dto.getGender());
         }
         nonadmin.setProfilePicturePath(profilePicturePath);
     }
@@ -106,12 +106,12 @@ public class NonadminMapper {
             String profilePicturePath;
             if (profilePicture != null && !profilePicture.isEmpty()) {
                 try {
-                    profilePicturePath = imageUtil.saveImageToFileSys(dto.getUsername(), profilePicture);
+                    profilePicturePath = imageUtil.saveProfileToFileSys(dto.getUsername(), profilePicture);
                 } catch (IOException e) {
                     throw new BackendServerException("Уписивање слике није успело.");
                 }
             } else {
-                profilePicturePath = imageUtil.getDefaultImagePath(dto.getGender());
+                profilePicturePath = imageUtil.getDefaultProfilePath(dto.getGender());
             }
             nonadmin.setProfilePicturePath(profilePicturePath);
         }

@@ -30,7 +30,6 @@ export class AdminComponent {
 
   nonadmins: NonAdminResponse[] = [];
   editingId: number = 0;
-  private imageUtil: ImageUtil = new ImageUtil();
 
   private loadNonadmins(): void {
     this.nonadminService.getAll().subscribe({
@@ -108,7 +107,7 @@ export class AdminComponent {
   }
 
   getImageUrl(profilePicturePath: string): string {
-    return this.imageUtil.getImageUrl(profilePicturePath);
+    return ImageUtil.getImageUrl(profilePicturePath);
   }
 
   getCreditCardNumberDisplay(last4Digits: string): string {

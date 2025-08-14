@@ -30,7 +30,6 @@ export class ProfileComponent {
   ) { }
 
   nonadmin!: NonAdminResponse;
-  private imageUtil: ImageUtil = new ImageUtil();
 
   ngOnInit() {
     this.loadNonadmin();
@@ -61,7 +60,7 @@ export class ProfileComponent {
   }
 
   getImageUrl(profilePicturePath: string): string {
-    return this.imageUtil.getImageUrl(profilePicturePath);
+    return ImageUtil.getImageUrl(profilePicturePath);
   }
 
   getCreditCardNumberDisplay(last4Digits: string): string {

@@ -1,76 +1,35 @@
-package com.example.backend.db.model;
+package com.example.backend.dto.ResponseDTO;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-
-@Entity
-public class Cottage {
+public class CottageResponseDTO {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(unique = true, nullable = false)
     private String name;
-
-    @Column(nullable = false)
     private String location;
-
-    @Column(nullable = false)
     private Integer capacity;
-
-    private String photosFolderPath;
-
-    @Column(length = 500)
     private String services;
-    
-    @Column(nullable = false)
     private Double winterPriceAdult;
-
-    @Column(nullable = false)
     private Double winterPriceChild;
-
-    @Column(nullable = false)
     private Double summerPriceAdult;
-
-    @Column(nullable = false)
     private Double summerPriceChild;
-
-    @Column(nullable = false)
     private String phoneNumber;
-
-    @Column(nullable = false)
     private Double latitude;
-
-    @Column(nullable = false)
     private Double longitude;
+    private Long ownerId;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = false)
-    private Host owner;
-
-    @OneToMany(mappedBy = "cottage", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CottagePhoto> photos = new ArrayList<>();
-
-    @OneToMany(mappedBy = "cottage")
-    private List<Reservation> reservations = new ArrayList<>();
+    private List<String> photoPaths;
 
     // Getters and Setters
 
     public Long getId() {
         return id;
     }
-    
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -93,14 +52,6 @@ public class Cottage {
 
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;
-    }
-
-    public String getPhotosFolderPath() {
-        return photosFolderPath;
-    }
-
-    public void setPhotosFolderPath(String photosFolderPath) {
-        this.photosFolderPath = photosFolderPath;
     }
 
     public String getServices() {
@@ -167,16 +118,20 @@ public class Cottage {
         this.longitude = longitude;
     }
 
-    public Host getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Host owner) {
-        this.owner = owner;
-    }
-
-    public List<CottagePhoto> getPhotos() {
-        return photos;
+    public Long getOwnerId() {
+        return ownerId;
     }
     
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public List<String> getPhotoPaths() {
+        return photoPaths;
+    }
+
+    public void setPhotoPaths(List<String> photoPaths) {
+        this.photoPaths = photoPaths;
+    }
+
 }

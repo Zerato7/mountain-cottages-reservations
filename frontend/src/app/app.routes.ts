@@ -6,6 +6,7 @@ import { PasswordChangeComponent } from './authentication/password-change/passwo
 import { AdminComponent } from './admin/admin.component';
 import { ProfileComponent } from './profile/profile.component';
 import { authGuard } from './guards/auth.guard';
+import { MyCottagesComponent } from './my-cottages/my-cottages.component';
 
 export const routes: Routes = [
   {path: 'admin/login', component: LoginComponent},
@@ -14,5 +15,6 @@ export const routes: Routes = [
   {path: 'register-success', component: RegisterSuccessComponent},
   {path: 'password-change', component: PasswordChangeComponent},
   {path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
+  {path: 'my-cottages', component: MyCottagesComponent, canActivate: [authGuard]},
   {path: 'admin/dashboard', component: AdminComponent}
 ];

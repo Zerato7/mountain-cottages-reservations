@@ -1,75 +1,55 @@
-package com.example.backend.db.model;
+package com.example.backend.dto.RequestDTO;
 
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-
-@Entity
-public class Cottage {
+public class CottageInsertDTO {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(unique = true, nullable = false)
+    @NotBlank(message = "Назив је обавезан.")
     private String name;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Место је обавезно.")
     private String location;
 
-    @Column(nullable = false)
+    @Positive(message = "Капацитет мора бити позитиван број.")
+    @NotNull(message = "Капацитет је обавезан.")
     private Integer capacity;
 
-    private String photosFolderPath;
-
-    @Column(length = 500)
+    @Size(max = 500, message = "Услуге може бити највише 500 карактера")
     private String services;
     
-    @Column(nullable = false)
+    @PositiveOrZero(message = "Цена ноћења зими за одрасле мора бити ненегативан број.")
+    @NotNull(message = "Цена ноћења зими за одрасле је обавезна.")
     private Double winterPriceAdult;
 
-    @Column(nullable = false)
+    @PositiveOrZero(message = "Цена ноћења зими за децу мора бити ненегативан број.")
+    @NotNull(message = "Цена ноћења зими за децу је обавезна.")
     private Double winterPriceChild;
 
-    @Column(nullable = false)
+    @PositiveOrZero(message = "Цена ноћења лети за одрасле мора бити ненегативан број.")
+    @NotNull(message = "Цена ноћења лети за одрасле је обавезна.")
     private Double summerPriceAdult;
 
-    @Column(nullable = false)
+    @PositiveOrZero(message = "Цена ноћења лети за децу мора бити ненегативан број.")
+    @NotNull(message = "Цена ноћења лети за децу је обавезна.")
     private Double summerPriceChild;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Контакт телефон је обавезан.")
     private String phoneNumber;
 
-    @Column(nullable = false)
+    @NotNull(message = "Географска ширина је обавезна.")
     private Double latitude;
 
-    @Column(nullable = false)
+    @NotNull(message = "Географска дужина је обавезна.")
     private Double longitude;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = false)
-    private Host owner;
-
-    @OneToMany(mappedBy = "cottage", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CottagePhoto> photos = new ArrayList<>();
-
-    @OneToMany(mappedBy = "cottage")
-    private List<Reservation> reservations = new ArrayList<>();
+    @NotNull(message = "Власник викендице је обавезан.")
+    private Long ownerId;
 
     // Getters and Setters
-
-    public Long getId() {
-        return id;
-    }
     
     public String getName() {
         return name;
@@ -93,14 +73,6 @@ public class Cottage {
 
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;
-    }
-
-    public String getPhotosFolderPath() {
-        return photosFolderPath;
-    }
-
-    public void setPhotosFolderPath(String photosFolderPath) {
-        this.photosFolderPath = photosFolderPath;
     }
 
     public String getServices() {
@@ -167,16 +139,12 @@ public class Cottage {
         this.longitude = longitude;
     }
 
-    public Host getOwner() {
-        return owner;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(Host owner) {
-        this.owner = owner;
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
-    public List<CottagePhoto> getPhotos() {
-        return photos;
-    }
-    
 }

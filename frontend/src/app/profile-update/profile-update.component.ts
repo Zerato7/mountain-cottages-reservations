@@ -6,7 +6,7 @@ import { UserEdit } from '../models/requests/userEdit';
 import { NonadminService } from '../services/nonadmin.service';
 import { CommonModule } from '@angular/common';
 import { CreditCardUtil } from '../utils/credit-card.util';
-import { ImageUtil } from '../utils/images.util';
+import { ImageUpload } from '../utils/images.util';
 
 @Component({
   selector: 'app-profile-update',
@@ -28,7 +28,7 @@ export class ProfileUpdateComponent {
   editForm!: FormGroup;
   errorMessage: string = '';
   cardType: string | null = null;
-  private imageUtil: ImageUtil = new ImageUtil();
+  private imageUpload: ImageUpload = new ImageUpload();
 
   ngOnInit() {
     this.editForm = new FormGroup({
@@ -84,7 +84,7 @@ export class ProfileUpdateComponent {
         value: null, disabled: this.disabledFields.includes('image')
       }, {
         validators: [],
-        asyncValidators: [ImageUtil.imageAsyncValidator()],
+        asyncValidators: [ImageUpload.imageAsyncValidator()],
         updateOn: 'change'
       }),
       creditCardNumber: new FormControl<string>({
@@ -102,10 +102,6 @@ export class ProfileUpdateComponent {
         this.editForm.get('creditCardNumber')?.value || ''
       );
     });
-
-    this.imageUtil.clearImageName();
-    this.imageUtil.clearImageSize();
-    this.imageUtil.clearImagePreviewUrl();
   }
 
   submitEdit():void {
@@ -142,19 +138,19 @@ export class ProfileUpdateComponent {
   }
 
   onFileSelected(event: Event): void {
-    this.imageUtil.onImageSelected(event, this.editForm, 'image');
+    this.imageUpload.onImageSelected(event, this.editForm, 'image');
   }
 
   getImageName(): string | null {
-    return this.imageUtil.getImageName();
+    return this.imageUpload.getImageName();
   }
 
   getImageSize(): number {
-    return this.imageUtil.getImageSize() ?? 0;
+    return this.imageUpload.getImageSize() ?? 0;
   }
 
   getImagePreviewUrl(): string | null {
-    return this.imageUtil.getImagePreviewUrl();
+    return this.imageUpload.getImagePreviewUrl();
   }
 
 }

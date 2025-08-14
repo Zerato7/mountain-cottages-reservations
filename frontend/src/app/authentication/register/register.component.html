@@ -108,7 +108,7 @@
       </div>
     </div>
 
-    <div class="row justify-content-start align-items-end">
+    <div class="row justify-content-start align-items-start">
       <div class="col-12 col-md-3 mb-3">
         <input
           type="file"
@@ -119,7 +119,7 @@
         >
         <button
           type="button"
-          class="btn btn-outline-secondary"
+          class="btn btn-outline-secondary upload-image-col"
           (click)="profilePictureUpload.click()"
         >Учитај профилну слику</button>
         <div
@@ -137,7 +137,7 @@
       </div>
       @if (getImageName() && !registerForm.get('image')?.errors) {
         <div class="col-12 col-md-3 mb-3">
-          <div *ngIf="getImagePreviewUrl()" class="mt-2 image-preview mx-auto">
+          <div *ngIf="getImagePreviewUrl()" class="mt-2 profile-preview mx-auto">
               <img [src]="getImagePreviewUrl()" alt="Преглед слике">
           </div>
           <div class="text-success text-center">

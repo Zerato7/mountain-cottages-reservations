@@ -1,4 +1,4 @@
-<form [formGroup]="editForm" (ngSubmit)="submitEdit()">
+<form [formGroup]="editForm" (ngSubmit)="submitEdit()" class="text-w-lighter">
   <div class="modal-header">
     <h5 class="modal-title">Измени податке о кориснику</h5>
     <button type="button" class="btn-close" aria-label="close" (click)="activeModal.dismiss()"></button>
@@ -110,7 +110,7 @@
     </div>
     @if (getImageName() && !editForm.get('image')?.errors) {
       <div class="mb-3">
-        <div *ngIf="getImagePreviewUrl()" class="mt-2 image-preview mx-auto">
+        <div *ngIf="getImagePreviewUrl()" class="mt-2 profile-preview mx-auto">
           <img [src]="getImagePreviewUrl()" alt="Преглед слике">
         </div>
         <div class="text-success text-center">
@@ -148,7 +148,7 @@
     </button>
   </div>
 </form>
-<div *ngIf="errorMessage" class="alert alert-danger mt-3 pb-0 mx-2">
+<div *ngIf="errorMessage" class="alert alert-danger mt-3 pb-0 mx-2 text-w-lighter">
   <ul>
     <li *ngFor="let error of errorMessage.split('\n')">{{ error }}</li>
   </ul>

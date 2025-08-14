@@ -6,7 +6,7 @@ import { UserRegistration } from '../../models/requests/userRegistration';
 import { CommonModule } from '@angular/common';
 import { UserType } from '../../models/userType';
 import { CreditCardUtil } from '../../utils/credit-card.util';
-import { ImageUtil } from '../../utils/images.util';
+import { ImageUpload } from '../../utils/images.util';
 
 @Component({
   selector: 'app-register',
@@ -25,7 +25,7 @@ export class RegisterComponent {
   errorMessage: string = '';
   loading: boolean = false;
   cardType: string | null = null;
-  private imageUtil: ImageUtil = new ImageUtil();
+  private imageUpload: ImageUpload = new ImageUpload();
 
   ngOnInit(): void {
     this.registerForm.get('creditCardNumber')?.valueChanges.subscribe(() => {
@@ -78,7 +78,7 @@ export class RegisterComponent {
     }),
     image: new FormControl<File|null>(null, {
       validators: [],
-      asyncValidators: [ImageUtil.imageAsyncValidator()],
+      asyncValidators: [ImageUpload.imageAsyncValidator()],
       updateOn: 'change'
     }),
     creditCardNumber: new FormControl<string>('', {
@@ -136,19 +136,19 @@ export class RegisterComponent {
   // Image
 
   onFileSelected(event: Event): void {
-    this.imageUtil.onImageSelected(event, this.registerForm, 'image');
+    this.imageUpload.onImageSelected(event, this.registerForm, 'image');
   }
 
   getImageName(): string | null {
-    return this.imageUtil.getImageName();
+    return this.imageUpload.getImageName();
   }
 
   getImageSize(): number {
-    return this.imageUtil.getImageSize() ?? 0;
+    return this.imageUpload.getImageSize() ?? 0;
   }
 
   getImagePreviewUrl(): string | null {
-    return this.imageUtil.getImagePreviewUrl();
+    return this.imageUpload.getImagePreviewUrl();
   }
 
 }
