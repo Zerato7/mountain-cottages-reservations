@@ -4,9 +4,9 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserEdit } from '../models/requests/userEdit';
 import { NonadminService } from '../services/nonadmin.service';
-import { ImageService } from '../services/image.service';
 import { CommonModule } from '@angular/common';
 import { CreditCardUtil } from '../utils/credit-card.util';
+import { ImageUtil } from '../utils/images.util';
 
 @Component({
   selector: 'app-profile-update',
@@ -19,8 +19,7 @@ export class ProfileUpdateComponent {
 
   constructor(
     private nonadminService: NonadminService,
-    public activeModal: NgbActiveModal,
-    private imageService: ImageService
+    public activeModal: NgbActiveModal
   ) {}
 
   @Input() nonadmin: NonAdminResponse = new NonAdminResponse();
@@ -29,6 +28,7 @@ export class ProfileUpdateComponent {
   editForm!: FormGroup;
   errorMessage: string = '';
   cardType: string | null = null;
+  private imageUtil: ImageUtil = new ImageUtil();
 
   ngOnInit() {
     this.editForm = new FormGroup({
@@ -84,7 +84,7 @@ export class ProfileUpdateComponent {
         value: null, disabled: this.disabledFields.includes('image')
       }, {
         validators: [],
-        asyncValidators: [ImageService.imageAsyncValidator()],
+        asyncValidators: [ImageUtil.imageAsyncValidator()],
         updateOn: 'change'
       }),
       creditCardNumber: new FormControl<string>({
@@ -103,9 +103,9 @@ export class ProfileUpdateComponent {
       );
     });
 
-    this.imageService.clearImageName();
-    this.imageService.clearImageSize();
-    this.imageService.clearImagePreviewUrl();
+    this.imageUtil.clearImageName();
+    this.imageUtil.clearImageSize();
+    this.imageUtil.clearImagePreviewUrl();
   }
 
   submitEdit():void {
@@ -142,19 +142,19 @@ export class ProfileUpdateComponent {
   }
 
   onFileSelected(event: Event): void {
-    this.imageService.onFileSelected(event, this.editForm, 'image');
+    this.imageUtil.onImageSelected(event, this.editForm, 'image');
   }
 
   getImageName(): string | null {
-    return this.imageService.getImageName();
+    return this.imageUtil.getImageName();
   }
 
   getImageSize(): number {
-    return this.imageService.getImageSize() ?? 0;
+    return this.imageUtil.getImageSize() ?? 0;
   }
 
   getImagePreviewUrl(): string | null {
-    return this.imageService.getImagePreviewUrl();
+    return this.imageUtil.getImagePreviewUrl();
   }
 
 }

@@ -5,8 +5,8 @@ import { Router, RouterLink } from '@angular/router';
 import { UserRegistration } from '../../models/requests/userRegistration';
 import { CommonModule } from '@angular/common';
 import { UserType } from '../../models/userType';
-import { ImageService } from '../../services/image.service';
 import { CreditCardUtil } from '../../utils/credit-card.util';
+import { ImageUtil } from '../../utils/images.util';
 
 @Component({
   selector: 'app-register',
@@ -19,13 +19,13 @@ export class RegisterComponent {
 
   constructor(
     private authService: AuthService,
-    private imageService: ImageService,
     private router: Router
   ) { }
 
   errorMessage: string = '';
   loading: boolean = false;
   cardType: string | null = null;
+  private imageUtil: ImageUtil = new ImageUtil();
 
   ngOnInit(): void {
     this.registerForm.get('creditCardNumber')?.valueChanges.subscribe(() => {
@@ -78,7 +78,7 @@ export class RegisterComponent {
     }),
     image: new FormControl<File|null>(null, {
       validators: [],
-      asyncValidators: [ImageService.imageAsyncValidator()],
+      asyncValidators: [ImageUtil.imageAsyncValidator()],
       updateOn: 'change'
     }),
     creditCardNumber: new FormControl<string>('', {
@@ -136,19 +136,19 @@ export class RegisterComponent {
   // Image
 
   onFileSelected(event: Event): void {
-    this.imageService.onFileSelected(event, this.registerForm, 'image');
+    this.imageUtil.onImageSelected(event, this.registerForm, 'image');
   }
 
   getImageName(): string | null {
-    return this.imageService.getImageName();
+    return this.imageUtil.getImageName();
   }
 
   getImageSize(): number {
-    return this.imageService.getImageSize() ?? 0;
+    return this.imageUtil.getImageSize() ?? 0;
   }
 
   getImagePreviewUrl(): string | null {
-    return this.imageService.getImagePreviewUrl();
+    return this.imageUtil.getImagePreviewUrl();
   }
 
 }

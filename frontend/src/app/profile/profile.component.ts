@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { NonAdminResponse } from '../models/responses/nonadminResponse';
 import { AuthService } from '../services/auth.service';
-import { ImageService } from '../services/image.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileUpdateComponent } from '../profile-update/profile-update.component';
 import { CommonModule } from '@angular/common';
 import { UserType } from '../models/userType';
 import { BgColourUtil } from '../utils/bg-colour.util';
 import { CreditCardUtil } from '../utils/credit-card.util';
+import { ImageUtil } from '../utils/images.util';
 
 const disabledFields: Record<UserType, string[]> = {
   ADMIN: [],
@@ -26,11 +26,11 @@ export class ProfileComponent {
 
   constructor(
     private authService: AuthService,
-    private imageService: ImageService,
     private modalService: NgbModal
   ) { }
 
   nonadmin!: NonAdminResponse;
+  private imageUtil: ImageUtil = new ImageUtil();
 
   ngOnInit() {
     this.loadNonadmin();
@@ -61,7 +61,7 @@ export class ProfileComponent {
   }
 
   getImageUrl(profilePicturePath: string): string {
-    return this.imageService.getImageUrl(profilePicturePath);
+    return this.imageUtil.getImageUrl(profilePicturePath);
   }
 
   getCreditCardNumberDisplay(last4Digits: string): string {

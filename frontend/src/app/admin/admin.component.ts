@@ -5,9 +5,9 @@ import { AdminService } from '../services/admin.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { ImageService } from '../services/image.service';
 import { ProfileUpdateComponent } from '../profile-update/profile-update.component';
 import { CreditCardUtil } from '../utils/credit-card.util';
+import { ImageUtil } from '../utils/images.util';
 
 @Component({
   selector: 'app-admin',
@@ -21,7 +21,6 @@ export class AdminComponent {
   constructor(
     private nonadminService: NonadminService,
     private adminService: AdminService,
-    private imageService: ImageService,
     private modalService: NgbModal
   ) {}
 
@@ -31,6 +30,7 @@ export class AdminComponent {
 
   nonadmins: NonAdminResponse[] = [];
   editingId: number = 0;
+  private imageUtil: ImageUtil = new ImageUtil();
 
   private loadNonadmins(): void {
     this.nonadminService.getAll().subscribe({
@@ -108,7 +108,7 @@ export class AdminComponent {
   }
 
   getImageUrl(profilePicturePath: string): string {
-    return this.imageService.getImageUrl(profilePicturePath);
+    return this.imageUtil.getImageUrl(profilePicturePath);
   }
 
   getCreditCardNumberDisplay(last4Digits: string): string {

@@ -1,22 +1,18 @@
-import { Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormGroup, ValidationErrors } from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import { AbstractControl, AsyncValidatorFn, FormGroup, ValidationErrors } from "@angular/forms";
+import { Observable, of } from "rxjs";
 
 const validImageFormats = ['image/jpeg', 'image/png'];
 const min_width = 100, max_width = 300;
 const min_height = 100, max_height = 300;
 
-@Injectable({
-  providedIn: 'root'
-})
-export class ImageService {
+export class ImageUtil {
 
   constructor() { }
 
   private baseBackPath = 'http://localhost:8080';
-  imageName: string | null = null;
-  imagePreviewUrl: string | null = null;
-  imageSize: number | null = null;
+  private imageName: string | null = null;
+  private imagePreviewUrl: string | null = null;
+  private imageSize: number | null = null;
 
   static imageAsyncValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
@@ -53,7 +49,7 @@ export class ImageService {
     };
   }
 
-  onFileSelected(event: Event, formGroup: FormGroup, fieldName: string): void {
+  onImageSelected(event: Event, formGroup: FormGroup, fieldName: string): void {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0] ?? null;
 
