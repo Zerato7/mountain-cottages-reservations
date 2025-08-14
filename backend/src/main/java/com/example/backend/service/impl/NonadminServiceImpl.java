@@ -12,7 +12,7 @@ import com.example.backend.db.repository.UserRepository;
 import com.example.backend.dto.RequestDTO.UserEditDTO;
 import com.example.backend.dto.ResponseDTO.NonadminResponseDTO;
 import com.example.backend.exception.BadRequestException;
-import com.example.backend.exception.DuplicateUserException;
+import com.example.backend.exception.DuplicateDataException;
 import com.example.backend.mapper.NonadminMapper;
 import com.example.backend.service.NonadminService;
 
@@ -47,10 +47,10 @@ public class NonadminServiceImpl implements NonadminService {
             new BadRequestException("Неадмин не постоји у систему.")
         );
         if (userRepository.existsByUsernameAndIdNot(dto.getUsername(), dto.getId())) {
-            throw new DuplicateUserException("Корисничко име већ постоји.", "username");
+            throw new DuplicateDataException("Корисничко име већ постоји.", "username");
         }
         if (nonadminRepository.existsByEmailAndIdNot(dto.getEmail(), dto.getId())) {
-            throw new DuplicateUserException("Е-мејл адреса већ постоји.", "email");
+            throw new DuplicateDataException("Е-мејл адреса већ постоји.", "email");
         }
         nonadminMapper.editFromDto(nonadmin, dto, profilePicture);
         return nonadminMapper.toResDto(nonadminRepository.save(nonadmin));

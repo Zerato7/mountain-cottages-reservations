@@ -28,8 +28,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(new MessageListDTO(errors));
     }
 
-    @ExceptionHandler(DuplicateUserException.class)
-    public ResponseEntity<MessageDTO> handleDuplicateUserException(DuplicateUserException ex) {
+    @ExceptionHandler(DuplicateDataException.class)
+    public ResponseEntity<MessageDTO> handleDuplicateUserException(DuplicateDataException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(
             new MessageDTO(ex.getMessage())
         );

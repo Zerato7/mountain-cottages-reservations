@@ -19,10 +19,9 @@ import com.example.backend.dto.RequestDTO.UserRegistrationDTO;
 import com.example.backend.dto.ResponseDTO.NonadminResponseDTO;
 import com.example.backend.exception.AuthException;
 import com.example.backend.exception.BadRequestException;
-import com.example.backend.exception.DuplicateUserException;
+import com.example.backend.exception.DuplicateDataException;
 import com.example.backend.exception.PasswordChangeException;
 import com.example.backend.mapper.NonadminMapper;
-import com.example.backend.mapper.RegistrationMapper;
 import com.example.backend.service.AuthService;
 import com.example.backend.util.EncryptionUtil;
 
@@ -32,7 +31,6 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
 
     private final NonadminMapper nonadminMapper;
-    private final RegistrationMapper registrationMapper;
     
     private final UserRepository userRepository;
     private final NonadminRepository nonadminRepository;
@@ -44,7 +42,6 @@ public class AuthServiceImpl implements AuthService {
             EncryptionUtil encryptionUtil,
             FileUploadProperties fileUploadProperties,
             NonadminMapper nonadminMapper,
-            RegistrationMapper registrationMapper,
             UserRepository userRepository,
             NonadminRepository nonadminRepository,
             HostRepository hostRepository,
@@ -52,7 +49,6 @@ public class AuthServiceImpl implements AuthService {
     ) {
         this.passwordEncoder = passwordEncoder;
         this.nonadminMapper = nonadminMapper;
-        this.registrationMapper = registrationMapper;
         this.userRepository = userRepository;
         this.nonadminRepository = nonadminRepository;
         this.hostRepository = hostRepository;
@@ -60,23 +56,23 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Nonadmin registerNonadmin(UserRegistrationDTO dto, MultipartFile profilePicture) {
+    public NonadminResponseDTO registerNonadmin(UserRegistrationDTO dto, MultipartFile profilePicture) {
         if (userRepository.existsByUsername(dto.getUsername())) {
-            throw new DuplicateUserException("Корисничко име већ постоји.", "username");
+            throw new DuplicateDataException("Корисничко име већ постоји.", "username");
         }
         if (nonadminRepository.existsByEmail(dto.getEmail())) {
-            throw new DuplicateUserException("Е-мејл адреса већ постоји.", "email");
+            throw new DuplicateDataException("Е-мејл адреса већ постоји.", "email");
         }
 
         switch(dto.getUserType()) {
             case TOURIST:
                 Tourist tourist = new Tourist();
-                registrationMapper.toEntity(dto, profilePicture, tourist);
-                return touristRepository.save(tourist);
+                nonadminMapper.toEntity(dto, profilePicture, tourist);
+                return nonadminMapper.toResDto(touristRepository.save(tourist));
             case HOST:
                 Host host = new Host();
-                registrationMapper.toEntity(dto, profilePicture, host);
-                return hostRepository.save(host);
+                nonadminMapper.toEntity(dto, profilePicture, host);
+                return nonadminMapper.toResDto(hostRepository.save(host));
             default:
                 throw new AuthException("Unsupported user type: " + dto.getUserType());
         }

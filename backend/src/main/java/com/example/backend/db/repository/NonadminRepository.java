@@ -11,8 +11,8 @@ import java.util.List;
 
 
 public interface NonadminRepository extends JpaRepository<Nonadmin, Long>{
-    public boolean existsByEmail(String email);
-    public boolean existsByEmailAndIdNot(String email, Long id);
-    public Optional<Nonadmin> findByUsername(String username);
-    public List<Nonadmin> findByStatusNot(User.Status status);
+    boolean existsByEmail(String email);
+    boolean existsByEmailAndIdNot(String email, Long id);
+    Optional<Nonadmin> findByUsername(String username);
+    List<Nonadmin> findByStatusNot(User.Status status);
 }

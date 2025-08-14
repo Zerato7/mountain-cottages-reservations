@@ -1,10 +1,10 @@
 package com.example.backend.exception;
 
-public class DuplicateUserException extends RuntimeException {
+public class DuplicateDataException extends RuntimeException {
     
     private final String field;
 
-    public DuplicateUserException(String message, String field) {
+    public DuplicateDataException(String message, String field) {
         super(message);
         this.field = field;
     }
