@@ -21,6 +21,15 @@ export class CottageService {
     return this.http.get<CottageResponse[]>(`${this.curBackPath}/getMy/${ownerId}`);
   }
 
+  getByName(name: string) {
+    return this.http.get<CottageResponse>(`${this.curBackPath}/getByName/${name}`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let message = error.error?.message || 'Непозната грешка при дохватању викендице.';
+        return throwError(() => new Error(message));
+      })
+    );
+  }
+
   createCottage(formData: FormData) {
     return this.http.post<CottageResponse>(`${this.curBackPath}/create`, formData).pipe(
       catchError((error: HttpErrorResponse) => {

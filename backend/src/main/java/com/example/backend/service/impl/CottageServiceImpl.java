@@ -51,6 +51,15 @@ public class CottageServiceImpl implements CottageService {
             .collect(Collectors.toList());
     }
 
+    @Override
+    public CottageResponseDTO getByName(String name) {
+        Cottage cottage = cottageRepository.findByName(name).orElseThrow(() ->
+            new BadRequestException("Викендица под овим именом не постоји")
+        );
+
+        return cottageMapper.toResDto(cottage);
+    }
+
     @Transactional
     @Override
     public CottageResponseDTO createCottage(CottageInsertDTO dto, List<MultipartFile> cottagePhotosFile) {

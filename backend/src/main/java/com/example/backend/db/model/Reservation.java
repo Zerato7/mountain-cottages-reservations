@@ -48,6 +48,9 @@ public class Reservation {
     @Column(nullable = false)
     private Integer childrenNumber;
 
+    @Column(nullable = false)
+    private Double cost;
+
     @Column(nullable = false, length = 500)
     private String specialDemands;
 
@@ -115,6 +118,14 @@ public class Reservation {
 
     public void setChildrenNumber(Integer childrenNumber) {
         this.childrenNumber = childrenNumber;
+    }
+
+    public Double getCost() {
+        return cost;
+    }
+
+    public void setCost(Double cost) {
+        this.cost = cost;
     }
 
     public String getSpecialDemands() {

@@ -1,1 +1,43 @@
-<p>cottage works!</p>
+@if (errorMessage) {
+  <h2 style="color: red;">{{ errorMessage }}</h2>
+} @else {
+  <div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-8">
+        <div class="card h-100 shadow-sm text-w-lighter">
+          <div class="card-body bg-cottage-card">
+            <h5 class="card-title">{{ cottage.name }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ cottage.location }}</h6>
+            <p class="card-text">
+              <strong>Контакт телефон: </strong>{{ cottage.phoneNumber }}<br/>
+              <strong>Улсуге: </strong>{{ cottage.services }}<br/>
+              <strong>Цена зими</strong><br/>
+              <strong>Одрасли: </strong>{{ cottage.winterPriceAdult }} РСД
+              <strong>Деца: </strong>{{ cottage.winterPriceChild }} РСД<br/>
+              <strong>Цена лети</strong><br/>
+              <strong>Одрасли: </strong>{{ cottage.summerPriceAdult }} РСД
+              <strong>Деца: </strong> {{ cottage.summerPriceChild }} РСД
+              <br/><button class="btn btn-primary mt-3">Изнајми</button>
+              <ngb-carousel class="mt-3"
+              [interval]="5000" [pauseOnHover]="true" [pauseOnFocus]="true">
+                @for (img of cottage.photoPaths; track img) {
+                  <ng-template ngbSlide>
+                    <div class="picsum-img-wrapper">
+                      <img [src]="getImageUrl(img.photoPath)"
+                        [alt]="'Слика викендице - број ' + img.position"
+                        class="d-block w-100">
+                    </div>
+                  </ng-template>
+                }
+              </ngb-carousel>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-8 mt-3">
+        <div class="map" *ngIf="options" leaflet [leafletOptions]="options" [leafletLayer]="layer"></div>
+      </div>
+    </div>
+  </div>
+
+}

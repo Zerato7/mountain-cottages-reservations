@@ -13,6 +13,8 @@ public interface CottageService {
 
     List<CottageResponseDTO> getMy(Long id);
 
+    CottageResponseDTO getByName(String name);
+
     CottageResponseDTO createCottage(CottageInsertDTO dto, List<MultipartFile> cottagePhotosFile);
 
     void deleteCottage(Long id);

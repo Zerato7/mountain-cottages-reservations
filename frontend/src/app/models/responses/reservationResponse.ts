@@ -18,6 +18,7 @@ export class ReservationResponse {
   datetimeEnd: Date = new Date();
   adultsNumber: number = 0;
   childrenNumber: number = 0;
+  cost: number = 0.0;
   specialDemands: string = '';
   status: Status = Status.PENDING;
   rejectionComment: string | null = null;

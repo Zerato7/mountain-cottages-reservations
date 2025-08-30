@@ -42,6 +42,11 @@ public class CottageController {
         return ResponseEntity.ok(cottageService.getMy(id));
     }
 
+    @GetMapping("/getByName/{name}")
+    public ResponseEntity<CottageResponseDTO> getMyCottages(@PathVariable String name) {
+        return ResponseEntity.ok(cottageService.getByName(name));
+    }
+
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CottageResponseDTO> createCottage(
         @Valid @RequestPart("cottage") CottageInsertDTO dto,

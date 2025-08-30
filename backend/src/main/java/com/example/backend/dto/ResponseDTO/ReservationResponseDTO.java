@@ -13,6 +13,7 @@ public class ReservationResponseDTO {
     private LocalDateTime datetimeEnd;
     private Integer adultsNumber;
     private Integer childrenNumber;
+    private Double cost;
     private String specialDemands;
     private Reservation.Status status;
     private String rejectionComment;
@@ -67,6 +68,14 @@ public class ReservationResponseDTO {
 
     public void setChildrenNumber(Integer childrenNumber) {
         this.childrenNumber = childrenNumber;
+    }
+
+    public Double getCost() {
+        return cost;
+    }
+    
+    public void setCost(Double cost) {
+        this.cost = cost;
     }
 
     public String getSpecialDemands() {

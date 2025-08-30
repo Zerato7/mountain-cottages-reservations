@@ -1,0 +1,38 @@
+.bg-cottage-card {
+  background-color: rgb(240, 228, 208);
+}
+
+ngb-carousel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 414px) {
+  ngb-carousel .picsum-img-wrapper {
+    height: 200px;
+  }
+}
+
+@media (max-width: 767px) {
+  ngb-carousel .picsum-img-wrapper {
+    height: 300px;
+  }
+}
+
+@media (max-width: 1280px) {
+  ngb-carousel .picsum-img-wrapper {
+    height: 400px;
+  }
+}
+
+@media (min-width: 1281px) {
+  ngb-carousel .picsum-img-wrapper {
+    height: 500px;
+  }
+}
+
+.map {
+  height: 300px;
+  border: thin solid black;
+}

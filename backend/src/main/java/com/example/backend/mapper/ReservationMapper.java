@@ -19,6 +19,7 @@ public class ReservationMapper {
         dto.setDatetimeEnd(reservation.getDatetimeEnd());
         dto.setAdultsNumber(reservation.getAdultsNumber());
         dto.setChildrenNumber(reservation.getChildrenNumber());
+        dto.setCost(reservation.getCost());
         dto.setSpecialDemands(reservation.getSpecialDemands());
         dto.setStatus(reservation.getStatus());
         dto.setRejectionComment(reservation.getRejectionComment());
