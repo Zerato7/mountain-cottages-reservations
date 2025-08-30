@@ -1,5 +1,15 @@
-import { UserStatus } from "../userStatus";
-import { UserType } from "../userType";
+export enum UserStatus {
+  PENDING = 'PENDING',
+  ACCEPTED = 'ACCEPTED',
+  REJECTED = 'REJECTED',
+  DEACTIVATED = 'DEACTIVATED'
+}
+
+export enum UserType {
+  ADMIN = 'ADMIN',
+  HOST = 'HOST',
+  TOURIST = 'TOURIST'
+}
 
 export class UserResponse {
   id: number = 0;

@@ -4,7 +4,7 @@ import { AuthService } from '../services/auth.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileUpdateComponent } from '../profile-update/profile-update.component';
 import { CommonModule } from '@angular/common';
-import { UserType } from '../models/userType';
+import { UserType } from '../models/responses/userResponse';
 import { BgColourUtil } from '../utils/bg-colour.util';
 import { CreditCardUtil } from '../utils/credit-card.util';
 import { ImageUtil } from '../utils/images.util';

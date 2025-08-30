@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark" [ngClass]="getBackgroundClass()">
   <div class="container-fluid">
-    <span class="navbar-brand">Планинска викендица</span>
+    <a class="navbar-brand" routerLink="/">Планинска викендица</a>
     @if (userRole !== null || !isAuthPage()) {
       <button
         class="navbar-toggler"
@@ -25,7 +25,7 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <ng-container *ngIf="userRole === 'TOURIST'">
             <li class="nav-item"><a class="nav-link" routerLink="/profile" routerLinkActive="active">Профил</a></li>
-            <li class="nav-item"><a class="nav-link" routerLink="/cottages" routerLinkActive="active">Викендице</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="/all-cottages" routerLinkActive="active">Викендице</a></li>
             <li class="nav-item"><a class="nav-link" routerLink="/reservations" routerLinkActive="active">Резервације</a></li>
           </ng-container>
           <ng-container *ngIf="userRole === 'HOST'">

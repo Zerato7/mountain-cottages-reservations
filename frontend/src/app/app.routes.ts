@@ -7,14 +7,20 @@ import { AdminComponent } from './admin/admin.component';
 import { ProfileComponent } from './profile/profile.component';
 import { authGuard } from './guards/auth.guard';
 import { MyCottagesComponent } from './my-cottages/my-cottages.component';
+import { AllCottagesComponent } from './all-cottages/all-cottages.component';
+import { HomeComponent } from './home/home.component';
+import { CottageComponent } from './cottage/cottage.component';
 
 export const routes: Routes = [
+  {path: '', component: HomeComponent},
   {path: 'admin/login', component: LoginComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'register-success', component: RegisterSuccessComponent},
   {path: 'password-change', component: PasswordChangeComponent},
   {path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
+  {path: 'all-cottages', component: AllCottagesComponent},
+  {path: 'cottage/:name', component: CottageComponent},
   {path: 'my-cottages', component: MyCottagesComponent, canActivate: [authGuard]},
   {path: 'admin/dashboard', component: AdminComponent}
 ];

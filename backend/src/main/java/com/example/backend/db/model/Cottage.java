@@ -178,5 +178,9 @@ public class Cottage {
     public List<CottagePhoto> getPhotos() {
         return photos;
     }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
     
 }

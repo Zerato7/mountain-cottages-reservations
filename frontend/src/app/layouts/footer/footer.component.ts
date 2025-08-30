@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { UserType } from '../../models/userType';
+import { UserType } from '../../models/responses/userResponse';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { BgColourUtil } from '../../utils/bg-colour.util';

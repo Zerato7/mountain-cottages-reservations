@@ -1,3 +1,10 @@
+import { ReservationResponse } from "./reservationResponse";
+
+export class CottagePhotoResponse {
+  position: number = 0;
+  photoPath: string = '';
+}
+
 export class CottageResponse {
   id: number = 0;
   name: string = '';
@@ -13,5 +20,6 @@ export class CottageResponse {
   longitude: number = 0.0;
   ownerId: number = 0;
 
-  photoPaths: string[] = [];
+  photoPaths: CottagePhotoResponse[] = [];
+  reservations: ReservationResponse[] = [];
 }

@@ -7,7 +7,8 @@ import { NonAdminResponse } from '../models/responses/nonadminResponse';
 import { CottageResponse } from '../models/responses/cottageResponse';
 import { CommonModule } from '@angular/common';
 import { BgColourUtil } from '../utils/bg-colour.util';
-import { UserType } from '../models/userType';
+import { DateTimeUtil } from '../utils/datetime.util';
+import { UserType } from '../models/responses/userResponse';
 
 type CottageExt = {
   cottage: CottageResponse,
@@ -98,7 +99,7 @@ export class MyCottagesComponent {
   }
 
   isSummer(): boolean {
-    return false;
+    return DateTimeUtil.isSummer();
   }
 
 }

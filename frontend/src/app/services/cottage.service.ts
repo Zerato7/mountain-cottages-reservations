@@ -46,4 +46,16 @@ export class CottageService {
     );
   }
 
+  avgRating(cottage: CottageResponse): number {
+    let sum: number = 0;
+    let num: number = 0;
+    cottage.reservations.forEach((reservation) => {
+      if (reservation.feedback) {
+        sum += reservation.feedback.rating;
+        num++;
+      }
+    });
+    return num > 0 ? sum / num : 0;
+  }
+
 }

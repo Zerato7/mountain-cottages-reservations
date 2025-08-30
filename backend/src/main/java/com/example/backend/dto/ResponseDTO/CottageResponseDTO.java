@@ -18,7 +18,8 @@ public class CottageResponseDTO {
     private Double longitude;
     private Long ownerId;
 
-    private List<String> photoPaths;
+    private List<CottagePhotoResponseDTO> photoPaths;
+    private List<ReservationResponseDTO> reservations;
 
     // Getters and Setters
 
@@ -126,12 +127,20 @@ public class CottageResponseDTO {
         this.ownerId = ownerId;
     }
 
-    public List<String> getPhotoPaths() {
+    public List<CottagePhotoResponseDTO> getPhotoPaths() {
         return photoPaths;
     }
 
-    public void setPhotoPaths(List<String> photoPaths) {
+    public void setPhotoPaths(List<CottagePhotoResponseDTO> photoPaths) {
         this.photoPaths = photoPaths;
+    }
+
+    public List<ReservationResponseDTO> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<ReservationResponseDTO> reservations) {
+        this.reservations = reservations;
     }
 
 }

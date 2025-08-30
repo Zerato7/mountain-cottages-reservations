@@ -1,0 +1,16 @@
+table th i {
+  transition: color 0.3s ease;
+}
+
+table th i.bi-arrow-up,
+table th i.bi-arrow-down {
+  color: #777c81;
+}
+
+table th.active-sort i {
+  color: #28a745;
+}
+
+.bg-all-cottages thead th {
+  background-color: rgb(237, 221, 211);
+}

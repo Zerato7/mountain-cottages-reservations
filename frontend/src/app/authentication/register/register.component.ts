@@ -4,7 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { UserRegistration } from '../../models/requests/userRegistration';
 import { CommonModule } from '@angular/common';
-import { UserType } from '../../models/userType';
+import { UserType } from '../../models/responses/userResponse';
 import { CreditCardUtil } from '../../utils/credit-card.util';
 import { ImageUpload } from '../../utils/images.util';
 

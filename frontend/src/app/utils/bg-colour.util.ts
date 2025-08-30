@@ -1,4 +1,4 @@
-import { UserType } from "../models/userType";
+import { UserType } from "../models/responses/userResponse";
 
 export namespace BgColourUtil {
 

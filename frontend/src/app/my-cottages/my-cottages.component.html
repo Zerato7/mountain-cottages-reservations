@@ -9,14 +9,15 @@
               <h5 class="card-title">{{ cottageExt.cottage.name }}</h5>
               <h6 class="card-subtitle mb-2 text-muted">{{ cottageExt.cottage.location }}</h6>
               <p class="card-text">
-                <strong>Услуге:</strong> {{ cottageExt.cottage.services }}<br />
+                <strong>Капацитет:</strong> {{ cottageExt.cottage.capacity }}<br>
+                <strong>Услуге:</strong> {{ cottageExt.cottage.services }}<br>
                 <strong>Цена:</strong>
                 @if (!isSummer()) {
                   {{ cottageExt.cottage.winterPriceAdult }} РСД - {{ cottageExt.cottage.winterPriceChild}} РСД
                 } @else {
                   {{ cottageExt.cottage.summerPriceAdult }} РСД - {{ cottageExt.cottage.summerPriceChild}} РСД
                 }
-                <br />
+                <br>
                 <strong>Телефон:</strong> {{ cottageExt.cottage.phoneNumber }}
               </p>
               <div class="row justify-content-between">

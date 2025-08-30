@@ -1,0 +1,60 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-6 mb-1">
+      <input type="text" class="form-control" [(ngModel)]="name" placeholder="Search by name" />
+    </div>
+    <div class="col-md-6 mb-1">
+      <input type="text" class="form-control" [(ngModel)]="location" placeholder="Search by location" />
+    </div>
+    <div class="col-md-12 mb-3">
+      <button class="btn btn-primary text-break mb-1" (click)="search()">Претражи</button>
+      <button class="btn btn-secondary text-break mx-1 mb-1" (click)="cancelSearch()">Одустани</button>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered bg-all-cottages">
+      <thead>
+        <tr>
+          <th class="cursor-pointer" (click)="onSort('name')"
+          [class.active-sort]="sortCategory == 'name'">Назив
+            <i [class]="isAscending['name'] ? 'bi bi-arrow-up' : 'bi bi-arrow-down'"></i>
+          </th>
+          <th class="cursor-pointer" (click)="onSort('location')"
+          [class.active-sort]="sortCategory == 'location'">Место
+            <i [class]="isAscending['location'] ? 'bi bi-arrow-up' : 'bi bi-arrow-down'"></i>
+          </th>
+          <th *ngIf="authService.isLoggedIn()"
+          class="cursor-pointer" (click)="onSort('avg-rating')"
+          [class.active-sort]="sortCategory == 'avg-rating'">
+            Оцена
+            <i [class]="isAscending['avg-rating'] ? 'bi bi-arrow-up' : 'bi bi-arrow-down'"></i>
+          </th>
+          <!-- <th>Капацитет</th>
+          <th>Услуге</th>
+          <th>Цена</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cottageExt of filteredCottagesExt">
+          <td class="cursor-pointer" (click)="showDetails(cottageExt.cottage)">
+            {{ cottageExt.cottage.name }}
+          </td>
+          <td>{{ cottageExt.cottage.location }}</td>
+          <td *ngIf="authService.isLoggedIn()">
+            <ngb-rating [rate]="getAvgRating(cottageExt.cottage)" [readonly]="true" [max]="5" />
+          </td>
+          <!-- <td>{{ cottage.capacity }}</td>
+          <td>{{ cottage.services }}</td>
+          <td>
+            @if (!isSummer()) {
+              {{ cottage.winterPriceAdult }} РСД - {{ cottage.winterPriceChild}} РСД
+            } @else {
+              {{ cottage.summerPriceAdult }} РСД - {{ cottage.summerPriceChild}} РСД
+            }
+          </td> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

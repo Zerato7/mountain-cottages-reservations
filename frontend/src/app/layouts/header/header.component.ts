@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { UserType } from '../../models/userType';
+import { UserType } from '../../models/responses/userResponse';
 import { BgColourUtil } from '../../utils/bg-colour.util';
 
 @Component({

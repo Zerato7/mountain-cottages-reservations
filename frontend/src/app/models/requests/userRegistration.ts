@@ -1,4 +1,4 @@
-import { UserType } from "../userType";
+import { UserType } from "../responses/userResponse";
 
 export class UserRegistration {
   username: string = '';

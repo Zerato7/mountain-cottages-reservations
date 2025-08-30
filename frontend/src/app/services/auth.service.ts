@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { NonAdminResponse } from '../models/responses/nonadminResponse';
-import { UserType } from '../models/userType';
+import { UserType } from '../models/responses/userResponse';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { UserLogin } from '../models/requests/userLogin';
 import { catchError, throwError } from 'rxjs';

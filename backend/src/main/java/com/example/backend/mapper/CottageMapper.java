@@ -11,6 +11,7 @@ import com.example.backend.db.model.Cottage;
 import com.example.backend.db.model.CottagePhoto;
 import com.example.backend.db.model.Host;
 import com.example.backend.dto.RequestDTO.CottageInsertDTO;
+import com.example.backend.dto.ResponseDTO.CottagePhotoResponseDTO;
 import com.example.backend.dto.ResponseDTO.CottageResponseDTO;
 import com.example.backend.exception.BackendServerException;
 import com.example.backend.util.ImageUtil;
@@ -19,11 +20,15 @@ import com.example.backend.util.ImageUtil;
 public class CottageMapper {
     
     private final ImageUtil imageUtil;
+    
+    private final ReservationMapper reservationMapper;
 
     public CottageMapper(
-        ImageUtil imageUtil
+        ImageUtil imageUtil,
+        ReservationMapper reservationMapper
     ) {
         this.imageUtil = imageUtil;
+        this.reservationMapper = reservationMapper;
     }
 
     public Cottage toEntity(CottageInsertDTO dto, Host owner, List<MultipartFile> cottagePhotosFile) {
@@ -74,28 +79,42 @@ public class CottageMapper {
     }
     
     public CottageResponseDTO toResDto(Cottage cottage) {
-        CottageResponseDTO cottageResponseDTO = new CottageResponseDTO();
-        cottageResponseDTO.setId(cottage.getId());
-        cottageResponseDTO.setName(cottage.getName());
-        cottageResponseDTO.setLocation(cottage.getLocation());
-        cottageResponseDTO.setCapacity(cottage.getCapacity());
-        cottageResponseDTO.setServices(cottage.getServices());
-        cottageResponseDTO.setWinterPriceAdult(cottage.getWinterPriceAdult());
-        cottageResponseDTO.setWinterPriceChild(cottage.getWinterPriceChild());
-        cottageResponseDTO.setSummerPriceAdult(cottage.getSummerPriceAdult());
-        cottageResponseDTO.setSummerPriceChild(cottage.getSummerPriceChild());
-        cottageResponseDTO.setPhoneNumber(cottage.getPhoneNumber());
-        cottageResponseDTO.setLatitude(cottage.getLatitude());
-        cottageResponseDTO.setLongitude(cottage.getLongitude());
-        cottageResponseDTO.setOwnerId(cottage.getOwner().getId());
+        CottageResponseDTO dto = new CottageResponseDTO();
+        dto.setId(cottage.getId());
+        dto.setName(cottage.getName());
+        dto.setLocation(cottage.getLocation());
+        dto.setCapacity(cottage.getCapacity());
+        dto.setServices(cottage.getServices());
+        dto.setWinterPriceAdult(cottage.getWinterPriceAdult());
+        dto.setWinterPriceChild(cottage.getWinterPriceChild());
+        dto.setSummerPriceAdult(cottage.getSummerPriceAdult());
+        dto.setSummerPriceChild(cottage.getSummerPriceChild());
+        dto.setPhoneNumber(cottage.getPhoneNumber());
+        dto.setLatitude(cottage.getLatitude());
+        dto.setLongitude(cottage.getLongitude());
+        dto.setOwnerId(cottage.getOwner().getId());
         
-        cottageResponseDTO.setPhotoPaths(
+        dto.setPhotoPaths(
             cottage.getPhotos().stream()
-                .map(CottagePhoto::getPhotoPath)
+                .map(this::toResDto)
                 .collect(Collectors.toList())
         );
 
-        return cottageResponseDTO;
+        dto.setReservations(
+            cottage.getReservations().stream()
+                .map(reservationMapper::toResDto)
+                .collect(Collectors.toList())
+        );
+
+        return dto;
+    }
+
+    public CottagePhotoResponseDTO toResDto(CottagePhoto cottagePhoto) {
+        CottagePhotoResponseDTO dto = new CottagePhotoResponseDTO();
+        dto.setPosition(cottagePhoto.getPosition());
+        dto.setPhotoPath(cottagePhoto.getPhotoPath());
+
+        return dto;
     }
 
 }

@@ -69,6 +69,22 @@ public class Reservation {
         return id;
     }
 
+    public Tourist getTourist() {
+        return tourist;
+    }
+
+    public void setTourist(Tourist tourist) {
+        this.tourist = tourist;
+    }
+
+    public Cottage getCottage() {
+        return cottage;
+    }
+
+    public void setCottage(Cottage cottage) {
+        this.cottage = cottage;
+    }
+
     public LocalDateTime getDatetimeStart() {
         return datetimeStart;
     }

@@ -158,13 +158,13 @@ export class CottageInsertComponent {
   onJsonFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (!input.files?.length) {
-      this.jsonError = "K";
+      this.jsonError = 'Nijedan fajl nije selektovan';
       return;
     }
 
     const file = input.files[0];
 
-    if (!file.name.endsWith('.json')) {
+    if (file.type != 'application/json') {
       this.jsonError = 'Изабрани фајл није .json формата.';
       return;
     }
