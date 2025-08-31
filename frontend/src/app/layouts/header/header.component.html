@@ -26,11 +26,11 @@
           <ng-container *ngIf="userRole === 'TOURIST'">
             <li class="nav-item"><a class="nav-link" routerLink="/profile" routerLinkActive="active">Профил</a></li>
             <li class="nav-item"><a class="nav-link" routerLink="/all-cottages" routerLinkActive="active">Викендице</a></li>
-            <li class="nav-item"><a class="nav-link" routerLink="/reservations" routerLinkActive="active">Резервације</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="/tourist-reservations" routerLinkActive="active">Резервације</a></li>
           </ng-container>
           <ng-container *ngIf="userRole === 'HOST'">
             <li class="nav-item"><a class="nav-link" routerLink="/profile" routerLinkActive="active">Профил</a></li>
-            <li class="nav-item"><a class="nav-link" routerLink="/my-reservations" routerLinkActive="active">Резервације</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="/host-reservations" routerLinkActive="active">Резервације</a></li>
             <li class="nav-item"><a class="nav-link" routerLink="/my-cottages" routerLinkActive="active">Моје викендице</a></li>
             <li class="nav-item"><a class="nav-link" routerLink="/statistics" routerLinkActive="active">Статистика</a></li>
           </ng-container>

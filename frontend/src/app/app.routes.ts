@@ -10,6 +10,8 @@ import { MyCottagesComponent } from './my-cottages/my-cottages.component';
 import { AllCottagesComponent } from './all-cottages/all-cottages.component';
 import { HomeComponent } from './home/home.component';
 import { CottageComponent } from './cottage/cottage.component';
+import { TouristReservationsComponent } from './tourist-reservations/tourist-reservations.component';
+import { HostReservationsComponent } from './host-reservations/host-reservations.component';
 
 export const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -17,10 +19,12 @@ export const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'register-success', component: RegisterSuccessComponent},
-  {path: 'password-change', component: PasswordChangeComponent},
+  {path: 'password-change', component: PasswordChangeComponent, canActivate: [authGuard]},
   {path: 'profile', component: ProfileComponent, canActivate: [authGuard]},
-  {path: 'all-cottages', component: AllCottagesComponent},
-  {path: 'cottage/:name', component: CottageComponent},
+  {path: 'all-cottages', component: AllCottagesComponent, canActivate: [authGuard]},
+  {path: 'cottage/:id', component: CottageComponent, canActivate: [authGuard]},
   {path: 'my-cottages', component: MyCottagesComponent, canActivate: [authGuard]},
-  {path: 'admin/dashboard', component: AdminComponent}
+  {path: 'admin/dashboard', component: AdminComponent, canActivate: [authGuard]},
+  {path: 'tourist-reservations', component: TouristReservationsComponent, canActivate: [authGuard]},
+  {path: 'host-reservations', component: HostReservationsComponent, canActivate: [authGuard]}
 ];

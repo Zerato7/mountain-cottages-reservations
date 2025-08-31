@@ -21,8 +21,8 @@ export class CottageService {
     return this.http.get<CottageResponse[]>(`${this.curBackPath}/getMy/${ownerId}`);
   }
 
-  getByName(name: string) {
-    return this.http.get<CottageResponse>(`${this.curBackPath}/getByName/${name}`).pipe(
+  getById(id: string) {
+    return this.http.get<CottageResponse>(`${this.curBackPath}/getById/${id}`).pipe(
       catchError((error: HttpErrorResponse) => {
         let message = error.error?.message || 'Непозната грешка при дохватању викендице.';
         return throwError(() => new Error(message));
@@ -65,6 +65,22 @@ export class CottageService {
       }
     });
     return num > 0 ? sum / num : 0;
+  }
+
+  editCottage(formData: FormData) {
+    return this.http.put<CottageResponse>(`${this.curBackPath}/edit`, formData).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let message = 'Непозната грешка при измену викендице.';
+
+        if (error.error?.messages) {
+          message = error.error.messages.map((item: any) => item.message).join(', ');
+        } else if (error.error?.message) {
+          message = error.error.message;
+        }
+
+        return throwError(() => new Error(message));
+      })
+    );
   }
 
 }

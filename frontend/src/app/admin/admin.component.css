@@ -16,12 +16,6 @@
   object-fit: cover;
 }
 
-/* table thead th {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-} */
-
 /* pending register requests */
 
 .table-pending {
@@ -76,4 +70,22 @@
 
 .table-rejected thead th {
   background-color: hsl(354, 70%, 80%);
+}
+
+/* cottages */
+.table-cottage {
+  border:2px solid #cf892d;
+}
+
+.badge-cottage {
+  background-color: #ffc107;
+}
+
+.table-cottage thead th {
+  background-color: hsl(27, 78%, 75%);
+}
+
+.bg-blocked td {
+  background-color: lab(1.01% 2.09 0.74);
+  color: white
 }

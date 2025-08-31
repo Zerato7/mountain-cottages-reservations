@@ -14,3 +14,20 @@ table th.active-sort i {
 .bg-all-cottages thead th {
   background-color: rgb(237, 221, 211);
 }
+
+.star-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.empty-star {
+  color: lightgray;
+}
+
+.filled-star {
+  color: gold;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}

@@ -1,0 +1,43 @@
+.active-table {
+  border: 2px solid black;
+}
+
+/* Accepted */
+.bg-accepted tr th, .bg-accepted {
+  background-color: hsl(146, 35%, 35%);
+  color: white !important;
+}
+
+.bg-accepted tr td {
+  background-color: hsl(120, 73%, 90%);
+}
+
+/* Pending */
+.bg-pending tr th, .bg-pending {
+  background-color: hsl(39, 59%, 52%);
+  color: white !important;
+}
+
+.bg-pending tr td {
+  background-color: hsl(45, 100%, 85%);
+}
+
+/* Rejected */
+.bg-denyed tr th, .bg-denyed {
+  background-color: hsl(0, 47%, 49%);
+  color: white !important;
+}
+
+.bg-denyed tr td {
+  background-color: hsl(354, 70%, 80%);
+}
+
+/* Cancelled */
+.bg-cancelled tr th, .bg-cancelled {
+  background-color: hsl(0, 1%, 40%);
+  color: white !important;
+}
+
+.bg-cancelled tr td {
+  background-color: hsl(0, 0%, 75%);
+}

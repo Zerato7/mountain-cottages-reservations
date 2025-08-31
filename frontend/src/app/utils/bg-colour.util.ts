@@ -1,3 +1,4 @@
+import { ReservationStatus } from "../models/requests/makeReservation";
 import { UserType } from "../models/responses/userResponse";
 
 export namespace BgColourUtil {
@@ -34,6 +35,15 @@ export namespace BgColourUtil {
       case UserType.TOURIST: return 'bg-cardbody-tourist';
       case UserType.HOST: return 'bg-cardbody-host';
       default: return '';
+    }
+  }
+
+  export function getReservationTableRowBgClass(reservationStatus: ReservationStatus): string {
+    switch (reservationStatus) {
+      case ReservationStatus.PENDING: return 'bg-pending';
+      case ReservationStatus.ACCEPTED_BY_OWNER: return 'bg-accepted';
+      case ReservationStatus.CANCELLED_BY_TOURIST: return 'bg-cancelled';
+      case ReservationStatus.REJECTED_BY_OWNER: return 'bg-denyed';
     }
   }
 

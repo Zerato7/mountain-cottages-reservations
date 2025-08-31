@@ -1,3 +1,10 @@
+@import '@danielmoncada/angular-datetime-picker/assets/style/picker.min.css';
+
+.modal-open .cdk-overlay-container,
+.modal-open .cdk-global-overlay-wrapper {
+  z-index: 2000 !important;
+}
+
 html, body {
   height: 100%;
   margin: 0;

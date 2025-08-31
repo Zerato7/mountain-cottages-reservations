@@ -203,3 +203,27 @@
     </div>
   </div>
 </div>
+<div class="container mt-4">
+  <h2 class="text-center text-break">Администратор - Управљање викендицама</h2>
+  <div class="table-responsive mt-3">
+    <table class="table table-bordered bg-all-cottages table-cottage">
+      <thead>
+        <tr>
+          <th>Назив</th>
+          <th>Место</th>
+          <th>Блокирање</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cottage of cottages"
+        [class.bg-blocked]="isBlocked(cottage)">
+          <td>{{ cottage.name }}</td>
+          <td>{{ cottage.location }}</td>
+          <td>
+            <button *ngIf="badRatings(cottage)" class="btn btn-danger" (click)="block(cottage)">Блокирај</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

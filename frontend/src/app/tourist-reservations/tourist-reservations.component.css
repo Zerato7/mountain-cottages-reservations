@@ -1,0 +1,39 @@
+.active-table {
+  border: 2px solid black;
+}
+
+.bg-active th, .bg-active {
+  background-color: hsl(146, 35%, 35%);
+  color: white !important;
+}
+
+.bg-pending td {
+  background-color: hsl(45, 100%, 85%);
+}
+
+.bg-accepted td {
+  background-color: hsl(120, 73%, 90%);
+}
+
+.bg-cancelled th, .bg-cancelled {
+  background-color: hsl(0, 1%, 40%);
+  color: white !important;
+}
+
+.bg-cancelled td {
+  background-color: hsl(0, 0%, 75%);
+}
+
+.bg-denyed th, .bg-denyed {
+  background-color: hsl(0, 47%, 49%);
+  color: white !important;
+}
+
+.bg-denyed td {
+  background-color: hsl(354, 70%, 80%);
+}
+
+.bg-arhive th, .bg-arhive {
+  background-color: hsl(39, 59%, 52%);
+  color: white !important;
+}

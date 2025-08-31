@@ -1,18 +1,18 @@
+import { ReservationStatus } from "../requests/makeReservation";
+
 export class FeedbackResponse {
+  reservationId: number = 0;
   rating: number = 0;
   comment: string | null = null;
-}
-
-export enum Status {
-  PENDING = 'PENDING',
-  ACCEPTED_BY_OWNER = 'ACCEPTED_BY_OWNER',
-  CANCELLED_BY_TOURIST = 'CANCELLED_BY_TOURIST',
-  REJECTED_BY_OWNER = 'REJECTED_BY_OWNER'
+  dateTimeCreation: Date = new Date();
 }
 
 export class ReservationResponse {
-  username: string = '';
+  id: number = 0;
+  touristFirstname: string = '';
+  touristLastname: string = '';
   cottageName: string = '';
+  cottageLocation: string = '';
 
   datetimeStart: Date = new Date();
   datetimeEnd: Date = new Date();
@@ -20,8 +20,11 @@ export class ReservationResponse {
   childrenNumber: number = 0;
   cost: number = 0.0;
   specialDemands: string = '';
-  status: Status = Status.PENDING;
+  status: ReservationStatus = ReservationStatus.PENDING;
   rejectionComment: string | null = null;
 
   feedback: FeedbackResponse | null = new FeedbackResponse();
+  newRating:number = 0;
+  newComment: string|null = null;
+  newRateErrMsg: string = '';
 }

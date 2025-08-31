@@ -2,16 +2,19 @@ import { Component } from '@angular/core';
 import { CottageService } from '../services/cottage.service';
 import { ActivatedRoute } from '@angular/router';
 import { CottageResponse } from '../models/responses/cottageResponse';
-import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarouselModule, NgbModal, NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImageUtil } from '../utils/images.util';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { Icon, icon, latLng, Layer, MapOptions, marker, tileLayer } from 'leaflet';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
+import { MakeReservationComponent } from '../make-reservation/make-reservation.component';
+import { NonAdminResponse } from '../models/responses/nonadminResponse';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-cottage',
   standalone: true,
-  imports: [NgbCarouselModule, LeafletModule, CommonModule],
+  imports: [NgbCarouselModule, LeafletModule, CommonModule, DatePipe, NgbRatingModule],
   templateUrl: './cottage.component.html',
   styleUrl: './cottage.component.css'
 })
@@ -19,9 +22,12 @@ export class CottageComponent {
 
   constructor(
     private cottageService: CottageService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private authService: AuthService,
+    private modalService: NgbModal
   ) { }
 
+  tourist!: NonAdminResponse;
   cottage: CottageResponse = new CottageResponse;
   errorMessage: string = '';
 
@@ -29,9 +35,25 @@ export class CottageComponent {
   layer!: Layer;
 
   ngOnInit(): void {
-    this.cottageService.getByName(this.activatedRoute.snapshot.paramMap.get('name')!).subscribe({
+    this.loadNonadmin();
+    this.loadCottage();
+  }
+
+  private loadNonadmin(): void {
+    this.tourist = this.authService.getNonadmin()!;
+  }
+
+  private loadCottage(): void {
+    this.cottageService.getById(this.activatedRoute.snapshot.paramMap.get('id')!).subscribe({
       next: cottage => {
         this.cottage = cottage;
+        this.cottage.reservations.forEach((r) => {
+          r.datetimeStart = new Date(r.datetimeStart);
+          r.datetimeEnd = new Date(r.datetimeEnd);
+        });
+        this.cottage.reservations.sort((a, b) => {
+          return b.datetimeStart.getTime() - a.datetimeStart.getTime();
+        });
         this.showmap();
       },
       error: err => {
@@ -64,6 +86,28 @@ export class CottageComponent {
 
   getImageUrl(cottagePhotoPath: string): string {
     return ImageUtil.getImageUrl(cottagePhotoPath);
+  }
+
+  openMakeReservationModal() {
+    const buttonElement = document.activeElement as HTMLElement;
+    buttonElement.blur();
+    const modalRef = this.modalService.open(MakeReservationComponent, {
+      centered: true,
+      size: 'lg'
+    });
+    modalRef.componentInstance.nonadmin = this.tourist;
+    modalRef.componentInstance.cottage = this.cottage;
+
+    modalRef.result.then(
+      (isSuccess: boolean) => {
+        if (isSuccess) {
+          alert('Успешно сте направили резервацију.');
+        }
+      },
+      () => {
+
+      }
+    );
   }
 
 }

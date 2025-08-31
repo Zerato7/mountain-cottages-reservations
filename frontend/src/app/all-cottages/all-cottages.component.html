@@ -30,9 +30,6 @@
             Оцена
             <i [class]="isAscending['avg-rating'] ? 'bi bi-arrow-up' : 'bi bi-arrow-down'"></i>
           </th>
-          <!-- <th>Капацитет</th>
-          <th>Услуге</th>
-          <th>Цена</th> -->
         </tr>
       </thead>
       <tbody>
@@ -42,17 +39,14 @@
           </td>
           <td>{{ cottageExt.cottage.location }}</td>
           <td *ngIf="authService.isLoggedIn()">
-            <ngb-rating [rate]="getAvgRating(cottageExt.cottage)" [readonly]="true" [max]="5" />
+            <ng-template #t let-fill="fill">
+              <span class="star-wrapper">
+                <i class="bi bi-star-fill empty-star"></i>
+                <i class="bi bi-star-fill filled-star" [style.width.%]="fill"></i>
+              </span>
+            </ng-template>
+            <ngb-rating [rate]="getAvgRating(cottageExt.cottage)" [starTemplate]="t" [readonly]="true" [max]="5" />
           </td>
-          <!-- <td>{{ cottage.capacity }}</td>
-          <td>{{ cottage.services }}</td>
-          <td>
-            @if (!isSummer()) {
-              {{ cottage.winterPriceAdult }} РСД - {{ cottage.winterPriceChild}} РСД
-            } @else {
-              {{ cottage.summerPriceAdult }} РСД - {{ cottage.summerPriceChild}} РСД
-            }
-          </td> -->
         </tr>
       </tbody>
     </table>

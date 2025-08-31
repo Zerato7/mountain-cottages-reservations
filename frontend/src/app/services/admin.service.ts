@@ -48,4 +48,13 @@ export class AdminService {
     );
   }
 
+  blockCottage(id: number) {
+    return this.http.put<string>(`${this.curBackPath}/blockCottage/${id}`, {}).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let message = error.error?.message || 'Непозната грешка при блокирању викендице.';
+        return throwError(() => new Error(message));
+      })
+    );
+  }
+
 }

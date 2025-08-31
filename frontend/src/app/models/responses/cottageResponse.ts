@@ -1,6 +1,7 @@
 import { ReservationResponse } from "./reservationResponse";
 
 export class CottagePhotoResponse {
+  id: number = 0;
   position: number = 0;
   photoPath: string = '';
 }
@@ -22,4 +23,6 @@ export class CottageResponse {
 
   photoPaths: CottagePhotoResponse[] = [];
   reservations: ReservationResponse[] = [];
+
+  dateTimeTilBlocked: Date | null = null;
 }

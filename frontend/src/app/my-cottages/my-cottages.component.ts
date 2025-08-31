@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { BgColourUtil } from '../utils/bg-colour.util';
 import { DateTimeUtil } from '../utils/datetime.util';
 import { UserType } from '../models/responses/userResponse';
+import { CottageEditComponent } from '../cottage-edit/cottage-edit.component';
 
 type CottageExt = {
   cottage: CottageResponse,
@@ -77,6 +78,23 @@ export class MyCottagesComponent {
 
   editCottage(cottageExt: CottageExt): void {
     cottageExt.errorMessage = '';
+    const buttonElement = document.activeElement as HTMLElement;
+    buttonElement.blur();
+    const modalRef = this.modalService.open(CottageEditComponent, {
+      centered: true,
+      size: 'lg'
+    });
+    modalRef.componentInstance.ownerId = this.host.id;
+    modalRef.componentInstance.cottage = cottageExt.cottage;
+
+    modalRef.result.then(
+      (cottage: CottageResponse) => {
+        cottageExt.cottage = cottage;
+      },
+      () => {
+
+      }
+    );
   }
 
   deleteCottage(cottageExt: CottageExt): void {
@@ -96,10 +114,6 @@ export class MyCottagesComponent {
 
   getBackgroundClass(): string {
     return BgColourUtil.getFooterBgClass(UserType.HOST);
-  }
-
-  isSummer(): boolean {
-    return DateTimeUtil.isSummer();
   }
 
 }

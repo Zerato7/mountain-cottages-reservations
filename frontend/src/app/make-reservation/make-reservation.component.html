@@ -1,0 +1,136 @@
+<div class="modal-header text-w-lighter">
+  <h5 class="modal-title">Резервација корак {{ step }}</h5>
+  <button type="button" class="btn-close" aria-label="close" (click)="activeModal.dismiss()"></button>
+</div>
+
+<form *ngIf="step==1" [formGroup]="form1" (ngSubmit)="next()" class="text-w-lighter">
+  <div class="modal-body">
+    <div class="mb-3">
+      <label for="startDateTime" class="form-label">Датум и време од</label>
+      <div class="input-group">
+        <input
+          id="startDateTime"
+          class="form-control"
+          formControlName="startDateTime"
+          [owlDateTime]="startPicker"
+          [owlDateTimeTrigger]="startPicker">
+        <button class="btn btn-outline-secondary" type="button" [owlDateTimeTrigger]="startPicker">
+          <i class="bi bi-calendar"></i>
+        </button>
+        <owl-date-time #startPicker pickerMode="dialog"></owl-date-time>
+      </div>
+      <div
+        *ngIf="form1.get('startDateTime')?.hasError('invalidDate')"
+        class="text-danger"
+      >
+        Улазак у викендицу је могућ од 14 часова.
+      </div>
+      <div
+        *ngIf="form1.get('startDateTime')?.hasError('tooSmall')"
+        class="text-danger"
+      >
+        Може се направити резервација најкасније 1h унапред.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="endDateTime" class="form-label">Датум и време до</label>
+      <div class="input-group">
+        <input
+          id="endTimeDate"
+          class="form-control"
+          formControlName="endDateTime"
+          [owlDateTime]="endPicker"
+          [owlDateTimeTrigger]="endPicker">
+        <button class="btn btn-outline-secondary" type="button" [owlDateTimeTrigger]="endPicker">
+          <i class="bi bi-calendar"></i>
+        </button>
+        <owl-date-time #endPicker pickerMode="dialog"></owl-date-time>
+      </div>
+      <div
+        *ngIf="form1.hasError('invalidDate')"
+        class="text-danger"
+      >
+        Излазак из викендицу је могућ до 10 часова.
+      </div>
+      <div
+        *ngIf="form1.hasError('tooSmall')"
+        class="text-danger"
+      >
+        Датум и време краја морају бити након датума и времена почетка.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="adults" class="form-label">Број одраслих</label>
+      <input type="text" id="adults" class="form-control" formControlName="adults">
+      <div
+        *ngIf="form1.get('adults')?.invalid && form1.get('adults')?.touched"
+        class="text-danger"
+      >
+        Број одраслих је обавезан и мора бити позитиван цео број.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="children" class="form-label">Број деце</label>
+      <input type="text" id="children" class="form-control" formControlName="children">
+      <div
+        *ngIf="form1.get('children')?.invalid && form1.get('children')?.touched"
+        class="text-danger"
+      >
+        Број деце је обавезан и мора бити ненегативан цео број.
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">
+      <i class="bi bi-x-circle"></i> Одустани
+    </button>
+    <button type="submit" class="btn btn-success" [disabled]="form1.invalid">
+      <i class="bi bi-check-circle"></i> Даље
+    </button>
+  </div>
+</form>
+<form *ngIf="step==2" [formGroup]="form2" (ngSubmit)="makeReservation()" class="text-w-ligher">
+  <div class="modal-body">
+    <div class="mb-3">
+      <p><strong>{{ cottage.name }}</strong></p>
+      <p>{{ form1.get('startDateTime')?.value | date:'YYYY-MM-dd HH:mm' }} -
+        {{ form1.get('endDateTime')?.value | date:'YYYY-MM-dd HH:mm' }}</p>
+      <p>Одраслих: {{ form1.get('adults')?.value }}</p>
+      <p>Деце: {{ form1.get('children')?.value }}</p>
+      <p>Цена: {{ cost }} РСД</p>
+      <hr>
+      <label for="creditCardNumber" class="form-label">Број кредитне картице</label>
+      <div class="input-group">
+        <input type="text" id="creditCardNumber" class="form-control" formControlName="creditCardNumber"
+        [placeholder]="getCreditCardDisplay()">
+        <span
+          *ngIf="cardType"
+          class="input-group-text bg-white border-start-0">
+          <img src="assets/{{cardType}}.jpg" alt="{{cardType}}" height="30">
+        </span>
+      </div>
+      <div
+        *ngIf="form2.get('creditCardNumber')?.invalid && form2.get('creditCardNumber')?.touched"
+        class="text-danger"
+      >
+        Број кредитне картице није валидан.
+      </div>
+      <textarea maxlength="500" id="specialDemands" class="form-control mt-1" formControlName="specialDemands"
+      placeholder="Додатни захтеви">
+      </textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="step = 1;">
+      <i class="bi bi-x-circle"></i> Назад
+    </button>
+    <button type="submit" class="btn btn-success" [disabled]="form2.invalid">
+      <i class="bi bi-check-circle"></i> Резервиши
+    </button>
+  </div>
+</form>
+<div *ngIf="errorMessage && step==2" class="alert alert-danger mt-3 pb-0 mx-2 text-w-lighter">
+  <ul>
+    <li *ngFor="let error of errorMessage.split('\n')">{{ error }}</li>
+  </ul>
+</div>

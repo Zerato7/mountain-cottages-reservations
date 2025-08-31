@@ -1,0 +1,128 @@
+<div class="container mt-4">
+  <div class="mt-5">
+    <h4>
+      <span class="badge bg-active text-dark text-wrap text-break">Активне регистрације</span>
+    </h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle active-table">
+        <thead>
+          <tr class="bg-active">
+            <th>Датум почетка</th>
+            <th>Датум краја</th>
+            <th>Назив викендице</th>
+            <th>Место викендице</th>
+            <th>Акција</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reservation of activeReservations"
+          [ngClass]="getBgClass(reservation)">
+            <td>{{ reservation.datetimeStart | date: 'dd-MM-YYYY HH:mm' }}</td>
+            <td>{{ reservation.datetimeEnd | date: 'dd-MM-YYYY HH:mm' }}</td>
+            <td>{{ reservation.cottageName }}</td>
+            <td>{{ reservation.cottageLocation }}</td>
+            <td><button *ngIf="reservation.status != 'CANCELLED_BY_TOURIST' && reservation.status != 'REJECTED_BY_OWNER'" class="btn btn-secondary" [disabled]="!canCancel(reservation)" (click)="cancel(reservation)">Откажи</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="mt-5">
+    <h4>
+      <span class="badge bg-cancelled text-dark text-wrap text-break">Отказане резервације</span>
+    </h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle active-table">
+        <thead>
+          <tr class="bg-cancelled">
+            <th>Датум почетка</th>
+            <th>Датум краја</th>
+            <th>Назив викендице</th>
+            <th>Место викендице</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reservation of cancelledReservations"
+          [ngClass]="getBgClass(reservation)">
+            <td>{{ reservation.datetimeStart | date: 'dd-MM-YYYY HH:mm' }}</td>
+            <td>{{ reservation.datetimeEnd | date: 'dd-MM-YYYY HH:mm' }}</td>
+            <td>{{ reservation.cottageName }}</td>
+            <td>{{ reservation.cottageLocation }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="mt-5">
+    <h4>
+      <span class="badge bg-denyed text-dark text-wrap text-break">Одбијене резервације</span>
+    </h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle active-table">
+        <thead>
+          <tr class="bg-denyed">
+            <th>Датум почетка</th>
+            <th>Датум краја</th>
+            <th>Назив викендице</th>
+            <th>Место викендице</th>
+            <th>Разлог</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reservation of denyedReservations"
+          [ngClass]="getBgClass(reservation)">
+            <td>{{ reservation.datetimeStart | date: 'dd-MM-YYYY HH:mm' }}</td>
+            <td>{{ reservation.datetimeEnd | date: 'dd-MM-YYYY HH:mm' }}</td>
+            <td>{{ reservation.cottageName }}</td>
+            <td>{{ reservation.cottageLocation }}</td>
+            <td>{{ reservation.rejectionComment }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="mt-5">
+    <h4>
+      <span class="badge bg-arhive text-dark text-wrap text-break">Архива резервација</span>
+    </h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle active-table">
+        <thead>
+          <tr class="bg-arhive">
+            <th>Датум почетка</th>
+            <th>Назив викендице</th>
+            <th>Оцена</th>
+            <th>Коментар</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reservation of arhivedReservations"
+          [ngClass]="getBgClass(reservation)">
+            <td>{{ reservation.datetimeStart | date: 'dd-MM-YYYY HH:mm' }}</td>
+            <td>{{ reservation.cottageName }}</td>
+            @if (reservation.feedback) {
+              <td>
+                <ngb-rating [rate]="reservation.feedback.rating" [readonly]="true" [max]="5" />
+              </td>
+              <td>{{ reservation.feedback.comment }}</td>
+            } @else {
+              <td>
+                <ngb-rating [(rate)]="reservation.newRating" [max]="5" />
+                <br>
+                <button class="btn btn-primary" (click)="setFeedback(reservation)">Остави рецензију</button>
+                <div *ngIf="reservation.newRateErrMsg" class="alert alert-danger mt-1">
+                  <ul>
+                    <li *ngFor="let error of reservation.newRateErrMsg.split('\n')">{{ error }}</li>
+                  </ul>
+                </div>
+              </td>
+              <td>
+                <textarea maxlength="1000" name="comment" [(ngModel)]="reservation.newComment">
+                </textarea>
+              </td>
+            }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

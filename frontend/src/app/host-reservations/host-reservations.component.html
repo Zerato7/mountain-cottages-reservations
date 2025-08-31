@@ -1,0 +1,126 @@
+<div class="container mt-4">
+  <div class="mt-5">
+    <h4>
+      <span class="badge bg-pending text-dark text-wrap text-break">Необрађене регистрације</span>
+    </h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle bg-pending">
+        <thead>
+          <tr>
+            <th>Туриста</th>
+            <th>Датум почетка</th>
+            <th>Датум краја</th>
+            <th>Назив викендице</th>
+            <th>Место викендице</th>
+            <th>Прихвати</th>
+            <th>Одбиј</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let rExt of pendingReservations">
+            <td>{{ rExt.reservation.touristFirstname }} {{ rExt.reservation.touristLastname }}</td>
+            <td>{{ rExt.reservation.datetimeStart | date: 'dd-MM-YYYY HH:mm' }}</td>
+            <td>{{ rExt.reservation.datetimeEnd | date: 'dd-MM-YYYY HH:mm' }}</td>
+            <td>{{ rExt.reservation.cottageName }}</td>
+            <td>{{ rExt.reservation.cottageLocation }}</td>
+            <td class="align-bottom">
+              <button class="btn btn-success btn-sm" (click)="acceptReservation(rExt)">Прихвати</button>
+              <div *ngIf="rExt.acceptErrMsg" class="text-danger">
+                {{ rExt.acceptErrMsg }}
+              </div>
+            </td>
+            <td>
+              <input type="text" name="rejectionComment" [(ngModel)]="rExt.rejectionComment"><br>
+              <button class="btn btn-danger btn-sm mt-1" (click)="rejectReservation(rExt)">Одбиј</button>
+              <div *ngIf="rExt.rejectErrMsg" class="text-danger">
+                {{ rExt.rejectErrMsg }}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="mt-5">
+    <h4>
+      <span class="badge bg-accepted text-dark text-wrap text-break">Прихваћене резервације</span>
+    </h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle active-table bg-accepted">
+        <thead>
+          <tr>
+            <th>Туриста</th>
+            <th>Датум почетка</th>
+            <th>Датум краја</th>
+            <th>Назив викендице</th>
+            <th>Место викендице</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reservation of acceptedReservations">
+            <td>{{ reservation.touristFirstname }} {{ reservation.touristLastname }}</td>
+            <td>{{ reservation.datetimeStart | date: 'dd-MM-YYYY HH:mm' }}</td>
+            <td>{{ reservation.datetimeEnd | date: 'dd-MM-YYYY HH:mm' }}</td>
+            <td>{{ reservation.cottageName }}</td>
+            <td>{{ reservation.cottageLocation }}</td>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="mt-5">
+    <h4>
+      <span class="badge bg-denyed text-dark text-wrap text-break">Одбијене резервације</span>
+    </h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle active-table bg-denyed">
+        <thead>
+          <tr>
+            <th>Туриста</th>
+            <th>Датум почетка</th>
+            <th>Датум краја</th>
+            <th>Назив викендице</th>
+            <th>Место викендице</th>
+            <th>Разлог</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reservation of denyedReservations">
+            <td>{{ reservation.touristFirstname }} {{ reservation.touristLastname }}</td>
+            <td>{{ reservation.datetimeStart | date: 'dd-MM-YYYY HH:mm' }}</td>
+            <td>{{ reservation.datetimeEnd | date: 'dd-MM-YYYY HH:mm' }}</td>
+            <td>{{ reservation.cottageName }}</td>
+            <td>{{ reservation.cottageLocation }}</td>
+            <td>{{ reservation.rejectionComment }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="mt-5">
+    <h4>
+      <span class="badge bg-cancelled text-dark text-wrap text-break">Отказане резервације</span>
+    </h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle active-table bg-cancelled">
+        <thead>
+          <tr>
+            <th>Туриста</th>
+            <th>Датум почетка</th>
+            <th>Датум краја</th>
+            <th>Назив викендице</th>
+            <th>Место викендице</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reservation of cancelledReservations">
+            <td>{{ reservation.touristFirstname }} {{ reservation.touristLastname }}</td>
+            <td>{{ reservation.datetimeStart | date: 'dd-MM-YYYY HH:mm' }}</td>
+            <td>{{ reservation.datetimeEnd | date: 'dd-MM-YYYY HH:mm' }}</td>
+            <td>{{ reservation.cottageName }}</td>
+            <td>{{ reservation.cottageLocation }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

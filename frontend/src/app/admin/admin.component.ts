@@ -8,6 +8,8 @@ import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileUpdateComponent } from '../profile-update/profile-update.component';
 import { CreditCardUtil } from '../utils/credit-card.util';
 import { ImageUtil } from '../utils/images.util';
+import { CottageService } from '../services/cottage.service';
+import { CottageResponse } from '../models/responses/cottageResponse';
 
 @Component({
   selector: 'app-admin',
@@ -21,20 +23,37 @@ export class AdminComponent {
   constructor(
     private nonadminService: NonadminService,
     private adminService: AdminService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private cottageService: CottageService
   ) {}
 
   ngOnInit() {
     this.loadNonadmins();
+    this.loadCottages();
   }
 
   nonadmins: NonAdminResponse[] = [];
   editingId: number = 0;
+  cottages: CottageResponse[] = [];
 
   private loadNonadmins(): void {
     this.nonadminService.getAll().subscribe({
       next: nonadmins => {
         this.nonadmins = nonadmins;
+      }
+    });
+  }
+
+  private loadCottages(): void {
+    this.cottageService.getAll().subscribe({
+      next: cottages => {
+        this.cottages = cottages;
+        this.cottages.forEach((cottage) => {
+          cottage.dateTimeTilBlocked = cottage.dateTimeTilBlocked ? new Date(cottage.dateTimeTilBlocked) : null;
+          cottage.reservations.forEach((reservation) => {
+            if (reservation.feedback) reservation.feedback.dateTimeCreation = new Date(reservation.feedback.dateTimeCreation);
+          });
+        });
       }
     });
   }
@@ -112,6 +131,27 @@ export class AdminComponent {
 
   getCreditCardNumberDisplay(last4Digits: string): string {
     return CreditCardUtil.getCreditCardNumberDisplay(last4Digits);
+  }
+
+  badRatings(cottage: CottageResponse): boolean {
+    if (this.isBlocked(cottage)) return false;
+    return true;
+  }
+
+  isBlocked(cottage: CottageResponse): boolean {
+    return cottage.dateTimeTilBlocked !== null &&
+      cottage.dateTimeTilBlocked.getTime() > new Date().getTime();
+  }
+
+  block(cottage: CottageResponse): void {
+    this.adminService.blockCottage(cottage.id).subscribe({
+      next: message => {
+        this.loadCottages();
+      },
+      error: err => {
+
+      }
+    });
   }
 
 }

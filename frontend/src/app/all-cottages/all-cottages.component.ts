@@ -6,8 +6,8 @@ import { CottageResponse } from '../models/responses/cottageResponse';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DateTimeUtil } from '../utils/datetime.util';
-import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 
 type SortCategory = 'name' | 'location' | 'avg-rating';
 
@@ -95,19 +95,15 @@ export class AllCottagesComponent {
     this.filteredCottagesExt.sort((a, b) => {
       switch (this.sortCategory) {
         case 'name':
-          return a.cottage.name > b.cottage.name ?
-            order : a.cottage.name < b.cottage.name ? -order : 0;
+          return a.cottage.name < b.cottage.name ?
+            order : a.cottage.name > b.cottage.name ? -order : 0;
         case 'location':
-          return a.cottage.location > b.cottage.location ?
-            order : a.cottage.location < b.cottage.location ? -order : 0;
+          return a.cottage.location < b.cottage.location ?
+            order : a.cottage.location > b.cottage.location ? -order : 0;
         case 'avg-rating':
-          return (a.avgRating - b.avgRating) * order;
+          return (b.avgRating - a.avgRating) * order;
       }
     });
-  }
-
-  isSummer(): boolean {
-    return DateTimeUtil.isSummer();
   }
 
   getAvgRating(cottage: CottageResponse): number {
@@ -117,7 +113,7 @@ export class AllCottagesComponent {
   showDetails(cottage: CottageResponse): void {
     if (this.tourist == null) return;
 
-    this.router.navigate(['/cottage', cottage.name]);
+    this.router.navigate(['/cottage', cottage.id]);
   }
 
 }
