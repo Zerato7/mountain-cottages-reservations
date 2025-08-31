@@ -1,16 +1,19 @@
 package com.example.backend.dto.ResponseDTO;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import com.example.backend.db.model.Reservation;
 
 public class ReservationResponseDTO {
     
-    private String username;
+    private Long id;
+    private String touristFirstname;
+    private String touristLastname;
     private String cottageName;
+    private String cottageLocation;
 
-    private LocalDateTime datetimeStart;
-    private LocalDateTime datetimeEnd;
+    private OffsetDateTime datetimeStart;
+    private OffsetDateTime datetimeEnd;
     private Integer adultsNumber;
     private Integer childrenNumber;
     private Double cost;
@@ -22,12 +25,28 @@ public class ReservationResponseDTO {
 
     // Getters and Setters
 
-    public String getUsername() {
-        return username;
+    public Long getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTouristFirstname() {
+        return touristFirstname;
+    }
+
+    public void setTouristFirstname(String touristFirstname) {
+        this.touristFirstname = touristFirstname;
+    }
+
+    public String getTouristLastname() {
+        return touristLastname;
+    }
+
+    public void setTouristLastname(String touristLastname) {
+        this.touristLastname = touristLastname;
     }
 
     public String getCottageName() {
@@ -38,19 +57,27 @@ public class ReservationResponseDTO {
         this.cottageName = cottageName;
     }
 
-    public LocalDateTime getDatetimeStart() {
+    public String getCottageLocation() {
+        return cottageLocation;
+    }
+
+    public void setCottageLocation(String cottageLocation) {
+        this.cottageLocation = cottageLocation;
+    }
+
+    public OffsetDateTime getDatetimeStart() {
         return datetimeStart;
     }
 
-    public void setDatetimeStart(LocalDateTime datetimeStart) {
+    public void setDatetimeStart(OffsetDateTime datetimeStart) {
         this.datetimeStart = datetimeStart;
     }
 
-    public LocalDateTime getDatetimeEnd() {
+    public OffsetDateTime getDatetimeEnd() {
         return datetimeEnd;
     }
 
-    public void setDatetimeEnd(LocalDateTime datetimeEnd) {
+    public void setDatetimeEnd(OffsetDateTime datetimeEnd) {
         this.datetimeEnd = datetimeEnd;
     }
 

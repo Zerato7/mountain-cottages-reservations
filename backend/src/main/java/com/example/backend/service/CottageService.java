@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.backend.dto.RequestDTO.CottageEditDTO;
 import com.example.backend.dto.RequestDTO.CottageInsertDTO;
 import com.example.backend.dto.ResponseDTO.CottageResponseDTO;
 
@@ -13,10 +14,12 @@ public interface CottageService {
 
     List<CottageResponseDTO> getMy(Long id);
 
-    CottageResponseDTO getByName(String name);
+    CottageResponseDTO getById(Long id);
 
     CottageResponseDTO createCottage(CottageInsertDTO dto, List<MultipartFile> cottagePhotosFile);
 
     void deleteCottage(Long id);
+
+    CottageResponseDTO editCottage(CottageEditDTO dto, List<MultipartFile> cottagePhotosFile);
 
 }

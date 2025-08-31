@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.backend.dto.RequestDTO.CottageEditDTO;
 import com.example.backend.dto.RequestDTO.CottageInsertDTO;
 import com.example.backend.dto.ResponseDTO.CottageResponseDTO;
 import com.example.backend.dto.ResponseDTO.MessageDTO;
@@ -42,9 +44,9 @@ public class CottageController {
         return ResponseEntity.ok(cottageService.getMy(id));
     }
 
-    @GetMapping("/getByName/{name}")
-    public ResponseEntity<CottageResponseDTO> getMyCottages(@PathVariable String name) {
-        return ResponseEntity.ok(cottageService.getByName(name));
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<CottageResponseDTO> getCottageById(@PathVariable Long id) {
+        return ResponseEntity.ok(cottageService.getById(id));
     }
 
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -59,6 +61,14 @@ public class CottageController {
     public ResponseEntity<MessageDTO> deleteCottage(@PathVariable Long id) {
         cottageService.deleteCottage(id);
         return ResponseEntity.ok(new MessageDTO("Викендица је успешно обрисана."));
+    }
+
+    @PutMapping(value = "/edit", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CottageResponseDTO> editCottage(
+        @Valid @RequestPart("cottage") CottageEditDTO dto,
+        @RequestPart(value = "images", required = false) List<MultipartFile> images 
+    ) {
+        return ResponseEntity.ok(cottageService.editCottage(dto, images));
     }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.backend.db.model.Cottage;
 import com.example.backend.db.model.CottagePhoto;
 import com.example.backend.db.model.Host;
+import com.example.backend.dto.RequestDTO.CottageEditDTO;
 import com.example.backend.dto.RequestDTO.CottageInsertDTO;
 import com.example.backend.dto.ResponseDTO.CottagePhotoResponseDTO;
 import com.example.backend.dto.ResponseDTO.CottageResponseDTO;
@@ -106,15 +107,55 @@ public class CottageMapper {
                 .collect(Collectors.toList())
         );
 
+        dto.setDateTimeTilBlocked(cottage.getDateTimeTilBlocked());
+
         return dto;
     }
 
     public CottagePhotoResponseDTO toResDto(CottagePhoto cottagePhoto) {
         CottagePhotoResponseDTO dto = new CottagePhotoResponseDTO();
+        dto.setId(cottagePhoto.getId());
         dto.setPosition(cottagePhoto.getPosition());
         dto.setPhotoPath(cottagePhoto.getPhotoPath());
 
         return dto;
+    }
+
+    public void editFromDTO(Cottage cottage, CottageEditDTO dto, List<MultipartFile> cottagePhotosFile) {
+        cottage.setName(dto.getName());
+        cottage.setLocation(dto.getLocation());
+        cottage.setCapacity(dto.getCapacity());
+        cottage.setServices(dto.getServices());
+        cottage.setWinterPriceAdult(dto.getWinterPriceAdult());
+        cottage.setWinterPriceChild(dto.getWinterPriceChild());
+        cottage.setSummerPriceAdult(dto.getSummerPriceAdult());
+        cottage.setSummerPriceChild(dto.getSummerPriceChild());
+        cottage.setPhoneNumber(dto.getPhoneNumber());
+        cottage.setLatitude(dto.getLatitude());
+        cottage.setLongitude(dto.getLongitude());
+
+        if (dto.getImageDelete()) {
+            cottage.getPhotos().clear();
+            if (cottagePhotosFile != null) {
+                int cnt = 0;
+                for (MultipartFile cottagePhotoFile : cottagePhotosFile) {
+                    try {
+                        String cottagePhotoPath = imageUtil.saveImageToFileSys(
+                            String.valueOf(cnt),
+                            cottage.getPhotosFolderPath(),
+                            cottagePhotoFile);
+                        CottagePhoto cottagePhoto = new CottagePhoto();
+                        cottagePhoto.setPhotoPath(cottagePhotoPath);
+                        cottagePhoto.setPosition(cnt++);
+                        cottagePhoto.setCottage(cottage);
+
+                        cottage.getPhotos().add(cottagePhoto);
+                    } catch (IOException e) {
+                        throw new BackendServerException("Уписивање слике није успело.");
+                    }
+                }
+            }
+        }
     }
 
 }

@@ -10,6 +10,7 @@ import com.example.backend.db.model.Cottage;
 import com.example.backend.db.model.Host;
 import com.example.backend.db.repository.CottageRepository;
 import com.example.backend.db.repository.HostRepository;
+import com.example.backend.dto.RequestDTO.CottageEditDTO;
 import com.example.backend.dto.RequestDTO.CottageInsertDTO;
 import com.example.backend.dto.ResponseDTO.CottageResponseDTO;
 import com.example.backend.exception.BadRequestException;
@@ -52,8 +53,8 @@ public class CottageServiceImpl implements CottageService {
     }
 
     @Override
-    public CottageResponseDTO getByName(String name) {
-        Cottage cottage = cottageRepository.findByName(name).orElseThrow(() ->
+    public CottageResponseDTO getById(Long id) {
+        Cottage cottage = cottageRepository.findById(id).orElseThrow(() ->
             new BadRequestException("Викендица под овим именом не постоји")
         );
 
@@ -75,12 +76,26 @@ public class CottageServiceImpl implements CottageService {
         return cottageMapper.toResDto(cottageRepository.save(cottage));
     }
 
+    @Transactional
     @Override
     public void deleteCottage(Long id) {
         Cottage cottage = cottageRepository.findById(id).orElseThrow(() ->
             new BadRequestException("Викендица не постоји.")
         );
         cottageRepository.delete(cottage);
+    }
+
+    @Override
+    public CottageResponseDTO editCottage(CottageEditDTO dto, List<MultipartFile> cottagePhotosFile) {
+        Cottage cottage = cottageRepository.findById(dto.getId()).orElseThrow(() ->
+            new BadRequestException("Викендица не постоји.")
+        ); 
+        if (cottageRepository.existsByNameAndIdNot(dto.getName(), dto.getId())) {
+            throw new DuplicateDataException("Назив већ постоји", "name");
+        }
+
+        cottageMapper.editFromDTO(cottage, dto, cottagePhotosFile);
+        return cottageMapper.toResDto(cottageRepository.save(cottage));
     }
 
 }

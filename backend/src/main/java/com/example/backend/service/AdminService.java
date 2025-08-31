@@ -16,4 +16,6 @@ public interface AdminService {
 
     MessageDTO reactivateNonadmin(Long id);
 
+    MessageDTO blockCottage(Long id);
+
 }

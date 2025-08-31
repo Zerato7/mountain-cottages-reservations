@@ -2,10 +2,19 @@ package com.example.backend.dto.ResponseDTO;
 
 public class CottagePhotoResponseDTO {
     
-    int position;
-    String photoPath;
+    private Long id;
+    private int position;
+    private String photoPath;
 
     // Getters and Setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public int getPosition() {
         return position;

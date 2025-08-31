@@ -1,11 +1,14 @@
 package com.example.backend.service.impl;
 
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.backend.db.model.Cottage;
 import com.example.backend.db.model.User;
+import com.example.backend.db.repository.CottageRepository;
 import com.example.backend.db.repository.UserRepository;
 import com.example.backend.dto.RequestDTO.UserLoginDTO;
 import com.example.backend.dto.ResponseDTO.MessageDTO;
@@ -20,10 +23,16 @@ public class AdminServiceImpl implements AdminService {
     private final PasswordEncoder passwordEncoder;
 
     private final UserRepository userRepository;
+    private final CottageRepository cottageRepository;
 
-    public AdminServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public AdminServiceImpl(
+        PasswordEncoder passwordEncoder, 
+        UserRepository userRepository,
+        CottageRepository cottageRepository
+    ) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.cottageRepository = cottageRepository;
     }
 
     @Override
@@ -81,6 +90,16 @@ public class AdminServiceImpl implements AdminService {
         } else {
             throw new BadRequestException(errorMessage);
         }
+    }
+
+    @Override
+    public MessageDTO blockCottage(Long id) {
+        Cottage cottage = cottageRepository.findById(id).orElseThrow(() -> 
+            new BadRequestException("Викендица не постоји.")
+        );
+        cottage.setDateTimeTilBlocked(OffsetDateTime.now().plusHours(48));
+        cottageRepository.save(cottage);
+        return new MessageDTO("Викендица је блокирана.");
     }
     
 }

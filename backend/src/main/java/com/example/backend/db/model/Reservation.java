@@ -1,6 +1,6 @@
 package com.example.backend.db.model;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -37,10 +37,10 @@ public class Reservation {
     private Cottage cottage;
 
     @Column(nullable = false)
-    private LocalDateTime datetimeStart;
+    private OffsetDateTime datetimeStart;
 
     @Column(nullable = false)
-    private LocalDateTime datetimeEnd;
+    private OffsetDateTime datetimeEnd;
 
     @Column(nullable = false)
     private Integer adultsNumber;
@@ -51,7 +51,7 @@ public class Reservation {
     @Column(nullable = false)
     private Double cost;
 
-    @Column(nullable = false, length = 500)
+    @Column(length = 500)
     private String specialDemands;
 
     @Column(nullable = false)
@@ -88,19 +88,19 @@ public class Reservation {
         this.cottage = cottage;
     }
 
-    public LocalDateTime getDatetimeStart() {
+    public OffsetDateTime getDatetimeStart() {
         return datetimeStart;
     }
 
-    public void setDatetimeStart(LocalDateTime datetimeStart) {
+    public void setDatetimeStart(OffsetDateTime datetimeStart) {
         this.datetimeStart = datetimeStart;
     }
 
-    public LocalDateTime getDatetimeEnd() {
+    public OffsetDateTime getDatetimeEnd() {
         return datetimeEnd;
     }
 
-    public void setDatetimeEnd(LocalDateTime datetimeEnd) {
+    public void setDatetimeEnd(OffsetDateTime datetimeEnd) {
         this.datetimeEnd = datetimeEnd;
     }
 

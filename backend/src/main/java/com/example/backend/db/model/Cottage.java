@@ -1,5 +1,6 @@
 package com.example.backend.db.model;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +65,8 @@ public class Cottage {
 
     @OneToMany(mappedBy = "cottage")
     private List<Reservation> reservations = new ArrayList<>();
+
+    private OffsetDateTime dateTimeTilBlocked;
 
     // Getters and Setters
 
@@ -179,8 +182,20 @@ public class Cottage {
         return photos;
     }
 
+    public void setPhotos(List<CottagePhoto> photos) {
+        this.photos = photos;
+    }
+
     public List<Reservation> getReservations() {
         return reservations;
+    }
+
+    public OffsetDateTime getDateTimeTilBlocked() {
+        return dateTimeTilBlocked;
+    }
+
+    public void setDateTimeTilBlocked(OffsetDateTime dateTimeTilBlocked) {
+        this.dateTimeTilBlocked = dateTimeTilBlocked;
     }
     
 }

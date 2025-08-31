@@ -1,28 +1,56 @@
-package com.example.backend.dto.ResponseDTO;
+package com.example.backend.dto.RequestDTO;
 
-import java.time.OffsetDateTime;
-import java.util.List;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
-public class CottageResponseDTO {
-    
+public class CottageEditDTO {
+
+    @NotNull
     private Long id;
+
+    @NotBlank(message = "Назив је обавезан.")
     private String name;
+
+    @NotBlank(message = "Место је обавезно.")
     private String location;
+
+    @Positive(message = "Капацитет мора бити позитиван број.")
+    @NotNull(message = "Капацитет је обавезан.")
     private Integer capacity;
+
+    @Size(max = 500, message = "Услуге може бити највише 500 карактера")
     private String services;
+    
+    @PositiveOrZero(message = "Цена ноћења зими за одрасле мора бити ненегативан број.")
+    @NotNull(message = "Цена ноћења зими за одрасле је обавезна.")
     private Double winterPriceAdult;
+
+    @PositiveOrZero(message = "Цена ноћења зими за децу мора бити ненегативан број.")
+    @NotNull(message = "Цена ноћења зими за децу је обавезна.")
     private Double winterPriceChild;
+
+    @PositiveOrZero(message = "Цена ноћења лети за одрасле мора бити ненегативан број.")
+    @NotNull(message = "Цена ноћења лети за одрасле је обавезна.")
     private Double summerPriceAdult;
+
+    @PositiveOrZero(message = "Цена ноћења лети за децу мора бити ненегативан број.")
+    @NotNull(message = "Цена ноћења лети за децу је обавезна.")
     private Double summerPriceChild;
+
+    @NotBlank(message = "Контакт телефон је обавезан.")
     private String phoneNumber;
+
+    @NotNull(message = "Географска ширина је обавезна.")
     private Double latitude;
+
+    @NotNull(message = "Географска дужина је обавезна.")
     private Double longitude;
-    private Long ownerId;
 
-    private List<CottagePhotoResponseDTO> photoPaths;
-    private List<ReservationResponseDTO> reservations;
-
-    private OffsetDateTime dateTimeTilBlocked;
+    @NotNull(message = "Мора се навести да ли се бришу слике.")
+    private Boolean imageDelete;
 
     // Getters and Setters
 
@@ -122,36 +150,12 @@ public class CottageResponseDTO {
         this.longitude = longitude;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public Boolean getImageDelete() {
+        return imageDelete;
+    }
+
+    public void setImageDelete(Boolean imageDelete) {
+        this.imageDelete = imageDelete;
     }
     
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    public List<CottagePhotoResponseDTO> getPhotoPaths() {
-        return photoPaths;
-    }
-
-    public void setPhotoPaths(List<CottagePhotoResponseDTO> photoPaths) {
-        this.photoPaths = photoPaths;
-    }
-
-    public List<ReservationResponseDTO> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(List<ReservationResponseDTO> reservations) {
-        this.reservations = reservations;
-    }
-
-    public OffsetDateTime getDateTimeTilBlocked() {
-        return dateTimeTilBlocked;
-    }
-
-    public void setDateTimeTilBlocked(OffsetDateTime dateTimeTilBlocked) {
-        this.dateTimeTilBlocked = dateTimeTilBlocked;
-    }
-
 }

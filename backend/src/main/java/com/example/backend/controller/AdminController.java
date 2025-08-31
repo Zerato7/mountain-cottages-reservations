@@ -52,4 +52,9 @@ public class AdminController {
         return ResponseEntity.ok(adminService.reactivateNonadmin(id));
     }
 
+    @PutMapping("/blockCottage/{id}")
+    public ResponseEntity<MessageDTO> blockCottage(@PathVariable Long id) {
+        return ResponseEntity.ok(adminService.blockCottage(id));
+    }
+
 }
