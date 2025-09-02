@@ -1,0 +1,43 @@
+<div class="container mt-4">
+  <h2>Статистика</h2>
+
+  <div class="mt-4">
+    <h4>Резервације по месецима (све викендице)</h4>
+    @if (isBarChartEmpty()) {
+      <p class="text-muted">Нема података за приказ.</p>
+    } @else {
+      <canvas baseChart
+              [data]="barChartData"
+              [options]="{ responsive: true }"
+              [type]="'bar'">
+      </canvas>
+    }
+  </div>
+
+  <div class="mt-5">
+    <h4>Однос радни дани / викенд по викендицама</h4>
+    <div class="row">
+      @if (weekStats.length > 0) {
+        @for (stat of weekStats; track stat.cottageName) {
+          <div class="col-md-4">
+            <div class="card shadow-sm mb-3">
+              <div class="card-body text-center bg-reservation-card">
+                <h5 class="card-title">{{ stat.cottageName }}</h5>
+                <canvas baseChart
+                        [data]="{
+                          labels: ['Радни дани', 'Викенд'],
+                          datasets: [{ data: [stat.weekdayCount, stat.weekendCount] }]
+                        }"
+                        [options]="{ responsive: true }"
+                        [type]="'pie'">
+                </canvas>
+              </div>
+            </div>
+          </div>
+        }
+      } @else {
+        <p class="text-muted">Нема података за приказ.</p>
+      }
+    </div>
+  </div>
+</div>

@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { CottageComponent } from './cottage/cottage.component';
 import { TouristReservationsComponent } from './tourist-reservations/tourist-reservations.component';
 import { HostReservationsComponent } from './host-reservations/host-reservations.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 export const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -26,5 +27,6 @@ export const routes: Routes = [
   {path: 'my-cottages', component: MyCottagesComponent, canActivate: [authGuard]},
   {path: 'admin/dashboard', component: AdminComponent, canActivate: [authGuard]},
   {path: 'tourist-reservations', component: TouristReservationsComponent, canActivate: [authGuard]},
-  {path: 'host-reservations', component: HostReservationsComponent, canActivate: [authGuard]}
+  {path: 'host-reservations', component: HostReservationsComponent, canActivate: [authGuard]},
+  {path: 'statistics', component: StatisticsComponent, canActivate: [authGuard]}
 ];

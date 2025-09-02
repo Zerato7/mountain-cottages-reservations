@@ -9,8 +9,11 @@ import { OWL_DATE_TIME_LOCALE, OwlDateTimeIntl, OwlDateTimeModule, OwlNativeDate
 import { registerLocaleData } from '@angular/common';
 import localeSrCyrl from '@angular/common/locales/sr-Cyrl';
 import { SerbianCyrillicIntl } from './utils/datetime.util';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { Chart, registerables } from 'chart.js';
 
 registerLocaleData(localeSrCyrl);
+Chart.register(...registerables);
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,6 +23,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     importProvidersFrom(OwlDateTimeModule, OwlNativeDateTimeModule),
     { provide: OWL_DATE_TIME_LOCALE, useValue: 'sr-Cyrl' },
-    { provide: OwlDateTimeIntl, useClass: SerbianCyrillicIntl}
+    { provide: OwlDateTimeIntl, useClass: SerbianCyrillicIntl},
+    provideCharts(withDefaultRegisterables())
   ]
 };
