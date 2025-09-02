@@ -50,9 +50,9 @@ export class ReservationService {
     );
   }
 
-  accept(reservation: ReservationResponse) {
+  accept(reservationId: number) {
     return this.http.put<ReservationResponse>(`${this.curBackPath}/accept`, {
-      id: reservation.id
+      id: reservationId
     }).pipe(
       catchError((error: HttpErrorResponse) => {
         let message = error.error?.message || 'Непозната грешка при прихватања резервације';
@@ -61,9 +61,9 @@ export class ReservationService {
     );
   }
 
-  reject(reservation: ReservationResponse, rejectionComment: string) {
+  reject(reservationId: number, rejectionComment: string) {
     return this.http.put<ReservationResponse>(`${this.curBackPath}/reject`, {
-      id: reservation.id,
+      id: reservationId,
       rejectionComment: rejectionComment
     }).pipe(
       catchError((error: HttpErrorResponse) => {

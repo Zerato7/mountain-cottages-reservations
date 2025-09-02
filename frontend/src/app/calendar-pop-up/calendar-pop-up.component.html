@@ -1,0 +1,23 @@
+<div class="modal-header border-bottom">
+  <h5 class="modal-title fw-semibold">
+    Прихватање/Одбијање резервације
+  </h5>
+  <button type="button" class="btn-close" aria-label="close" (click)="activeModal.dismiss()"></button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-12 col-md-6 align-content-end mb-3">
+      <button class="btn btn-success" (click)="accept()">Прихвати</button>
+      <div *ngIf="acceptErrMsg" class="text-danger">
+        {{ acceptErrMsg }}
+      </div>
+    </div>
+    <div class="col-12 col-md-6 mb-3">
+      <input type="text" name="rejectionComment" class="form-control" [(ngModel)]="rejectionComment"><br>
+      <button class="btn btn-danger" (click)="reject()">Одбиј</button>
+      <div *ngIf="rejectErrMsg" class="text-danger">
+        {{ rejectErrMsg }}
+      </div>
+    </div>
+  </div>
+</div>

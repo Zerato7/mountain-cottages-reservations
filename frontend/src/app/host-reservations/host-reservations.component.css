@@ -41,3 +41,8 @@
 .bg-cancelled tr td {
   background-color: hsl(0, 0%, 75%);
 }
+
+.bg-reservation-badge {
+  background-color: rgb(133, 45, 188);
+}
+
