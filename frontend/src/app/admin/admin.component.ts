@@ -53,6 +53,11 @@ export class AdminComponent {
           cottage.reservations.forEach((reservation) => {
             if (reservation.feedback) reservation.feedback.dateTimeCreation = new Date(reservation.feedback.dateTimeCreation);
           });
+          cottage.reservations.sort((a, b) => {
+            if (!b.feedback) return -1;
+            if (!a.feedback) return 1;
+            return b.feedback.dateTimeCreation.getTime() - a.feedback.dateTimeCreation.getTime();
+          });
         });
       }
     });
@@ -135,7 +140,10 @@ export class AdminComponent {
 
   badRatings(cottage: CottageResponse): boolean {
     if (this.isBlocked(cottage)) return false;
-    return true;
+    if (cottage.reservations.length >= 2) {
+      return cottage.reservations.slice(0, 2).every(r => r.feedback && r.feedback.rating <= 2);
+    }
+    return false;
   }
 
   isBlocked(cottage: CottageResponse): boolean {

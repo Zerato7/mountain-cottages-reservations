@@ -166,7 +166,7 @@ VALUES(6, 1, 5, 'b4uSDuPEzR67jSmUpzTS+A==',	'2025-11-02 07:59:00.000000', '2025-
 INSERT INTO reservation(id, adults_number, children_number, credit_card_number, datetime_end, datetime_start, status, cottage_id, tourist_id, cost)
 VALUES(7, 1, 0, 'b4uSDuPEzR67jSmUpzTS+A==',	'2025-07-02 07:59:00.000000', '2025-07-01 12:00:00.000000',	'ACCEPTED_BY_OWNER', 2, 4, 4500);
 INSERT INTO reservation(id, adults_number, children_number, credit_card_number, datetime_end, datetime_start, status, cottage_id, tourist_id, cost)
-VALUES(8, 1, 0, 'b4uSDuPEzR67jSmUpzTS+A==',	'2025-08-04 07:59:00.000000', '2025-08-03 12:00:00.000000',	'ACCEPTED_BY_OWNER', 2, 4, 4500);
+VALUES(8, 1, 0, 'b4uSDuPEzR67jSmUpzTS+A==',	'2025-08-04 07:59:00.000000', '2025-08-03 12:00:00.000000',	'ACCEPTED_BY_OWNER', 1, 4, 4500);
 
 INSERT INTO feedback(reservation_id, rating, comment, date_time_creation)
 VALUES(1, 2, 'Sve super', '2025-08-31 12:39:00.000000');

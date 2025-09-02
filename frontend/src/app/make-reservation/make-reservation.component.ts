@@ -100,17 +100,62 @@ export class MakeReservationComponent {
 
   next(): void {
     this.step = 2;
-    const nightNum: number = DateTimeUtil.DateTimeDiffDays(this.form1.get('endDateTime')?.value, this.form1.get('startDateTime')?.value);
-    console.log(nightNum);
-    if (true) {
-      this.cost = this.cottage.summerPriceAdult * this.form1.get('adults')?.value +
+
+    this.cost = 0.0;
+    let startDate = new Date(this.form1.get('startDateTime')?.value);
+    let endDate = new Date(this.form1.get('endDateTime')?.value);
+
+    const summerPrice = this.cottage.summerPriceAdult * this.form1.get('adults')?.value +
         this.cottage.summerPriceChild * this.form1.get('children')?.value;
-      this.cost *= nightNum;
-    } else {
-      this.cost = this.cottage.winterPriceAdult * this.form1.get('adults')?.value +
+
+    const winterPrice = this.cottage.winterPriceAdult * this.form1.get('adults')?.value +
         this.cottage.winterPriceChild * this.form1.get('children')?.value;
-      this.cost *= nightNum;
+
+    let dateCmp: Date = new Date();
+    let isSummer: boolean;
+
+    if (startDate.getMonth() < 4) {
+      dateCmp.setHours(0, 0, 0, 0);
+      dateCmp.setMonth(4);
+      dateCmp.setDate(1);
+      isSummer = false;
+    } else
+    if (startDate.getMonth() < 8) {
+      dateCmp.setHours(0, 0, 0, 0);
+      dateCmp.setMonth(8);
+      dateCmp.setDate(1);
+      isSummer = true;
+    } else {
+      dateCmp.setHours(0, 0, 0, 0);
+      dateCmp.setMonth(4);
+      dateCmp.setDate(1);
+      dateCmp.setFullYear(dateCmp.getFullYear() + 1);
+      isSummer = false;
     }
+
+    let step = {
+      month: 4,
+      year: 0
+    };
+    while (dateCmp.getTime() < endDate.getTime()) {
+      const nightNum = Math.ceil((dateCmp.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+      this.cost += isSummer ? nightNum * summerPrice : nightNum * winterPrice;
+
+      startDate.setTime(dateCmp.getTime());
+      dateCmp.setMonth((dateCmp.getMonth() + step.month) % 12);
+      dateCmp.setFullYear(dateCmp.getFullYear() + step.year);
+      step.month = 12 - step.month;
+      step.year = 1 - step.year;
+
+      console.log(nightNum);
+      console.log(this.cost);
+
+      isSummer = !isSummer;
+    }
+
+    const nightNum = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    this.cost += isSummer ? nightNum * summerPrice : nightNum * winterPrice;
+
   }
 
   getCreditCardDisplay(): string {
