@@ -82,7 +82,7 @@ export class TouristReservationsComponent {
 
     this.reservationService.cancel(reservation).subscribe({
       next: r => {
-        this.cancelledReservations.push(r);
+        this.loadReservations();
       },
       error: err => {
 

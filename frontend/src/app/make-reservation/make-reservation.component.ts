@@ -114,6 +114,11 @@ export class MakeReservationComponent {
     let dateCmp: Date = new Date();
     let isSummer: boolean;
 
+    let step = {
+      month: 4,
+      year: 0
+    };
+
     if (startDate.getMonth() < 4) {
       dateCmp.setHours(0, 0, 0, 0);
       dateCmp.setMonth(4);
@@ -125,6 +130,8 @@ export class MakeReservationComponent {
       dateCmp.setMonth(8);
       dateCmp.setDate(1);
       isSummer = true;
+      step.month = 8;
+      step.year = 1;
     } else {
       dateCmp.setHours(0, 0, 0, 0);
       dateCmp.setMonth(4);
@@ -132,11 +139,6 @@ export class MakeReservationComponent {
       dateCmp.setFullYear(dateCmp.getFullYear() + 1);
       isSummer = false;
     }
-
-    let step = {
-      month: 4,
-      year: 0
-    };
     while (dateCmp.getTime() < endDate.getTime()) {
       const nightNum = Math.ceil((dateCmp.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
       this.cost += isSummer ? nightNum * summerPrice : nightNum * winterPrice;
