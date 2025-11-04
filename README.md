@@ -1,4 +1,4 @@
-# Mountain Cottage Rental — README
+# Mountain Cottage Rental
 
 Short description
 ---
